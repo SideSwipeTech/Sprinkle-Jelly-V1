@@ -1,18 +1,18 @@
-# Wizly Labs V2 — Build Phases
+# Build Phases
 
 **Status:** Draft for owner review  
-**Date:** 15 September 2026  
+**Date:** 16 September 2026  
 **Approach:** Sequential development; one active domain or closely related group at a time.
 
 ## Purpose
 
-Rebuild Labs with clear ownership and a working product at every milestone. Shared capabilities are built once. Each domain then adds its own complete learner and staff experience without recreating those capabilities.
+Build Wizly Labs as a new product with clear ownership and a working experience at every milestone. Shared capabilities are built once. Each domain then adds its own complete learner and staff experience without recreating those capabilities.
 
-This document defines the build order and completion checks only. It does not select technologies, approve individual features, or carry forward the previous implementation automatically.
+This document defines the build order and completion checks only. It does not select technologies or approve individual features.
 
 ## Before implementation
 
-Finish the plain-language product discussions: shared capabilities, individual domains, important edge cases, cross-domain journeys and visual references. Then agree the technology stack and architecture. The existing repository supplies reference material; only explicitly accepted behaviour becomes part of V2.
+Define the product in plain language: shared capabilities, individual domains, important edge cases, cross-domain journeys and visual references. Then agree the technology stack and architecture. Only behaviour approved for this product enters the build.
 
 ## Working rules
 
@@ -53,7 +53,7 @@ Finish the plain-language product discussions: shared capabilities, individual d
 | **2.3 Execution & evaluation** | Implement Run, Stop, input/output, execution limits and supported-language behaviour. Separately implement answer checking, test results and hidden-answer protection. Platform faults must not count as learner failures. |
 | **2.4 Content & media** | Build the agreed shared draft, review, publish and archive behaviour, together with common file/media handling. Individual authoring screens belong to their domains. |
 | **2.5 Reliable actions & data lifecycle** | Establish shared background processing, safe repeat actions, change tracking and agreed retention/deletion handling. Record the activity and completion facts approved Progress features will need; dashboard screens remain later. |
-| **2.6 Shared assistance & verification** | Build common generated-help behaviour only if retained in V2. Verify all shared capabilities through development-only examples, including normal, failed and interrupted operations. |
+| **2.6 Shared assistance & verification** | Build common generated-help behaviour only if approved for this product. Verify all shared capabilities through development-only examples, including normal, failed and interrupted operations. |
 
 **Boundaries:** Assessment timing, test saving and result history belong to the Assessment domain, not a second shared assessment product. Notifications, Economy and Progress keep their own domain ownership even where other domains use their capabilities. Build only known shared needs, not speculative frameworks.
 
@@ -98,7 +98,7 @@ Freeze features during this phase. Work consists of verified defect fixes and re
 | Subphase | Verification |
 |---|---|
 | **4.1 Complete domain walkthroughs** | Manually test every learner and staff domain, including normal, empty, loading, restricted and failed states. Repeat checks on the integrated product. |
-| **4.2 Cross-domain journeys** | Verify challenge → solution → reward → progress; daily → completion → streak; course → activity → completion → certificate; assessment → result → progress; and account/preferences changes across affected areas. |
+| **4.2 Cross-domain journeys** | Verify challenge → solution → reward → progress; daily → completion → streak; course → activity → completion →certificate; assessment → result → progress; and account/preferences changes across affected areas. |
 | **4.3 Failure & recovery behaviour** | Exercise refresh, disconnect, duplicate actions, service interruption, expired access and interrupted background work. Confirm work is preserved as promised and results are not duplicated. |
 | **4.4 Security & access** | Test learner/staff boundaries, access to another learner's data, hidden test material, uploads, sensitive actions and the main-site boundary. |
 | **4.5 k6 & performance** | Run representative browse, run, submit, assessment, stream and mixed workloads against agreed targets. Use representative data, identify bottlenecks, fix and rerun. |
