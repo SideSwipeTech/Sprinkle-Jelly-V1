@@ -1,11 +1,11 @@
 # Assessments
 
-**Status:** Draft for review  
+**Status:** Reviewed — one marking clarification remains  
 **Group:** Assessments — Mock Tests and Company Tests
 
 ## Purpose
 
-Mock Tests let learners practise different subjects and understand their skills without proctoring. Company Tests prepare learners for a company's assessment pattern, are grouped by company and use browser-based proctoring.
+Mock Tests let learners practise different subjects and understand their skills. Company Tests prepare learners for a company's assessment pattern and are grouped by company. Both include the same browser-based proctoring capability, with the paper's Off, Standard or Strict setting determining its response.
 
 Both use the same basic testing experience: sections, questions, marking, time limits, answer saving, submission, results and history. Their differences remain visible. A paper is the configured set of questions; a test is the learner's attempt at it. A paper is either Mock or Company and is not converted between them.
 
@@ -15,7 +15,7 @@ Both use the same basic testing experience: sections, questions, marking, time l
 |---|---|
 | [Taking a Test](Taking%20a%20Test.md) | Entry, checks, questions, navigation, saving, interruptions, proctoring and submission |
 | [Results](Results.md) | Marking, results, practice, history, skills, rewards, corrections and data removal |
-| [Authoring](Authoring.md) | Companies, papers, sections, questions, publishing, archives, settings and staff review |
+| [Authoring](Authoring.md) | Companies, papers, sections, questions, publishing, direct editing, archives, deletion and staff review |
 
 These describe product behaviour. Technology, data structures and implementation rules belong elsewhere.
 
@@ -27,7 +27,7 @@ Direct links and refresh open the intended catalogue, paper or history page.
 
 Learners browse published papers, search and filter by category and difficulty, and move through the results in pages. Featured papers appear first, followed by the most recently updated. The page shows a simple paper count and a way to continue an unfinished test.
 
-Paper detail explains the title, instructions, sections, question counts, marks, negative marking, duration and availability. It shows the settings that will apply to a new test and calls out relevant recent changes.
+Paper detail explains the title, instructions, sections, question counts, marks, negative marking, duration, availability and proctoring rules. It shows the settings that will apply to a new test and calls out relevant recent changes.
 
 ### Company Tests
 
@@ -43,11 +43,11 @@ Each paper card offers the relevant primary action: **Start**, **Resume**, **Pra
 
 ## Main journeys
 
-**Mock:** Browse → paper details → readiness check → start → answer → submit → result → review or practice.
+**Mock:** Browse → paper details → readiness check and test terms → start → answer → submit → result → review or practice.
 
-**Company:** Browse companies → company and role → paper briefing → readiness check and proctoring terms → start → answer → submit → result and company readiness.
+**Company:** Browse companies → company and role → paper briefing → readiness check and test terms → start → answer → submit → result and company readiness.
 
-**Staff:** Create company/role when needed → create paper → arrange sections and questions → preview and validate → publish → manage permitted settings, review results in aggregate or archive.
+**Staff:** Create company/role when needed → create paper → arrange sections and questions → preview and validate → publish → edit directly, inspect aggregate results, archive or delete safely.
 
 ## Shared features used
 
@@ -64,6 +64,14 @@ Each paper card offers the relevant primary action: **Start**, **Resume**, **Pra
 
 Assessment owns its papers, test rules, marking policy, result history and company-readiness definition. Shared features are referenced rather than redefined. It does not define databases, backend modules or import rules.
 
+## Agreed rules
+
+Both types retain browser-based proctoring, the recorded-test saving and timing rules, the one-sign-in restriction and the in-test help restrictions. Off records no proctoring events, Standard records and warns, and Strict can automatically submit at the event limit. Open practice is unproctored.
+
+Each paper permits one recorded test per learner, followed by unlimited unrecorded practice. Invalidation or an administrative fresh-test grant provides the specified exception; repeated ordinary retakes are not added.
+
+Administration uses direct Create, Read, Update and Delete, plus Archive and optional Duplicate. A published paper can be edited without compulsory archival, duplication or a new paper. Edits affect future starts, not the content, answers, timing or marking of an ongoing or completed test. Permanent catalogue deletion must not destroy the material needed to finish or review those tests. There is no Trash or soft-delete workflow.
+
 ## Boundaries
 
 Results are for the learner, not employers or colleges. There are no leaderboards, percentiles, employer reports, hiring predictions or result certificates. Company Tests award no XP, Credits or achievements. Neither type changes the Daily Challenge streak.
@@ -72,16 +80,8 @@ Generated AI help is unavailable throughout Assessments, including results and o
 
 An unavailable catalogue is not an empty catalogue. A company with no tests taken is untested; insufficient evidence is not a poor readiness score. Learners can read their own results only. Staff actions require the relevant permission, not merely access to a staff page.
 
-## Review points
+## Open point
 
-Mock Tests having no proctoring is settled. The following points are explicit review items, not permission for an implementation agent to choose a policy.
+**Multiple-choice penalty:** the proportional partial-mark rule is clear, but the wrong-only penalty and the per-question zero floor conflict. Settle that calculation before implementing this scoring case; an agent must not invent the answer. See Results.
 
-| Point | Draft position / question |
-|---|---|
-| Mock retakes | The described baseline keeps one recorded test per paper, followed by unlimited unrecorded practice. Should Mock instead allow repeated recorded attempts that update skills? |
-| Mock restrictions | The draft retains the timed-test saving rules, one-sign-in restriction and suppression of Notes, companion and outside help during a recorded Mock. Confirm whether these non-proctoring restrictions should remain for practice-oriented Mock Tests. |
-| Company proctoring | Standard warns; Strict can submit at the event limit. An Off option, which records nothing, remains an unapproved option because it conflicts with Company Tests being proctored. |
-| Published content | Questions and marking freeze on publication; correction uses a new draft copy. Permanent deletion is for a pristine draft, otherwise Archive. Confirm that this matches the intended administration experience. |
-| Multiple-choice penalty | The proportional partial-mark rule is clear, but the wrong-only penalty and the per-question zero floor conflict. The penalty for that case must be settled before implementation. |
-
-All other behaviour below is documented for review, not claimed to have been manually verified in a working product. There is no new implementation or visual prototype in this document set.
+The feature briefing has been reviewed. This status does not claim the product has been implemented or manually tested. Future domains are briefed and approved before their documents are written.

@@ -1,21 +1,21 @@
 # Taking a Test
 
-**Status:** Draft for review  
+**Status:** Reviewed — marking clarification in Results remains  
 [Assessments](Assessments.md) · [Results](Results.md) · [Authoring](Authoring.md)
 
 ## Before starting
 
 ### Paper details and availability
 
-The entry page explains the rules before Start: sections, marking, negative marking, total time, navigation restrictions and any coding-run allowance. Company briefings also name the company, role, year, Actual/Pattern label and proctoring rules.
+The entry page explains the rules before Start: sections, marking, negative marking, total time, navigation restrictions, proctoring response and any coding-run allowance. Company briefings also name the company, role, year and Actual/Pattern label.
 
-A learner with an unfinished test resumes it. Otherwise, Start is available only when the paper is published, its availability window is open, access is valid and the services needed for the test can be used. An archived paper cannot be started, but existing results remain reachable. A never-published paper is not exposed to learners.
+A learner with an unfinished test resumes it. Otherwise, Start is available only when the paper is published, its availability window is open, access is valid and the services needed for the test can be used. An archived or deleted catalogue paper cannot be newly started, but existing attempts and results remain reachable. A never-published paper is not exposed to learners.
 
 A blocked start states one clear reason and an appropriate remedy. Examples are signing in again when the session cannot cover the test, returning when availability opens, or retrying when a required service recovers. A paper with missing questions cannot start. When availability cannot be confirmed, show that uncertainty rather than an apparently usable Start button.
 
 ### Readiness check
 
-Before a new recorded test, a readiness check examines platform connectivity, whether answers can be saved and read back, browser capabilities, device draft saving, clock agreement, viewport/input readiness, and coding availability when coding questions exist. Company Tests also check fullscreen where required; Mock Tests do not request it for proctoring.
+Before a new recorded test, a readiness check examines platform connectivity, whether answers can be saved and read back, browser capabilities, device draft saving, clock agreement, viewport/input readiness, fullscreen where required, and coding availability when coding questions exist. The same checks apply to Mock and Company Tests as relevant to their settings.
 
 Each applicable item says **Passed**, **Warning**, or **Could not check**. Warnings require acknowledgement. Could not check is not a pass and cannot be acknowledged as though it were a known warning. These results are advisory, not a promise the device or service will stay healthy. Start still applies the actual access and availability checks.
 
@@ -23,11 +23,11 @@ The check creates no test, timer, grade, reward or charge. It requests no camera
 
 ### Start and acknowledgement
 
-Before starting, explain the recorded-attempt rule, that time does not pause, that re-entry resumes the same test, and the applicable account restrictions. Company learners also see what is recorded and what can end the test. Mock learners see no proctoring notice or event counter.
+Before starting either type, explain the recorded-attempt rule, that time does not pause, that re-entry resumes the same test, and the applicable account restrictions. State the proctoring setting, what is recorded and what can end the test. Off must not imply that observations are being collected.
 
 Start creates the test and begins the clock only when starting succeeds. Repeated clicks open the same test rather than creating duplicates. Opening details or completing the readiness check alone never consumes an attempt.
 
-The content and settings used for a test stay fixed for that test. Staff changes do not move its deadline, change its marks or introduce new restrictions halfway through it. Closing availability or archiving the paper after it starts does not cancel it.
+The content and settings used for a test stay fixed for that test. Staff can edit the paper directly, but those changes apply to future starts. They do not replace questions, change saved answers or marks, move the deadline or introduce restrictions midway through an attempt. Closing availability, archiving or deleting the catalogue paper does not cancel a test already started or remove what it needs to finish.
 
 ## Answering questions
 
@@ -89,15 +89,23 @@ One failed save does not blank the paper or discard other answers. Repeated deli
 
 Leaving, refreshing or losing the connection does not give up the test. Time continues, and returning before the deadline restores the learner's place and confirmed answers. Unsent work is recoverable only on the device that still holds it and can be sent only while answers are still accepted. There is no promise that unconfirmed typing appears on another device.
 
-During a recorded test, another sign-in on the account is refused without interrupting the test device. There is no forced device-takeover prompt. If the device fails, confirmed answers still reach automatic submission; a second device does not receive an exception to the sign-in rule. This restriction remains a Mock review point in the overview.
+During a recorded test of either type, another sign-in on the account is refused without interrupting the test device. There is no forced device-takeover prompt. If the device fails, confirmed answers still reach automatic submission; a second device does not receive an exception to the sign-in rule.
 
 The learner may leave the page, but there is no discard-test control. Navigation must not hang indefinitely while trying to save or claim success when saving did not finish.
 
-## Company proctoring
+## Proctoring
 
-Company Tests use neutral **Recorded Events**, not accusations. Mock Tests collect none of these events and cannot be submitted because of them.
+Both Mock and Company Tests use neutral **Recorded Events**, not accusations. The paper's setting controls the response:
 
-| Observation | Company behaviour |
+| Setting | Behaviour |
+|---|---|
+| Off | Record none of the listed events and apply no event-count penalty or automatic submission |
+| Standard | Record applicable events and warn; never submit because of their count |
+| Strict | Record and warn, then automatically submit at the configured limit |
+
+The Strict limit is three by default, adjustable from one to ten. Show the setting and applicable count clearly before and during the test. The timed-test rules and help restrictions remain in place when event recording is Off.
+
+| Observation | When it is recorded under Standard or Strict |
 |---|---|
 | The test page becomes hidden | Record the observation |
 | The window loses focus without becoming hidden | Record it without counting the same observation twice |
@@ -105,23 +113,21 @@ Company Tests use neutral **Recorded Events**, not accusations. Mock Tests colle
 | Copy, cut, paste or context-menu use | Record only when the paper enables this category |
 | Restricted navigation or browser shortcuts | Record only when that category is enabled |
 
-Standard records and warns but never submits because of the count. Strict warns and automatically submits at the configured limit: three by default, adjustable from one to ten. Show the selected behaviour and count clearly. The Off option is unresolved and is not approved for Company Tests.
-
 Repeated reports of the same event count once; identical signals within two seconds are treated as one observation. Connection loss, slow networks, execution failures, saving retries and platform notices are not proctoring events. Permitted keyboard navigation, assistive technology, zoom, captions and reduced motion do not count.
 
 No camera, microphone, screen recording, clipboard contents or keystroke capture is collected. Staff see event kinds, times, counted status and the reason a test ended—not a recording of the learner or a conclusion about intent.
 
-Where fullscreen is required, request it on entry. Refusal prompts the learner again rather than silently starting a recording or imposing an undocumented failure. Fullscreen is not requested as Mock proctoring.
+Where fullscreen is required, request it on entry. Refusal prompts the learner again rather than silently starting a recording or imposing an undocumented failure. These rules apply to both types.
 
-During a recorded test, companion messages, Quick Notes, generated help, outside-help controls and problem-reporting controls are unavailable. Asking for those capabilities elsewhere in Labs does not bypass the restriction. Generated help remains absent throughout the Assessment domain; retaining the other restrictions for Mock is an explicit review point.
+During a recorded test, companion messages, Quick Notes, generated help, outside-help controls and problem-reporting controls are unavailable. Asking for those capabilities elsewhere in Labs does not bypass the restriction. Generated help remains absent throughout the Assessment domain.
 
 ## Ending a test
 
-The learner submits, time expires, a Strict Company test reaches its event limit, or an account-security action ends access. A lost connection alone is never an ending.
+The learner submits, time expires, a Strict test reaches its event limit, or an account-security action ends access. These reasons apply to both Mock and Company. A lost connection alone is never an ending.
 
 Answers stop being accepted at the deadline. The submission grace period is for finishing submission, not extra answering time. A late answer is reported as late, not falsely labelled Saved. A late Submit may still complete the ending using confirmed answers.
 
-Repeated or simultaneous submissions produce one result. The result and history explain whether the learner submitted, time ended, the Company event limit was reached or access was ended. The event-limit reason is not available to Mock Tests.
+Repeated or simultaneous submissions produce one result. The result and history explain whether the learner submitted, time ended, the event limit was reached or access was ended.
 
 If access is forcibly ended, the platform finalizes only when the answered work is safely saved and no submission is unresolved. Otherwise, it invalidates the test with an honest access-related reason. A temporary grading outage leaves the result pending, not failed.
 
@@ -134,10 +140,10 @@ A test that nobody returns to still ends and scores confirmed work. Questions wi
 | A save fails | Keep the answer, show its state and offer a genuine retry |
 | Run cannot start | Explain the execution problem; keep code and do not spend the run allowance |
 | Time expires while typing | Stop accepting answers; submit confirmed work, not unconfirmed typing |
-| Staff edit settings or archive the paper | The existing test continues under its starting rules |
+| Staff edit questions/settings, archive or delete the paper | The existing test continues with the content and rules it started with |
 | Maintenance approaches | Refuse a new test that cannot finish safely under the disclosed maintenance rule; an existing test continues while saving remains available |
 | The result cannot yet be graded | Show that answers are saved and grading is pending |
 
 ### Check this journey
 
-Try double Start, refresh after a confirmed save, an unsent answer during disconnection, restricted navigation, exhausted Run allowance, late saving and simultaneous submission. Test Mock without any event collection, and Company separately under Standard and Strict. Each case should preserve confirmed work and produce at most one recorded result.
+Try double Start, refresh after a confirmed save, an unsent answer during disconnection, restricted navigation, exhausted Run allowance, late saving and simultaneous submission. Test both types under Off, Standard and Strict. Edit and delete a catalogue paper during an attempt and confirm that the learner can still finish the original test. Each case should preserve confirmed work and produce at most one recorded result.
