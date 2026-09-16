@@ -70,11 +70,11 @@ Certificate visibility remains independent of validity. Ordinary course changes 
 
 ## Account information
 
-Show seven read-only facts as text, not disabled inputs: display name, email, all actual roles held, whether access is active, access end date, current sign-in expiry and member-since. Identify the main site or Access as appropriate and link to the main site for permitted identity/membership changes.
+Show seven read-only facts as text, not disabled inputs: display name, email, Labs role, whether access is active, access end date, current sign-in expiry and member-since. Identify the main site or Access as appropriate and link to the main site for permitted identity/membership changes.
 
 Reread account/access facts through the shared Access boundary when opening the section. A bounded last-verified view must carry its freshness if fresh verification is unavailable. Could not verify access, Signed out, Inactive and Past its end are different conditions; an upstream outage must not pretend that membership expired.
 
-Show all roles, not one selected effective role. With no role list, do not invent one; with an unreadable list, explain that it could not be read. Account dates are information here, not a second implementation of admission rules.
+The single Labs role is User, Admin or Super Admin under [Administration](../Administration/Administration.md). WordPress `administrator` resolves to Super Admin; the WordPress role designated for Labs administration resolves to Admin; other verified accounts resolve to User. Super Admin takes precedence when both mappings apply. Show that WordPress controls the role. An unreadable role is Unavailable, not an inferred staff role or a confirmed User result. There is no role picker, grant/removal control or permission editor inside Labs. Account dates and the displayed role are information here, not a second implementation of admission rules.
 
 No plan, price, invoice, renewal, payment management, password form, biography editor, session list or Sign out everywhere screen is introduced in this section. Those concerns stay with their designated owners.
 
@@ -107,10 +107,10 @@ There is no broad account-export feature or prepared export prerequisite. Existi
 
 ## Staff boundaries and errors
 
-Staff cannot edit main-site identity here, read Quick Notes or approve/reject/cancel a learner's erasure request. Authorized certificate reviewers decide the learner's exact name proposal. Authorized retention operators manage a genuine hold in Administration, not an Approve erasure queue.
+Neither Admin nor Super Admin can edit main-site identity here, read Quick Notes or approve/reject/cancel a learner's erasure request. Super Admin decides the learner's exact certificate-name proposal and manages genuine retention holds in Administration. These are responsibilities of the existing role, not separate certificate-reviewer or retention-operator roles or an Approve erasure queue.
 
 Keep errors local to the affected section/control. Never replace unknown account facts with zeros or inferred membership states. Preserve saved neighboring preferences and distinguish missing information from blocked permission. All controls must work by keyboard and remain understandable without color alone.
 
 ## Completion checks
 
-Check every setting's scope, independent failures, no-storage appearance, the header-to-Settings round trip, Follow system and reduced-motion precedence. Check restricted-page companion behavior, the mandatory course-change exception, certificate states and read-only identity. Exercise erasure confirmation, stale verification, cancellation success/failure, seven-day expiry, holds, interruption, final completion and certificate privacy. Verify that no broad export, identity editor or staff erasure-approval workflow appears.
+Check every setting's scope, independent failures, no-storage appearance, the header-to-Settings round trip, Follow system and reduced-motion precedence. Check restricted-page companion behavior, the mandatory course-change exception, certificate states and read-only identity. Exercise erasure confirmation, stale verification, cancellation success/failure, seven-day expiry, holds, interruption, final completion and certificate privacy. Verify the WordPress-derived three-role display and that no local role editor, broad export, identity editor or staff erasure-approval workflow appears.

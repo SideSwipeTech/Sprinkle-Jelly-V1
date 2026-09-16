@@ -7,13 +7,13 @@
 
 One assessment studio manages Mock and Company papers. Choose the type first, then show only its applicable fields. Staff can create, read, update and permanently delete papers and questions, preview and publish, archive and optionally duplicate. Direct editing is available after publication. There is no compulsory archive-and-duplicate correction process, Trash or soft-delete workflow.
 
-Actions require assessment permissions and retain who changed what. The permissions for authoring, invalidating a result and reviewing proctoring events are distinct. Paper and company management belong to the super administrator by default and Recorded Event review to moderators; other roles need an explicit grant. A role that can view one staff page does not automatically receive every action.
+Roles follow [Administration](../Administration/Administration.md): User, Admin and Super Admin, determined only by WordPress through Access. Admin prepares drafts, submits changes and reviews factual Recorded Events. Super Admin manages companies, publishes/applies live changes and performs protected operations including invalidation, accommodations and fresh-test grants. Authoring, publication and result changes remain distinct actions under this fixed role policy. No role assignment or per-person permission grant exists inside Labs.
 
 If another edit has made the page stale, preserve the typed work and offer a choice between keeping those edits and loading the saved version. Never silently overwrite a newer save or discard the staff member's input.
 
 ## Companies and roles
 
-Create a company with its name and descriptive details, then add the roles associated with it. A role name must be unique within that company, and renaming must not break existing links.
+Create a company with its name and descriptive details, then add the roles associated with it. A role name must be unique within that company, and renaming must not break existing links. These are company job roles, not Labs account roles.
 
 A Company paper always belongs to a company, and its role must belong to that company. The paper's owning company and type remain its identity; direct content editing does not turn a Mock paper into a Company paper or transfer learner history to another company. Changing descriptive information does not rewrite the company/role information of a recorded attempt.
 
@@ -101,7 +101,7 @@ Never cascade a deletion into learner results or leave another live paper with b
 
 ## Accommodations
 
-An authorized staff member can assign extra time for a learner and paper before Start: 1.0, 1.25, 1.5 or 2.0 times the normal duration. No assignment is not silently reported as an explicit 1.0 accommodation.
+Super Admin can assign extra time for a learner and paper before Start: 1.0, 1.25, 1.5 or 2.0 times the normal duration. No assignment is not silently reported as an explicit 1.0 accommodation.
 
 The multiplier changes answering duration, not submission grace, and cannot change mid-test. Requests are handled through the main site's contact route. Labs stores the approved adjustment, not medical reasons or supporting documents, and has no evidence-upload form for this purpose.
 
@@ -109,11 +109,11 @@ The multiplier changes answering duration, not submission grace, and cannot chan
 
 ### Recorded Events
 
-For both Mock and Company Tests, authorized staff can read the count, ending reason and ordered event timeline, including which observations counted. Off records none; a recorded Off setting must not be presented as missing monitoring data. The timeline is read-only and contains no screen/audio/video capture, clipboard contents or inferred misconduct.
+For both Mock and Company Tests, Admin and Super Admin can read the count, ending reason and ordered event timeline, including which observations counted. Off records none; a recorded Off setting must not be presented as missing monitoring data. The timeline is read-only and contains no screen/audio/video capture, clipboard contents or inferred misconduct.
 
 ### Invalidation
 
-Authorized staff can invalidate a test with a required note. The learner receives a neutral reason; the staff note stays private. The history entry remains, the appropriate fresh test is restored, and Skills/Economy apply the consequences described in Results. Repeating invalidation has no duplicate effect.
+Super Admin can invalidate a test with a required note. The learner receives a neutral reason; the staff note stays private. The history entry remains, the appropriate fresh test is restored, and Skills/Economy apply the consequences described in Results. Repeating invalidation has no duplicate effect.
 
 Staff cannot assign a new score, select a pass result or manually retry a pending grade. Proven calculation defects follow the bounded correction workflow rather than an arbitrary re-grade.
 
