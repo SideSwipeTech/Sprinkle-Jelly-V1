@@ -1,6 +1,6 @@
 # Taking a Test
 
-**Status:** Reviewed — marking clarification in Results remains  
+**Status:** Reviewed  
 [Assessments](Assessments.md) · [Results](Results.md) · [Authoring](Authoring.md)
 
 ## Before starting

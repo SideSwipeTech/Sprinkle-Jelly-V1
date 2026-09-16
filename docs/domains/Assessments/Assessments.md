@@ -1,6 +1,6 @@
 # Assessments
 
-**Status:** Reviewed — one marking clarification remains  
+**Status:** Reviewed  
 **Group:** Assessments — Mock Tests and Company Tests
 
 ## Purpose
@@ -80,8 +80,6 @@ Generated AI help is unavailable throughout Assessments, including results and o
 
 An unavailable catalogue is not an empty catalogue. A company with no tests taken is untested; insufficient evidence is not a poor readiness score. Learners can read their own results only. Staff actions require the relevant permission, not merely access to a staff page.
 
-## Open point
+## Review status
 
-**Multiple-choice penalty:** the proportional partial-mark rule is clear, but the wrong-only penalty and the per-question zero floor conflict. Settle that calculation before implementing this scoring case; an agent must not invent the answer. See Results.
-
-The feature briefing has been reviewed. This status does not claim the product has been implemented or manually tested. Future domains are briefed and approved before their documents are written.
+The feature briefing and marking rules have been reviewed. This status does not claim the product has been implemented or manually tested. Future domains are briefed and approved before their documents are written.

@@ -1,6 +1,6 @@
 # Authoring
 
-**Status:** Reviewed — marking clarification in Results remains  
+**Status:** Reviewed  
 [Assessments](Assessments.md) · [Taking a Test](Taking%20a%20Test.md) · [Results](Results.md)
 
 ## The staff workspace

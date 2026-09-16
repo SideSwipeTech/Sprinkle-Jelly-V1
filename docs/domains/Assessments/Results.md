@@ -1,6 +1,6 @@
 # Results
 
-**Status:** Reviewed — one marking clarification remains  
+**Status:** Reviewed  
 [Assessments](Assessments.md) · [Taking a Test](Taking%20a%20Test.md) · [Authoring](Authoring.md)
 
 ## Marking
@@ -11,16 +11,33 @@ The marking scheme shown before Start governs that recorded test. Each question 
 |---|---|
 | Single-choice or true/false | Full marks for correct; a wrong answer earns no marks and receives the configured penalty |
 | Numerical | Full marks when within the configured tolerance; otherwise wrong with the configured penalty |
-| Multiple-choice | Partial marks based on correct selections minus wrong selections, divided by the number of correct options, with the proportional part never below zero |
+| Multiple-choice (multi-select) | Proportional credit when at least one correct option is selected; only incorrect selections receive the configured penalty once; an empty selection scores zero |
 | Coding | Marks proportional to cases passed out of all visible and hidden cases, using the saved code |
 
-For example, a six-mark multiple-choice question with three correct options gives two proportional marks when the learner selects two correct options and one wrong option. Repeated selections count once. A coding answer passing three of four cases earns three quarters of the question's marks.
+### Multi-select scoring
 
-**Multiple-choice penalty needs clarification:** the rules describe a penalty when no correct option is selected, but also forbid a negative score for that question. At zero proportional marks, that floor would erase the penalty. Do not invent a different calculation; settle the wrong-only case before implementation. An empty selection is unanswered and does not attract the penalty.
+When at least one correct option is selected, multiply the question's marks by **(correct selections minus incorrect selections) divided by the number of correct options**. This proportional result cannot fall below zero, and no additional penalty applies to that partly correct or mixed answer.
+
+When the learner selects one or more options but none is correct, subtract the question's configured penalty once. That question may therefore score below zero. With negative marking disabled, it scores zero. Nothing selected is unanswered and scores zero without a penalty. Repeated selections count once and never change the score.
+
+For a four-mark question with two correct options and a one-mark penalty:
+
+| Learner's selection | Marks |
+|---|---:|
+| Both correct options, no incorrect options | 4 |
+| One correct option, no incorrect options | 2 |
+| One correct and one incorrect option | 0 |
+| Only incorrect options | -1 |
+| Nothing selected | 0 |
+| Only incorrect options, with negative marking disabled | 0 |
+
+A six-mark question with three correct options gives two proportional marks when the learner selects two correct options and one incorrect option. A coding answer passing three of four cases earns three quarters of that question's marks.
+
+### Total and final grading
 
 A coding question with no saved code, or no cases, is skipped. Publication and live-edit validation must prevent a coding question without cases from becoming available; no missing test case is invented during marking.
 
-Add the question marks at full precision, round the total once to two decimal places using half-up rounding, and do not let the final total fall below zero. Per-question displays must not change the values used in that sum. Mock pass/fail uses the passing percentage fixed for that test; Company has no pass/fail decision.
+Add the question marks at full precision, round the total once to two decimal places using half-up rounding, and do not let the final total fall below zero. The overall zero floor does not remove a valid wrong-only multi-select penalty before summing the questions. Per-question displays must not change the values used in that sum. Mock pass/fail uses the passing percentage fixed for that test; Company has no pass/fail decision.
 
 Running visible cases while answering is not grading. Final grading checks saved code against the full question case set. If grading cannot currently run, the result waits instead of awarding zero or a wrong answer.
 
@@ -136,4 +153,4 @@ Delete the learner's tests of both types, including archived attempts, answers, 
 
 ### Check this journey
 
-Verify a zero-answer result, partial marks, negative marking, grading during an outage, withheld review versus aged-out detail, repeat grants, invalidation, a bounded calculation correction and account deletion. Edit a published answer key and remove a paper from the catalogue, then verify that original attempts remain correctly gradable and reviewable. Confirm that histories remain honest and no action duplicates a result or reward.
+Verify a zero-answer result, partial marks, negative marking, grading during an outage, withheld review versus aged-out detail, repeat grants, invalidation, a bounded calculation correction and account deletion. For multi-select, check fully correct, partly correct, mixed, wrong-only, unanswered and repeated selections, with negative marking both enabled and disabled; verify that penalties reduce the sum and only the final test total is floored at zero. Edit a published answer key and remove a paper from the catalogue, then verify that original attempts remain correctly gradable and reviewable. Confirm that histories remain honest and no action duplicates a result or reward.
