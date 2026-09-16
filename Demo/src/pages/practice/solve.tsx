@@ -5,7 +5,8 @@
  * custom input, ungraded) and records nothing; Submit grades the full case
  * set and becomes a submission of record — whatever its verdict. A platform
  * fault is reported in the platform's own name, writes no row and never
- * lands as a false solve failure.
+ * lands as a false solve failure. A program that does not compile fails in
+ * the compiler's words, and nothing runs.
  *
  * Drafts are device-local per challenge and per language; switching language
  * never contaminates the other language's work. Opened from a track the
@@ -28,8 +29,19 @@ import {
 } from "@state/store";
 import { raise } from "@companion/stream";
 import { useStore } from "@state/useStore";
-import { CodeEditor } from "@components/CodeEditor/CodeEditor";
-import { Terminal } from "@components/CodeEditor/Terminal";
+import {
+  CodeEditor,
+  CodeWorkbench,
+  RunButton,
+  SubmitButton,
+  Terminal,
+  ToolButton,
+  assessSource,
+  extensionFor,
+  measureRun,
+  type TerminalStatusLine,
+  type TerminalTestCase
+} from "@components/CodeEditor";
 import { HintLadder } from "../../extraction/components/HintLadder/HintLadder";
 import { LanguageSelect } from "../../extraction/components/LanguageSelect/LanguageSelect";
 import { List, ListRow } from "../../extraction/components/ListRow/ListRow";
@@ -37,7 +49,6 @@ import { Menu } from "../../extraction/components/Menu/Menu";
 import { Dialog } from "../../extraction/components/Dialog/Dialog";
 import {
   detailFor,
-  isUntouchedStarter,
   starterFor,
   trackEditorLanguage,
   TRACK_CONTENTS,
@@ -54,14 +65,6 @@ type Verdict =
   | { kind: "fault"; note: string }
   | null;
 
-interface CaseResult {
-  name: string;
-  passed: boolean;
-  durationMs: number;
-  expected?: string;
-  actual?: string;
-}
-
 export function ChallengeSolve() {
   const { challengeId } = useParams();
   const [params] = useSearchParams();
@@ -73,11 +76,13 @@ export function ChallengeSolve() {
   const [code, setCode] = useState("");
   const [phase, setPhase] = useState<Phase>("idle");
   const [out, setOut] = useState<string | null>(null);
-  const [results, setResults] = useState<CaseResult[]>([]);
+  const [err, setErr] = useState<string | null>(null);
+  const [statusLine, setStatusLine] = useState<TerminalStatusLine | null>(null);
+  const [results, setResults] = useState<TerminalTestCase[]>([]);
   const [verdict, setVerdict] = useState<Verdict>(null);
   const [restored, setRestored] = useState<string | null>(null);
   const [resetArm, setResetArm] = useState(false);
-  const [showCustom, setShowCustom] = useState(false);
+  const [inputRequest, setInputRequest] = useState(0);
   const [customVal, setCustomVal] = useState("");
   const [hintCount, setHintCount] = useState(0);
   const [reportOpen, setReportOpen] = useState(false);
@@ -92,6 +97,14 @@ export function ChallengeSolve() {
   const trackContents = track ? TRACK_CONTENTS[track.id] ?? [] : [];
   const trackIndex = track && item ? trackContents.indexOf(item.id) : -1;
 
+  function clearConsole() {
+    setOut(null);
+    setErr(null);
+    setStatusLine(null);
+    setVerdict(null);
+    setResults([]);
+  }
+
   /* Seed the editor: the device draft for this challenge + language, else the
      authored starter — announced once, and only when a draft really was kept. */
   useEffect(() => {
@@ -102,29 +115,16 @@ export function ChallengeSolve() {
     const start = starterFor(item, lang);
     setCode(draft ?? start);
     setRestored(draft !== undefined && draft !== start ? "Your device draft was restored." : null);
-    setOut(null);
-    setVerdict(null);
-    setResults([]);
+    clearConsole();
     setResetArm(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item?.id]);
 
   useEffect(() => () => { if (timerRef.current !== null) window.clearTimeout(timerRef.current); }, []);
 
-  /* The claimed chords: Ctrl/Cmd+Enter runs, Ctrl/Cmd+Shift+Enter submits. */
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (!(e.ctrlKey || e.metaKey) || e.key !== "Enter") return;
-      e.preventDefault();
-      if (e.shiftKey) doSubmit(); else doRun();
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
-
   const detailData = detail;
   const draftKey = item ? `${item.id}:${language}` : "";
+  const fileName = `solution.${extensionFor(language)}`;
 
   const nextInTrack =
     track && trackIndex >= 0 && trackIndex + 1 < trackContents.length
@@ -146,29 +146,44 @@ export function ChallengeSolve() {
     const start = starterFor(item, next);
     setCode(draft ?? start);
     setRestored(draft !== undefined && draft !== start ? "Your device draft was restored." : null);
-    setOut(null);
-    setVerdict(null);
-    setResults([]);
+    clearConsole();
     setResetArm(false);
   }
 
   function doRun() {
     if (!item || !detailData || phase !== "idle") return;
     if (detailData.judgeDown) {
+      clearConsole();
       setVerdict({ kind: "fault", note: detailData.judgeDown });
-      setOut(null);
-      setResults([]);
       return;
     }
+    const source = code;
     setPhase("running");
-    setOut(null);
+    clearConsole();
     timerRef.current = window.setTimeout(() => {
       setPhase("idle");
-      const clean = !isUntouchedStarter(code, starterFor(item, language));
-      const rows: CaseResult[] = detailData.samples.map((s, i) => ({
+      const assessment = assessSource(source, starterFor(item, language), language, fileName);
+      const stats = measureRun(source, language, detailData.samples.length);
+      if (assessment.kind === "syntax") {
+        setResults(
+          detailData.samples.map((s, i) => ({
+            name: `Visible case ${i + 1}`,
+            passed: false,
+            input: s.input,
+            expected: s.expected,
+            actual: `${assessment.label} — the program did not run`
+          }))
+        );
+        setErr(assessment.report);
+        setStatusLine({ tone: "fail", text: `${assessment.label} on line ${assessment.issue.line} · nothing ran · nothing recorded` });
+        return;
+      }
+      const clean = assessment.kind === "changed";
+      const rows: TerminalTestCase[] = detailData.samples.map((s, i) => ({
         name: `Visible case ${i + 1}`,
         passed: clean,
-        durationMs: 0.12 + i * 0.05,
+        durationMs: stats.durationMs / detailData.samples.length + i * 0.05,
+        input: s.input,
         expected: s.expected,
         actual: clean ? s.expected : "(the starter's stub return)"
       }));
@@ -178,25 +193,41 @@ export function ChallengeSolve() {
           ? `Ran the ${rows.length} visible sample${rows.length === 1 ? "" : "s"} — all passed.\nA run is not a submission: nothing was recorded. Submit grades the full set of ${detailData.samples.length + detailData.hiddenCount} cases.`
           : `Ran the ${rows.length} visible sample${rows.length === 1 ? "" : "s"} — case 1 failed.\nThe editor still holds the starter stub. A run is not a submission: nothing was recorded.`
       );
+      setStatusLine(
+        clean
+          ? { tone: "pass", text: `${rows.length}/${rows.length} visible cases passed · ${stats.durationMs} ms · ${stats.memoryMb.toFixed(1)} MB` }
+          : { tone: "fail", text: `Visible case 1 failed · ${stats.durationMs} ms · nothing recorded` }
+      );
     }, 500);
   }
 
   function doRunCustom() {
     if (!item || !detailData || phase !== "idle") return;
     if (customVal.trim().length === 0) {
-      setOut("Custom input was empty — the platform refused it before execution. Nothing ran.");
+      clearConsole();
+      setStatusLine({ tone: "warn", text: "Custom input was empty — the platform refused it before execution. Nothing ran." });
       return;
     }
     if (detailData.judgeDown) {
+      clearConsole();
       setVerdict({ kind: "fault", note: detailData.judgeDown });
       return;
     }
+    const source = code;
     setPhase("running");
+    clearConsole();
     timerRef.current = window.setTimeout(() => {
       setPhase("idle");
-      setResults([{ name: "Custom input", passed: true, durationMs: 0.16 }]);
-      setOut(`Custom input — program output only, ungraded:\n\n${customVal}\n\n→ ran without judging (0.16ms). A custom run produces no verdict and no record.`);
-      raise("succeeded", { runtime: "0.16ms" });
+      const assessment = assessSource(source, starterFor(item, language), language, fileName);
+      if (assessment.kind === "syntax") {
+        setErr(assessment.report);
+        setStatusLine({ tone: "fail", text: `${assessment.label} on line ${assessment.issue.line} · nothing ran` });
+        return;
+      }
+      const stats = measureRun(source, language);
+      setOut(`stdin ← ${customVal.trim().split("\n").join("\n         ")}`);
+      setStatusLine({ tone: "info", text: `Ran with custom input · ungraded, no verdict, no record · ${stats.durationMs} ms` });
+      raise("succeeded", { runtime: `${stats.durationMs}ms` });
     }, 400);
   }
 
@@ -204,15 +235,48 @@ export function ChallengeSolve() {
     if (!item || !detailData || phase !== "idle") return;
     if (detailData.judgeDown) {
       /* The platform's own failure — no row, no status change, never a wrong answer. */
+      clearConsole();
       setVerdict({ kind: "fault", note: detailData.judgeDown });
       return;
     }
+    const source = code;
     setPhase("submitting");
-    setVerdict(null);
+    clearConsole();
     timerRef.current = window.setTimeout(() => {
       setPhase("idle");
       const total = detailData.samples.length + detailData.hiddenCount;
-      if (isUntouchedStarter(code, starterFor(item, language))) {
+      const assessment = assessSource(source, starterFor(item, language), language, fileName);
+      const stats = measureRun(source, language, total);
+
+      if (assessment.kind === "syntax") {
+        recordSubmission({
+          challengeId: item.id,
+          language,
+          verdict: "runtime_error",
+          casesPassed: 0,
+          casesTotal: total,
+          code: source
+        });
+        setVerdict({
+          kind: "wrong",
+          note: "The program does not compile, so no case could run — recorded as a submission.",
+          failingCase: `${assessment.label} on line ${assessment.issue.line}`
+        });
+        setErr(assessment.report);
+        setResults(
+          detailData.samples.map((s, i) => ({
+            name: `Visible case ${i + 1}`,
+            passed: false,
+            input: s.input,
+            expected: s.expected,
+            actual: `${assessment.label} — the program did not run`
+          }))
+        );
+        setStatusLine({ tone: "fail", text: `Submission recorded · 0/${total} cases` });
+        return;
+      }
+
+      if (assessment.kind === "untouched") {
         const failing = detailData.samples[0];
         recordSubmission({
           challengeId: item.id,
@@ -220,7 +284,7 @@ export function ChallengeSolve() {
           verdict: "wrong_answer",
           casesPassed: 0,
           casesTotal: total,
-          code
+          code: source
         });
         setVerdict({
           kind: "wrong",
@@ -233,12 +297,15 @@ export function ChallengeSolve() {
             name: `Visible case ${i + 1}`,
             passed: false,
             durationMs: 0.1 + i * 0.04,
+            input: s.input,
             expected: s.expected,
             actual: "(the starter's stub return)"
           }))
         );
+        setStatusLine({ tone: "fail", text: `Submission recorded · 0/${total} cases · ${stats.durationMs} ms` });
         return;
       }
+
       const first = !store.solved.includes(item.id);
       recordSubmission({
         challengeId: item.id,
@@ -247,7 +314,7 @@ export function ChallengeSolve() {
         casesPassed: total,
         casesTotal: total,
         xpAward: xpFor(item.difficulty),
-        code
+        code: source
       });
       setVerdict({ kind: "accepted", first });
       setOut(
@@ -256,7 +323,16 @@ export function ChallengeSolve() {
             ? `First acceptance: the solve, ${xpFor(item.difficulty)} XP and the editorial unlock are one outcome.`
             : "Already solved — this verdict is free practice; nothing further was paid or overwritten.")
       );
-      setResults(detailData.samples.map((_, i) => ({ name: `Visible case ${i + 1}`, passed: true, durationMs: 0.1 + i * 0.04 })));
+      setResults(
+        detailData.samples.map((s, i) => ({
+          name: `Visible case ${i + 1}`,
+          passed: true,
+          durationMs: stats.durationMs / total + i * 0.04,
+          input: s.input,
+          expected: s.expected
+        }))
+      );
+      setStatusLine({ tone: "pass", text: `Accepted · ${total}/${total} cases · ${stats.durationMs} ms · ${stats.memoryMb.toFixed(1)} MB` });
       raise("accepted", { title: item.title });
       if (track && trackIndex >= 0) {
         const remaining = trackContents.filter((id) => !store.solved.includes(id) && id !== item.id);
@@ -273,9 +349,7 @@ export function ChallengeSolve() {
     setCode(start);
     setRestored(null);
     setResetArm(false);
-    setOut(null);
-    setVerdict(null);
-    setResults([]);
+    clearConsole();
   }
 
   if (!item || !detailData) {
@@ -289,6 +363,62 @@ export function ChallengeSolve() {
   const solved = store.solved.includes(item.id);
   const busy = phase !== "idle";
   const trackDone = track ? (TRACK_CONTENTS[track.id] ?? []).every((id) => store.solved.includes(id)) : false;
+
+  const verdictBanner = verdict ? (
+    verdict.kind === "accepted" ? (
+      <div className="wb-verdict" data-tone="pass" role="status">
+        <div className="wb-verdict__main">
+          <Icon name="check" size={16} />
+          <div>
+            <p className="wb-verdict__title">Accepted</p>
+            <p className="wb-verdict__note">
+              {verdict.first
+                ? `+${xpFor(item.difficulty)} XP — the solve and the editorial are recorded.`
+                : "Already solved — free practice, nothing further paid."}
+            </p>
+          </div>
+        </div>
+        <div className="wb-verdict__actions">
+          <Link className="btn btn--secondary" to={`/solutions/${item.id}`}>Open the editorial</Link>
+          {nextInTrack ? (
+            <Link className="btn btn--primary" to={`/challenges/${nextInTrack.id}?track=${track!.id}`}>
+              Next in track: {nextInTrack.title}
+            </Link>
+          ) : nextUnsolved ? (
+            <Link className="btn btn--primary" to={`/challenges/${nextUnsolved.id}${track ? `?track=${track.id}` : ""}`}>
+              Next unsolved: {nextUnsolved.title}
+            </Link>
+          ) : null}
+          {track && !nextInTrack ? <Link className="btn btn--quiet" to={`/tracks/${track.id}`}>Back to the track</Link> : null}
+        </div>
+      </div>
+    ) : verdict.kind === "wrong" ? (
+      <div className="wb-verdict" data-tone="fail" role="status">
+        <div className="wb-verdict__main">
+          <Icon name="error" size={16} />
+          <div>
+            <p className="wb-verdict__title">Wrong answer — {verdict.failingCase}</p>
+            <p className="wb-verdict__note">{verdict.note} Your draft is still in the editor.</p>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className="wb-verdict" data-tone="warn" role="alert">
+        <div className="wb-verdict__main">
+          <Icon name="alert" size={16} />
+          <div>
+            <p className="wb-verdict__title">Platform fault</p>
+            <p className="wb-verdict__note">
+              {verdict.note} Nothing was recorded — this is not a solve failure and your status is unchanged. Your code is still in the editor.
+            </p>
+          </div>
+        </div>
+        <div className="wb-verdict__actions">
+          <button className="btn btn--secondary" type="button" onClick={doSubmit}>Retry grading</button>
+        </div>
+      </div>
+    )
+  ) : null;
 
   return (
     <Page
@@ -327,9 +457,9 @@ export function ChallengeSolve() {
         </Card>
       ) : null}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1.35fr", gap: "16px", minHeight: "620px" }}>
+      <div className="solve-layout">
         {/* Statement pane */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        <div className="solve-layout__brief">
           <Card>
             <CardHeader title="Problem statement" icon="challenges" />
             <p className="page__lead" style={{ whiteSpace: "pre-wrap" }}>{item.prompt}</p>
@@ -381,135 +511,95 @@ export function ChallengeSolve() {
         </div>
 
         {/* Work pane */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", height: "100%" }}>
-          <div style={{ flex: "1 1 360px", minHeight: "360px" }}>
-            <CodeEditor
-              value={code}
-              onChange={persistCode}
-              language={language}
-              filename={`solution.${language === "python" ? "py" : language === "javascript" ? "js" : language === "typescript" ? "ts" : language === "java" ? "java" : language === "cpp" ? "cpp" : "go"}`}
-              onRun={doRun}
-              isExecuting={busy}
-              toolbarActions={
-                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                  <button
-                    type="button"
-                    className="btn btn--quiet"
-                    onClick={() => setShowCustom((s) => !s)}
-                    style={{ fontSize: "11px", padding: "3px 8px" }}
-                  >
-                    {showCustom ? "Hide custom input" : "Custom input"}
-                  </button>
-                  {lockedLanguage ? (
-                    <span className="chip chip--quiet" style={{ fontSize: "11px" }} title="This track fixes one language">
-                      {languageLabelOf(lockedLanguage)} · track language
-                    </span>
-                  ) : (
-                    <LanguageSelect
-                      value={language}
-                      onChange={(v) => changeLanguage(v as EditorLanguage)}
-                      options={EDITOR_LANGUAGES.filter((l) => detailData.languages.includes(l.value))}
-                      label="Language"
-                    />
-                  )}
-                  <button
-                    type="button"
-                    className="btn btn--quiet"
-                    onClick={doReset}
-                    disabled={busy}
-                    style={{ fontSize: "11px", padding: "3px 8px" }}
-                    title="Replace the editor and the device draft with the authored starter"
-                  >
-                    {resetArm ? "Confirm reset — replaces your draft" : "Reset to starter"}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn--primary"
-                    onClick={doSubmit}
-                    disabled={busy}
-                    style={{ padding: "4px 12px", fontSize: "12px" }}
-                  >
-                    <Icon name="check" size={13} />
-                    <span>{phase === "submitting" ? "Grading…" : "Submit for grading"}</span>
-                  </button>
-                </div>
-              }
-            />
-          </div>
-
-          {showCustom ? (
-            <div style={{ padding: "10px 14px", borderRadius: "var(--radius-sm)", background: "var(--c-surface-inset)", border: "1px solid var(--c-border)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
-                <span className="micro" style={{ color: "var(--c-text-faint)" }}>CUSTOM INPUT — UNGRADED, NO VERDICT</span>
-                <button className="btn btn--quiet" style={{ fontSize: "11px", padding: "2px 6px" }} type="button" onClick={doRunCustom} disabled={busy}>
-                  Run custom input
-                </button>
-              </div>
-              <textarea
-                rows={2}
-                value={customVal}
-                onChange={(e) => setCustomVal(e.target.value)}
-                placeholder={detailData.samples[0]?.input ?? "one input line"}
-                style={{ width: "100%", background: "transparent", border: "none", color: "var(--c-text-primary)", fontFamily: "var(--font-mono)", fontSize: "12px", outline: "none" }}
-              />
-            </div>
-          ) : null}
-
-          {verdict ? (
-            <div
-              role={verdict.kind === "fault" ? "alert" : "status"}
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-sm)",
-                border: `1px solid ${verdict.kind === "accepted" ? "var(--c-accent-primary)" : verdict.kind === "fault" ? "var(--c-warning)" : "var(--c-border-strong)"}`,
-                background: "var(--c-surface-inset)"
-              }}
-            >
-              {verdict.kind === "accepted" ? (
-                <>
-                  <p style={{ margin: 0, fontWeight: 600 }}>
-                    ✓ Accepted{verdict.first ? ` — +${xpFor(item.difficulty)} XP, the solve and the editorial are recorded` : " — already solved; free practice, nothing further paid"}
-                  </p>
-                  <div className="row" style={{ marginTop: "8px" }}>
-                    <Link className="btn btn--secondary" to={`/solutions/${item.id}`}>Open the editorial</Link>
-                    {nextInTrack ? (
-                      <Link className="btn btn--primary" to={`/challenges/${nextInTrack.id}?track=${track!.id}`}>
-                        Next in track: {nextInTrack.title}
-                      </Link>
-                    ) : nextUnsolved ? (
-                      <Link className="btn btn--primary" to={`/challenges/${nextUnsolved.id}${track ? `?track=${track.id}` : ""}`}>
-                        Next unsolved: {nextUnsolved.title}
-                      </Link>
-                    ) : null}
-                    {track && !nextInTrack ? <Link className="btn btn--quiet" to={`/tracks/${track.id}`}>Back to the track</Link> : null}
-                  </div>
-                </>
-              ) : verdict.kind === "wrong" ? (
-                <>
-                  <p style={{ margin: 0, fontWeight: 600 }}>Wrong answer — {verdict.failingCase}.</p>
-                  <p className="meta" style={{ margin: "4px 0 0" }}>{verdict.note} Your draft is still in the editor.</p>
-                </>
+        <div className="solve-layout__work">
+          <CodeWorkbench
+            label="Challenge workbench"
+            fileName={fileName}
+            onRun={doRun}
+            onSubmit={doSubmit}
+            busy={busy}
+            toolbar={
+              lockedLanguage ? (
+                <span className="code-wb__chip" title="This track fixes one language">
+                  {languageLabelOf(lockedLanguage)} · track language
+                </span>
               ) : (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                  <p style={{ margin: 0 }}>
-                    <strong>Platform fault.</strong> {verdict.note} Nothing was recorded — this is not a solve failure and your status is unchanged. Your code is still in the editor.
-                  </p>
-                  <button className="btn btn--secondary" type="button" onClick={doSubmit}>Retry grading</button>
-                </div>
-              )}
-            </div>
-          ) : null}
-
-          <div style={{ flex: "0 0 240px", minHeight: "220px" }}>
-            <Terminal
-              output={out}
-              isExecuting={busy}
-              statusText={phase === "submitting" ? "Submission grading against the full case set — pending, not failed." : undefined}
-              onRun={doRun}
-              onClear={() => { setOut(null); setVerdict(null); setResults([]); }}
-              testCases={results}
-            />
-          </div>
+                <LanguageSelect
+                  value={language}
+                  onChange={(v) => changeLanguage(v as EditorLanguage)}
+                  options={EDITOR_LANGUAGES.filter((l) => detailData.languages.includes(l.value))}
+                  label="Language"
+                  disabled={busy}
+                />
+              )
+            }
+            actions={
+              <>
+                <ToolButton icon="edit" onClick={() => setInputRequest((n) => n + 1)} title="Run your solution against an input of your own — ungraded">
+                  Custom input
+                </ToolButton>
+                <ToolButton
+                  icon="reset"
+                  armed={resetArm}
+                  onClick={doReset}
+                  disabled={busy}
+                  title="Replace the editor and the device draft with the authored starter"
+                >
+                  {resetArm ? "Confirm reset — replaces your draft" : "Reset"}
+                </ToolButton>
+              </>
+            }
+            editor={
+              <CodeEditor
+                value={code}
+                onChange={persistCode}
+                language={language}
+                filename={fileName}
+                path={`challenge/${item.id}/${language}/${fileName}`}
+              />
+            }
+            console={
+              <Terminal
+                label="Challenge console"
+                output={out}
+                errorOutput={err}
+                statusLine={statusLine}
+                isExecuting={busy}
+                statusText={
+                  phase === "submitting"
+                    ? "Submission grading against the full case set — pending, not failed."
+                    : "Running the visible cases…"
+                }
+                onClear={clearConsole}
+                testCases={results}
+                hiddenCount={detailData.hiddenCount}
+                banner={verdictBanner}
+                input={{
+                  value: customVal,
+                  onChange: setCustomVal,
+                  label: "Custom input",
+                  placeholder: detailData.samples[0]?.input ?? "one input line",
+                  note: "Ungraded — a custom run produces no verdict and no record.",
+                  action: (
+                    <RunButton
+                      onClick={doRunCustom}
+                      running={phase === "running"}
+                      disabled={busy}
+                      label="Run with this input"
+                      shortcut={false}
+                    />
+                  )
+                }}
+                inputRequest={inputRequest}
+              />
+            }
+            footer={
+              <>
+                <RunButton onClick={doRun} running={phase === "running"} disabled={busy} title="Run the visible cases — records nothing" />
+                <SubmitButton onClick={doSubmit} pending={phase === "submitting"} disabled={busy} label="Submit" title="Grade the full case set — recorded as a submission" />
+              </>
+            }
+          />
 
           {/* The learner's own submissions on this challenge — the shared record. */}
           {store.submissions.filter((s) => s.challengeId === item.id).length > 0 ? (

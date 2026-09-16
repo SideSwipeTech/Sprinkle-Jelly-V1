@@ -158,6 +158,7 @@ export function createDemoStore(role: AppRole = readPersistedRole()): Store {
       { id: "g2", at: "12 Aug 2026", delta: -2, reason: "Diagnostic report on LRU Cache" },
       { id: "g3", at: "15 Aug 2026", delta: 5, reason: "Bug bounty finding on CodeLab runner" }
     ],
+    codelabFiles: {},
     scratchpad: "# Quick Notes\n\n- LEGB is lookup order: Local -> Enclosing -> Global -> Built-in.\n- Sliding window invariant: [left, right] satisfies frequency <= k.\n- Monotonic stack: Pop whenever current element > top element.\n- Postgres EXPLAIN ANALYZE: Check Seq Scan vs Index Scan cost bounds.",
     userSettings: {
       theme: "matrix",

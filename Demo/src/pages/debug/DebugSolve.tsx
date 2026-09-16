@@ -16,6 +16,9 @@
  *     the platform cannot complete is invalidated — the allowance is restored
  *     and no verdict is invented.
  *
+ * A program that does not compile fails in the compiler's words and runs no
+ * case. Changes compares the editor against the authored broken program.
+ *
  * The demo's judge is the same honest proxy as the challenge workbench: the
  * untouched broken program still reproduces the planted fault (a real wrong
  * answer naming the first visible case); a changed program is the attempted
@@ -40,14 +43,25 @@ import {
 } from "@state/store";
 import { raise } from "@companion/stream";
 import { useStore } from "@state/useStore";
-import { CodeEditor } from "@components/CodeEditor/CodeEditor";
-import { Terminal } from "@components/CodeEditor/Terminal";
+import {
+  CodeDiff,
+  CodeEditor,
+  CodeWorkbench,
+  RunButton,
+  SubmitButton,
+  Terminal,
+  ToolButton,
+  assessSource,
+  extensionFor,
+  measureRun,
+  type TerminalStatusLine,
+  type TerminalTestCase
+} from "@components/CodeEditor";
 import { HintLadder } from "../../extraction/components/HintLadder/HintLadder";
 import { List, ListRow } from "../../extraction/components/ListRow/ListRow";
 import { Menu } from "../../extraction/components/Menu/Menu";
 import { Dialog } from "../../extraction/components/Dialog/Dialog";
 import { ConfirmDialog } from "../../extraction/components/Dialog/Dialog.variants";
-import { isUntouchedStarter } from "../practice/data";
 import { debugMetaFor, debugXp } from "./cases";
 
 type Phase = "idle" | "running" | "validating";
@@ -57,23 +71,6 @@ type Verdict =
   | { kind: "wrong"; failingCase: string; timed: boolean; ending?: TimedEnding }
   | { kind: "invalidated"; note: string }
   | null;
-
-interface CaseResult {
-  name: string;
-  passed: boolean;
-  durationMs: number;
-  expected?: string;
-  actual?: string;
-}
-
-const EXT: Record<string, string> = {
-  python: "py",
-  javascript: "js",
-  typescript: "ts",
-  java: "java",
-  cpp: "cpp",
-  go: "go"
-};
 
 function formatClock(ms: number): string {
   const total = Math.max(0, Math.ceil(ms / 1000));
@@ -96,8 +93,11 @@ export function DebugSolve() {
   const checkpointRef = useRef("");
   const [phase, setPhase] = useState<Phase>("idle");
   const [out, setOut] = useState<string | null>(null);
-  const [results, setResults] = useState<CaseResult[]>([]);
+  const [results, setResults] = useState<TerminalTestCase[]>([]);
   const [verdict, setVerdict] = useState<Verdict>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const [statusLine, setStatusLine] = useState<TerminalStatusLine | null>(null);
+  const [showChanges, setShowChanges] = useState(false);
   const [hintCount, setHintCount] = useState(0);
   const [resetArm, setResetArm] = useState(false);
   const [restoreArm, setRestoreArm] = useState(false);
@@ -117,6 +117,7 @@ export function DebugSolve() {
   const finalizedForRef = useRef<string | null>(null);
 
   const draftKey = item ? `debug:${item.id}` : "";
+  const fileName = meta ? `case.${extensionFor(meta.language)}` : "case.txt";
   const activeWindow = store.debugWindow;
   const windowHere = Boolean(item && activeWindow?.caseId === item.id);
   const windowElsewhere = Boolean(activeWindow && !windowHere);
@@ -134,6 +135,14 @@ export function DebugSolve() {
     ? store.debugSubmissions.find((s) => s.caseId === item.id && s.code) ?? null
     : null;
 
+  function clearConsole() {
+    setOut(null);
+    setErr(null);
+    setStatusLine(null);
+    setVerdict(null);
+    setResults([]);
+  }
+
   function acknowledge(contents: string) {
     checkpointRef.current = contents;
     setCheckpoint(contents);
@@ -148,9 +157,8 @@ export function DebugSolve() {
     setCode(start);
     acknowledge(start);
     setRestored(draft !== undefined && draft !== meta.broken ? "Your device draft was restored — it is the acknowledged checkpoint." : null);
-    setOut(null);
-    setVerdict(null);
-    setResults([]);
+    clearConsole();
+    setShowChanges(false);
     setResetArm(false);
     setRestoreArm(false);
     setBugCallout(false);
@@ -192,18 +200,6 @@ export function DebugSolve() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [windowHere, remainingMs <= 0, activeWindow?.endsAt]);
 
-  /* Ctrl/Cmd+Enter runs the visible cases; Ctrl/Cmd+Shift+Enter validates. */
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (!(e.ctrlKey || e.metaKey) || e.key !== "Enter") return;
-      e.preventDefault();
-      if (e.shiftKey) doValidate(); else doRun();
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
-
   function persistCode(next: string) {
     setCode(next);
     if (draftKey) saveChallengeDraft(draftKey, next);
@@ -217,16 +213,34 @@ export function DebugSolve() {
      timed window it acknowledges the editor as the checkpoint. */
   function doRun() {
     if (!item || !meta || phase !== "idle") return;
-    acknowledge(code);
+    const source = code;
+    acknowledge(source);
     setPhase("running");
-    setOut(null);
+    clearConsole();
     timerRef.current = window.setTimeout(() => {
       setPhase("idle");
-      const stillBroken = isUntouchedStarter(code, meta.broken);
-      const rows: CaseResult[] = meta.visible.map((s, i) => ({
+      const assessment = assessSource(source, meta.broken, meta.language, fileName);
+      const stats = measureRun(source, meta.language, meta.visible.length);
+      if (assessment.kind === "syntax") {
+        setErr(assessment.report);
+        setResults(
+          meta.visible.map((s, i) => ({
+            name: `Visible case ${i + 1}`,
+            passed: false,
+            input: s.input,
+            expected: s.expected,
+            actual: `${assessment.label} — the program did not run`
+          }))
+        );
+        setStatusLine({ tone: "fail", text: `${assessment.label} on line ${assessment.issue.line} · nothing ran · nothing recorded` });
+        return;
+      }
+      const stillBroken = assessment.kind === "untouched";
+      const rows: TerminalTestCase[] = meta.visible.map((s, i) => ({
         name: `Visible case ${i + 1}`,
         passed: !stillBroken,
-        durationMs: 0.1 + i * 0.05,
+        durationMs: stats.durationMs / Math.max(1, meta.visible.length) + i * 0.05,
+        input: s.input,
         expected: s.expected,
         actual: stillBroken ? "(the planted fault still reproduces)" : s.expected
       }));
@@ -237,18 +251,24 @@ export function DebugSolve() {
           ? `Ran the ${rows.length} visible case${rows.length === 1 ? "" : "s"} — the planted fault still reproduces.\nA run is not a validation: nothing was recorded.`
           : `Ran the ${rows.length} visible case${rows.length === 1 ? "" : "s"} — all passed.\nA run is not a validation: nothing was recorded. Validate Fix grades the full set of ${meta.visible.length + meta.hiddenCount} cases.`
       );
+      setStatusLine(
+        stillBroken
+          ? { tone: "fail", text: `The planted fault reproduces · ${stats.durationMs} ms · nothing recorded` }
+          : { tone: "pass", text: `${rows.length}/${rows.length} visible cases passed · ${stats.durationMs} ms · ${stats.memoryMb.toFixed(1)} MB` }
+      );
     }, 500);
   }
 
   /* Validate Fix — grades the full case set; the submission of record. */
   function doValidate() {
     if (!item || !meta || phase !== "idle") return;
-    acknowledge(code);
+    const source = code;
+    acknowledge(source);
     setPhase("validating");
-    setVerdict(null);
+    clearConsole();
     timerRef.current = window.setTimeout(() => {
       setPhase("idle");
-      grade(code);
+      grade(source);
     }, 800);
   }
 
@@ -257,14 +277,17 @@ export function DebugSolve() {
      window does not (the learner keeps working until an ending). */
   function grade(source: string, ending?: "finish-now" | "clock" | "all-pass") {
     if (!item || !meta) return;
+    clearConsole();
     const total = meta.visible.length + meta.hiddenCount;
-    const stillBroken = isUntouchedStarter(source, meta.broken);
+    const assessment = assessSource(source, meta.broken, meta.language, fileName);
+    const stats = measureRun(source, meta.language, total);
     const inWindow = timed || ending === "finish-now" || ending === "clock";
-    if (stillBroken) {
+    if (assessment.kind !== "changed") {
+      const syntax = assessment.kind === "syntax" ? assessment : null;
       recordDebugSubmission({
         caseId: item.id,
         language: meta.language,
-        verdict: "wrong_answer",
+        verdict: syntax ? "runtime_error" : "wrong_answer",
         casesPassed: 0,
         casesTotal: total,
         code: source
@@ -274,20 +297,28 @@ export function DebugSolve() {
         kind: "wrong",
         timed: inWindow,
         ending,
-        failingCase: `Visible case 1 — expected ${failing?.expected ?? "the authored output"}`
+        failingCase: syntax
+          ? `${syntax.label} on line ${syntax.issue.line} — the program did not run`
+          : `Visible case 1 — expected ${failing?.expected ?? "the authored output"}`
       });
-      setOut(
-        `Verdict: NOT FIXED\nFailing: visible case 1 — the planted fault still reproduces.\nRecorded as a validation of record${inWindow ? "; the window continues until an ending" : ""}.`
-      );
+      if (syntax) {
+        setErr(syntax.report);
+      } else {
+        setOut(
+          `Verdict: NOT FIXED\nFailing: visible case 1 — the planted fault still reproduces.\nRecorded as a validation of record${inWindow ? "; the window continues until an ending" : ""}.`
+        );
+      }
       setResults(
         meta.visible.map((s, i) => ({
           name: `Visible case ${i + 1}`,
           passed: false,
-          durationMs: 0.1 + i * 0.04,
+          ...(syntax ? {} : { durationMs: 0.1 + i * 0.04 }),
+          input: s.input,
           expected: s.expected,
-          actual: "(the planted fault still reproduces)"
+          actual: syntax ? `${syntax.label} — the program did not run` : "(the planted fault still reproduces)"
         }))
       );
+      setStatusLine({ tone: "fail", text: `Validation recorded · 0/${total} cases` });
       raise("not accepted", { title: item.title });
       if (ending) endDebugWindow();
       return;
@@ -313,7 +344,16 @@ export function DebugSolve() {
           ? `First acceptance: the fix, +${debugXp(item.difficulty)} XP and the debrief unlock are one outcome.${inWindow ? " Recorded as timed evidence at practice weight." : " Practice acceptances create no evidence."}`
           : "Already fixed — this validation is free practice; nothing further was paid.")
     );
-    setResults(meta.visible.map((_, i) => ({ name: `Visible case ${i + 1}`, passed: true, durationMs: 0.1 + i * 0.04 })));
+    setResults(
+      meta.visible.map((s, i) => ({
+        name: `Visible case ${i + 1}`,
+        passed: true,
+        durationMs: stats.durationMs / total + i * 0.04,
+        input: s.input,
+        expected: s.expected
+      }))
+    );
+    setStatusLine({ tone: "pass", text: `Fixed · ${total}/${total} cases · ${stats.durationMs} ms · ${stats.memoryMb.toFixed(1)} MB` });
     raise("accepted", { title: item.title });
   }
 
@@ -327,20 +367,18 @@ export function DebugSolve() {
 
   function doReset() {
     if (!item || !meta) return;
-    if (!resetArm) { setResetArm(true); return; }
+    if (!resetArm) { setResetArm(true); setRestoreArm(false); return; }
     clearChallengeDraft(draftKey);
     setCode(meta.broken);
     acknowledge(meta.broken);
     setRestored(null);
     setResetArm(false);
-    setOut(null);
-    setVerdict(null);
-    setResults([]);
+    clearConsole();
   }
 
   function doRestore() {
     if (!lastSubmitted?.code) return;
-    if (!restoreArm) { setRestoreArm(true); return; }
+    if (!restoreArm) { setRestoreArm(true); setResetArm(false); return; }
     persistCode(lastSubmitted.code);
     acknowledge(lastSubmitted.code);
     setRestoreArm(false);
@@ -488,6 +526,67 @@ export function DebugSolve() {
   const acknowledged = code === checkpoint;
   const busy = phase !== "idle";
 
+  const endingNote = (v: { ending?: TimedEnding }, accepted: boolean): string =>
+    v.ending === "all-pass"
+      ? "The window closed on the all-pass — counted as timed evidence."
+      : v.ending === "finish-now"
+        ? accepted
+          ? "Finished now — your acknowledged checkpoint was graded; the window is closed and this counts as timed evidence."
+          : "Finished now — the acknowledged checkpoint was graded; the window is closed and practice stays open."
+        : v.ending === "clock"
+          ? accepted
+            ? "The clock ran out — your last acknowledged checkpoint was graded; this counts as timed evidence."
+            : "The clock ran out — the last acknowledged checkpoint was graded; the window is closed and practice stays open."
+          : "";
+
+  const verdictBanner = verdict ? (
+    verdict.kind === "accepted" ? (
+      <div className="wb-verdict" data-tone="pass" role="status">
+        <div className="wb-verdict__main">
+          <Icon name="check" size={16} />
+          <div>
+            <p className="wb-verdict__title">
+              Fixed{verdict.first ? ` — +${debugXp(item.difficulty)} XP and the debrief are unlocked` : " — already fixed; free practice, nothing further paid"}
+            </p>
+            <p className="wb-verdict__note">
+              {[endingNote(verdict, true), verdict.timed ? "" : "Practice acceptances create no evidence."].filter(Boolean).join(" ")}
+            </p>
+          </div>
+        </div>
+      </div>
+    ) : verdict.kind === "wrong" ? (
+      <div className="wb-verdict" data-tone="fail" role="status">
+        <div className="wb-verdict__main">
+          <Icon name="error" size={16} />
+          <div>
+            <p className="wb-verdict__title">Not fixed — {verdict.failingCase}</p>
+            <p className="wb-verdict__note">
+              {[
+                endingNote(verdict, false),
+                verdict.timed && !verdict.ending ? "The window keeps running — a failed validation is not an ending." : "",
+                verdict.timed ? "" : "Your edits are still in the editor."
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            </p>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className="wb-verdict" data-tone="warn" role="alert">
+        <div className="wb-verdict__main">
+          <Icon name="alert" size={16} />
+          <div>
+            <p className="wb-verdict__title">Window invalidated — the platform's side failed.</p>
+            <p className="wb-verdict__note">
+              {verdict.note} Nothing was graded and the spent allowance was restored — this is not a failure of yours.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  ) : null;
+
   return (
     <Page
       kind="sink"
@@ -535,9 +634,9 @@ export function DebugSolve() {
         </Card>
       ) : null}
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1.35fr", gap: "16px", minHeight: "620px" }}>
+      <div className="solve-layout">
         {/* Case file pane */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        <div className="solve-layout__brief">
           <Card>
             <CardHeader title="Case file" icon="debug" />
             <p className="page__lead" style={{ whiteSpace: "pre-wrap" }}>{item.brief}</p>
@@ -610,101 +709,114 @@ export function DebugSolve() {
         </div>
 
         {/* Work pane */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          <div style={{ flex: "1 1 360px", minHeight: "360px" }}>
-            <CodeEditor
-              value={code}
-              onChange={persistCode}
-              language={meta.language}
-              filename={`case.${EXT[meta.language] ?? "txt"}`}
-              onRun={doRun}
-              isExecuting={busy}
-              toolbarActions={
-                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                  <span className="chip chip--quiet" style={{ fontSize: "11px" }} title="This case is authored in one language">
-                    {meta.languageLabel}
+        <div className="solve-layout__work">
+          <CodeWorkbench
+            label="Debug workbench"
+            fileName={fileName}
+            onRun={doRun}
+            onSubmit={doValidate}
+            busy={busy}
+            toolbar={
+              <>
+                <span className="code-wb__chip" title="This case is authored in one language">
+                  {meta.languageLabel}
+                </span>
+                {timed ? (
+                  <span
+                    className="code-wb__hint"
+                    data-tone={acknowledged ? undefined : "warn"}
+                    title="The acknowledged checkpoint is what a deadline grades"
+                  >
+                    <Icon name={acknowledged ? "check" : "clock"} size={12} />
+                    <span>{acknowledged ? "Checkpoint acknowledged" : "Latest edits not yet acknowledged"}</span>
                   </span>
-                  <button
-                    type="button"
-                    className="btn btn--quiet"
-                    onClick={doReset}
+                ) : null}
+              </>
+            }
+            actions={
+              <>
+                <ToolButton
+                  icon="layers"
+                  on={showChanges}
+                  onClick={() => setShowChanges((v) => !v)}
+                  title="Compare your version with the case's broken program"
+                >
+                  Changes
+                </ToolButton>
+                {lastSubmitted ? (
+                  <ToolButton
+                    icon="history"
+                    armed={restoreArm}
+                    onClick={doRestore}
                     disabled={busy}
-                    style={{ fontSize: "11px", padding: "3px 8px" }}
-                    title="Replace the editor and the device draft with the authored broken program"
+                    title="Replace the editor with your last submitted source for this case"
                   >
-                    {resetArm ? "Confirm reset — your edits are replaced" : "Reset"}
-                  </button>
-                  {lastSubmitted ? (
-                    <button
-                      type="button"
-                      className="btn btn--quiet"
-                      onClick={doRestore}
-                      disabled={busy}
-                      style={{ fontSize: "11px", padding: "3px 8px" }}
-                      title="Replace the editor with your last submitted source for this case"
-                    >
-                      {restoreArm ? "Confirm restore — replaces the editor" : "Restore last submitted"}
-                    </button>
-                  ) : null}
-                  <button
-                    type="button"
-                    className="btn btn--primary"
-                    onClick={doValidate}
-                    disabled={busy}
-                    style={{ padding: "4px 12px", fontSize: "12px" }}
-                  >
-                    <Icon name="check" size={13} />
-                    <span>{phase === "validating" ? "Validating…" : "Validate Fix"}</span>
-                  </button>
-                </div>
-              }
-            />
-          </div>
-
-          {verdict ? (
-            <div
-              role={verdict.kind === "invalidated" ? "alert" : "status"}
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-sm)",
-                border: `1px solid ${verdict.kind === "accepted" ? "var(--c-accent-primary)" : verdict.kind === "invalidated" ? "var(--c-warning)" : "var(--c-border-strong)"}`,
-                background: "var(--c-surface-inset)"
-              }}
-            >
-              {verdict.kind === "accepted" ? (
-                <p style={{ margin: 0, fontWeight: 600 }}>
-                  ✓ Fixed{verdict.first ? ` — +${debugXp(item.difficulty)} XP and the debrief are unlocked` : " — already fixed; free practice, nothing further paid"}
-                  {verdict.ending === "all-pass" ? ". The window closed on the all-pass — counted as timed evidence." : ""}
-                  {verdict.ending === "finish-now" ? ". Finished now — your acknowledged checkpoint was graded; the window is closed and this counts as timed evidence." : ""}
-                  {verdict.ending === "clock" ? ". The clock ran out — your last acknowledged checkpoint was graded; this counts as timed evidence." : ""}
-                  {verdict.timed ? "" : " Practice acceptances create no evidence."}
-                </p>
-              ) : verdict.kind === "wrong" ? (
-                <p style={{ margin: 0 }}>
-                  <strong>Not fixed</strong> — {verdict.failingCase}.
-                  {verdict.ending === "finish-now" ? " Finished now — the acknowledged checkpoint was graded; the window is closed and practice stays open." : ""}
-                  {verdict.ending === "clock" ? " The clock ran out — the last acknowledged checkpoint was graded; the window is closed and practice stays open." : ""}
-                  {verdict.timed && !verdict.ending ? " The window keeps running — a failed validation is not an ending." : ""}
-                  {verdict.timed ? "" : " Your edits are still in the editor."}
-                </p>
+                    {restoreArm ? "Confirm restore — replaces the editor" : "Restore last submitted"}
+                  </ToolButton>
+                ) : null}
+                <ToolButton
+                  icon="reset"
+                  armed={resetArm}
+                  onClick={doReset}
+                  disabled={busy}
+                  title="Replace the editor and the device draft with the authored broken program"
+                >
+                  {resetArm ? "Confirm reset — your edits are replaced" : "Reset"}
+                </ToolButton>
+              </>
+            }
+            editor={
+              showChanges ? (
+                <CodeDiff
+                  original={meta.broken}
+                  modified={code}
+                  language={meta.language}
+                  modelKey={`debug/${item.id}`}
+                  originalLabel="Broken program"
+                  modifiedLabel="Your version"
+                />
               ) : (
-                <p style={{ margin: 0 }}>
-                  <strong>Window invalidated — the platform's side failed.</strong> {verdict.note} Nothing was graded and the spent allowance was restored — this is not a failure of yours.
-                </p>
-              )}
-            </div>
-          ) : null}
-
-          <div style={{ flex: "0 0 240px", minHeight: "220px" }}>
-            <Terminal
-              output={out}
-              isExecuting={busy}
-              statusText={phase === "validating" ? "Validating the fix against the full case set — pending, not failed." : undefined}
-              onRun={doRun}
-              onClear={() => { setOut(null); setVerdict(null); setResults([]); }}
-              testCases={results}
-            />
-          </div>
+                <CodeEditor
+                  value={code}
+                  onChange={persistCode}
+                  language={meta.language}
+                  filename={fileName}
+                  path={`debug/${item.id}/${fileName}`}
+                />
+              )
+            }
+            console={
+              <Terminal
+                label="Debug console"
+                output={out}
+                errorOutput={err}
+                statusLine={statusLine}
+                isExecuting={busy}
+                statusText={
+                  phase === "validating"
+                    ? "Validating the fix against the full case set — pending, not failed."
+                    : "Running the visible cases…"
+                }
+                onClear={clearConsole}
+                testCases={results}
+                hiddenCount={meta.hiddenCount}
+                banner={verdictBanner}
+              />
+            }
+            footer={
+              <>
+                <RunButton onClick={doRun} running={phase === "running"} disabled={busy} title="Run the visible cases — free practice, records nothing" />
+                <SubmitButton
+                  onClick={doValidate}
+                  pending={phase === "validating"}
+                  disabled={busy}
+                  label="Validate fix"
+                  pendingLabel="Validating…"
+                  title="Grade the full case set — recorded as a validation"
+                />
+              </>
+            }
+          />
 
           {store.debugSubmissions.filter((s) => s.caseId === item.id).length > 0 ? (
             <Card>

@@ -1,18 +1,31 @@
 /**
- * projects — the personal workspace pages, ported to the extraction
- * components so file creation and deletion run through dialogs instead of
- * window.prompt / window.confirm.
+ * projects — the personal workspace pages, on the shared code workbench.
+ * File creation and deletion run through dialogs instead of window.prompt /
+ * window.confirm; runs are simulated on this device and their last output is
+ * kept with the project.
  */
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Card, CardHeader, StateBlock } from "@components/Card";
 import { Page, Back } from "@components/Page";
+import { Icon } from "@icons/Icon";
 import { PROJECT_TEMPLATES } from "@data/catalog";
-import { addProject, deleteProjectFile, runProject, saveProjectFile, setProjectActive } from "@state/store";
+import { addProject, deleteProjectFile, saveProjectFile, setProjectActive, setProjectOutput } from "@state/store";
 import { useStore } from "@state/useStore";
-import { CodeEditor } from "@components/CodeEditor/CodeEditor";
-import { Terminal } from "@components/CodeEditor/Terminal";
+import {
+  CodeEditor,
+  CodeWorkbench,
+  RunButton,
+  Terminal,
+  ToolButton,
+  describeRun,
+  detectLanguage,
+  isRunnable,
+  simulateProgram,
+  type RunResult,
+  type SupportedLanguage
+} from "@components/CodeEditor";
 import { FileExplorer } from "../../extraction/components/FileExplorer/FileExplorer";
 import { EditorTabs } from "../../extraction/components/EditorTabs/EditorTabs";
 import { PromptDialog } from "../../extraction/components/Dialog/Dialog.variants";
@@ -101,12 +114,42 @@ export function ProjectNew() {
   );
 }
 
+/** A new file starts with a line its own language reads as a comment. */
+function starterContent(path: string): string {
+  switch (detectLanguage(path)) {
+    case "python":
+      return "# New file\n";
+    case "javascript":
+    case "typescript":
+    case "java":
+    case "cpp":
+    case "go":
+      return "// New file\n";
+    case "json":
+      return "{}\n";
+    case "markdown":
+      return "# Notes\n";
+    case "css":
+      return "/* New file */\n";
+    case "html":
+      return "<!-- New file -->\n";
+    default:
+      return "";
+  }
+}
+
 export function ProjectWorkspace() {
   const { projectId } = useParams();
   const store = useStore();
   const project = store.projects.find((p) => p.id === projectId);
-  const [isExecuting, setIsExecuting] = useState(false);
+  const [pending, setPending] = useState(false);
   const [namingFile, setNamingFile] = useState(false);
+  const [result, setResult] = useState<{ run: RunResult; language: SupportedLanguage } | null>(null);
+  const [stdin, setStdin] = useState("");
+  const [inputRequest, setInputRequest] = useState(0);
+  const timerRef = useRef<number | null>(null);
+
+  useEffect(() => () => { if (timerRef.current !== null) window.clearTimeout(timerRef.current); }, []);
 
   if (!project) {
     return (
@@ -117,28 +160,33 @@ export function ProjectWorkspace() {
   }
 
   const active = project.files.find((f) => f.path === project.activePath) ?? project.files[0];
+  const activeLanguage = active ? detectLanguage(active.path) : undefined;
+  const target = active && isRunnable(activeLanguage) ? active : project.files.find((f) => isRunnable(detectLanguage(f.path)));
+  const targetLanguage = target ? detectLanguage(target.path) : undefined;
 
   function createFile(path: string) {
     if (!project) return;
-    saveProjectFile(project.id, path, "# New file\n");
-    setProjectActive(project.id, path);
+    const clean = path.trim();
+    if (!clean) return;
+    if (!project.files.some((f) => f.path === clean)) saveProjectFile(project.id, clean, starterContent(clean));
+    setProjectActive(project.id, clean);
   }
 
   const handleRun = () => {
-    if (!project) return;
-    setIsExecuting(true);
-    setTimeout(() => {
-      runProject(project.id);
-      setIsExecuting(false);
-    }, 700);
+    if (!project || pending || !target || !isRunnable(targetLanguage)) return;
+    const snapshot = { source: target.content, path: target.path, language: targetLanguage, stdin };
+    setPending(true);
+    timerRef.current = window.setTimeout(() => {
+      const run = simulateProgram(snapshot);
+      setResult({ run, language: snapshot.language });
+      setProjectOutput(project.id, [run.stdout, run.stderr].filter(Boolean).join("\n"));
+      setPending(false);
+    }, 650);
   };
 
-  const getLanguageFromPath = (path: string): "python" | "typescript" | "javascript" | "json" | "markdown" => {
-    if (path.endsWith(".py")) return "python";
-    if (path.endsWith(".ts") || path.endsWith(".tsx")) return "typescript";
-    if (path.endsWith(".js") || path.endsWith(".jsx")) return "javascript";
-    if (path.endsWith(".json")) return "json";
-    return "markdown";
+  const clear = () => {
+    setResult(null);
+    setProjectOutput(project.id, "");
   };
 
   return (
@@ -146,55 +194,91 @@ export function ProjectWorkspace() {
       <div className="lab-workspace stack--md">
         <Card className="lab__brief">
           <p className="meta">
-            Runtime: Python 3.12 · Entrypoint: <code>{project.activePath}</code> · Maximum 40 files in workspace · Local persistent sandbox
+            {target ? (
+              <>
+                Run target: <code>{target.path}</code> · the active file runs when it is a program
+              </>
+            ) : (
+              "No runnable file yet — add a .py, .js, .ts, .go, .java or .cpp file to run."
+            )}{" "}
+            · Maximum 40 files in workspace · Local persistent sandbox
           </p>
         </Card>
 
-        <div style={{ display: "grid", gridTemplateColumns: "220px 1.4fr 1fr", gap: "12px", minHeight: "580px" }}>
-          {/* File Explorer — the extracted component carries its own name/confirm flows */}
-          <FileExplorer
-            files={project.files}
-            activeFile={project.activePath}
-            onSelectFile={(path) => setProjectActive(project.id, path)}
-            onAddFile={createFile}
-            onDeleteFile={(delPath) => deleteProjectFile(project.id, delPath)}
-          />
-
-          {/* Code Editor */}
-          <div style={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
+        <CodeWorkbench
+          label={`${project.name} workspace`}
+          onRun={handleRun}
+          busy={pending}
+          toolbar={
+            <span className="code-wb__hint" title="Run executes the active file when it is a program">
+              <Icon name="play" size={12} />
+              <span>{target ? target.path : "nothing to run"}</span>
+            </span>
+          }
+          actions={
+            <>
+              <ToolButton icon="plus" onClick={() => setNamingFile(true)} title="Create a file">
+                New file
+              </ToolButton>
+              <ToolButton icon="edit" onClick={() => setInputRequest((n) => n + 1)} title="Standard input for the next run">
+                Input
+              </ToolButton>
+            </>
+          }
+          sidebar={
+            <FileExplorer
+              files={project.files}
+              activeFile={project.activePath}
+              onSelectFile={(path) => setProjectActive(project.id, path)}
+              onAddFile={createFile}
+              onDeleteFile={(delPath) => deleteProjectFile(project.id, delPath)}
+              label={`${project.name} files`}
+            />
+          }
+          tabs={
             <EditorTabs
               files={project.files}
               activeFile={project.activePath}
               onSelectFile={(path) => setProjectActive(project.id, path)}
               onAddFile={() => setNamingFile(true)}
             />
-            <div style={{ flex: 1, minHeight: 0 }}>
-              {active ? (
-                <CodeEditor
-                  value={active.content}
-                  onChange={(newVal) => saveProjectFile(project.id, active.path, newVal)}
-                  language={getLanguageFromPath(active.path)}
-                  filename={active.path}
-                  onRun={handleRun}
-                  isExecuting={isExecuting}
-                  hideHeader
-                />
-              ) : (
-                <StateBlock state="empty" message="No files yet." />
-              )}
-            </div>
-          </div>
-
-          {/* Terminal Console */}
-          <Terminal
-            output={project.output}
-            isExecuting={isExecuting}
-            onRun={handleRun}
-            onClear={() => {
-              runProject(project.id);
-            }}
-          />
-        </div>
+          }
+          editor={
+            active ? (
+              <CodeEditor
+                value={active.content}
+                onChange={(newVal) => saveProjectFile(project.id, active.path, newVal)}
+                language={activeLanguage ?? "markdown"}
+                filename={active.path}
+                path={`project/${project.id}/${active.path}`}
+              />
+            ) : (
+              <StateBlock state="empty" message="No files yet." />
+            )
+          }
+          console={
+            <Terminal
+              label="Workspace console"
+              output={result ? result.run.stdout || null : project.output || null}
+              errorOutput={result?.run.stderr || null}
+              hint={result?.run.hint ?? null}
+              statusLine={result ? describeRun(result.run, result.language) : null}
+              isExecuting={pending}
+              statusText={target ? `Running ${target.path} in the simulated sandbox…` : undefined}
+              onClear={clear}
+              input={{
+                value: stdin,
+                onChange: setStdin,
+                label: "Input",
+                placeholder: "Lines passed to the program's standard input",
+                note: "Sent to the program on every run until you clear it."
+              }}
+              inputRequest={inputRequest}
+            />
+          }
+          statusItems={[`${project.files.length} ${project.files.length === 1 ? "file" : "files"}`]}
+          footer={<RunButton onClick={handleRun} running={pending} disabled={!target} label={target ? `Run ${target.path}` : "Run"} />}
+        />
       </div>
 
       <PromptDialog

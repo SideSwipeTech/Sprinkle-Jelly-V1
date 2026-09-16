@@ -109,6 +109,8 @@ export interface Store {
     output: string;
   }[];
   lessonNotes: Record<string, string>;
+  /** CodeLab scratch files per starter language, kept on this device. */
+  codelabFiles: Record<string, { path: string; content: string }[]>;
   scratchpad: string;
   userSettings: {
     theme: string;
@@ -221,6 +223,7 @@ function read(): Store {
       })),
       certificates: parsed.certificates ?? base.certificates,
       scratchpad: parsed.scratchpad ?? base.scratchpad,
+      codelabFiles: parsed.codelabFiles ?? base.codelabFiles,
       coursePublications: parsed.coursePublications ?? base.coursePublications,
       videoProgress: parsed.videoProgress ?? base.videoProgress,
       userSettings: migrateUserSettings({ ...base.userSettings, ...parsed.userSettings }),
@@ -463,15 +466,21 @@ export function setProjectActive(projectId: string, path: string) {
   emit();
 }
 
-export function runProject(projectId: string) {
+/** Record the console output of a simulated project run. */
+export function setProjectOutput(projectId: string, output: string) {
   memory = {
     ...memory,
-    projects: memory.projects.map((p) =>
-      p.id === projectId
-        ? { ...p, output: `[log] Simulated run of ${p.activePath}\n[log] Using fixture data. Nothing left this device.` }
-        : p
-    )
+    projects: memory.projects.map((p) => (p.id === projectId ? { ...p, output } : p))
   };
+  emit();
+}
+
+/** Keep one CodeLab starter language's files; an empty list forgets them. */
+export function saveCodelabFiles(language: string, files: { path: string; content: string }[]) {
+  const next = { ...memory.codelabFiles };
+  if (files.length === 0) delete next[language];
+  else next[language] = files.map((f) => ({ path: f.path, content: f.content }));
+  memory = { ...memory, codelabFiles: next };
   emit();
 }
 

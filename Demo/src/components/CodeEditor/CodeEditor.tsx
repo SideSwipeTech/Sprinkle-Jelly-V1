@@ -1,10 +1,75 @@
-import { useState, useEffect, useRef, useMemo, type ReactNode, type UIEvent, type SyntheticEvent } from "react";
-import Editor, { useMonaco, type OnMount } from "@monaco-editor/react";
+/**
+ * CodeEditor — the platform's one code editor: Monaco, painted from the live
+ * palette tokens so every identity and scheme reaches the editing surface.
+ *
+ * Inside a CodeWorkbench it is bare — the workbench owns the toolbar, status
+ * bar and shortcuts, and this component reports its cursor and actions up
+ * through context. Standalone it carries its own header and status bar.
+ *
+ * Shortcuts are editor actions (scoped to this instance and listed in the F1
+ * palette): Ctrl/Cmd+Enter runs, Ctrl/Cmd+Shift+Enter submits, Ctrl/Cmd+S
+ * confirms the device draft instead of opening the browser's save dialog, and
+ * Alt+Z toggles word wrap.
+ */
+
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import Editor, { type OnMount } from "@monaco-editor/react";
 import { Icon } from "@icons/Icon";
+import type { IconName } from "@icons/keyline";
+import { useLiveEditorTheme } from "./editor-theme";
+import { EditorStatusBar, EditorTools, Kbd, SHORTCUTS } from "./EditorChrome";
+import { fileIcon, indentationFor, languageName, type SupportedLanguage } from "./language";
+import { setEditorPreferences, getEditorPreferences, useEditorPreferences } from "./preferences";
+import {
+  createStatusStore,
+  useWorkbench,
+  type EditorApi
+} from "./workbench-context";
 import "./code-editor.css";
 
-export type SupportedLanguage = "python" | "javascript" | "typescript" | "java" | "cpp" | "go" | "json" | "markdown" | "html" | "css";
-export type EditorEngine = "monaco" | "custom";
+export type { SupportedLanguage } from "./language";
+
+/* The slice of Monaco's API this component touches, stated once so the
+   mount handler reads as plain typed calls. */
+interface Disposable {
+  dispose(): void;
+}
+interface MonacoRange {
+  startLineNumber: number;
+  startColumn: number;
+  endLineNumber: number;
+  endColumn: number;
+}
+interface MonacoSelection extends MonacoRange {
+  positionLineNumber: number;
+  positionColumn: number;
+}
+interface MonacoModel {
+  getLineCount(): number;
+  getValueInRange(range: MonacoRange): string;
+}
+interface MonacoEditor {
+  getModel(): MonacoModel | null;
+  getValue(): string;
+  focus(): void;
+  getAction(id: string): { run(): Promise<void> } | null;
+  addAction(action: {
+    id: string;
+    label: string;
+    keybindings?: number[];
+    contextMenuGroupId?: string;
+    contextMenuOrder?: number;
+    run: () => void;
+  }): Disposable;
+  onDidChangeCursorSelection(listener: (e: { selection: MonacoSelection }) => void): Disposable;
+  onDidChangeModelContent(listener: () => void): Disposable;
+  onDidChangeModel(listener: () => void): Disposable;
+}
+interface MonacoNamespace {
+  KeyMod: { CtrlCmd: number; Shift: number; Alt: number };
+  KeyCode: { Enter: number; KeyS: number; KeyZ: number };
+  editor: { remeasureFonts(): void };
+}
 
 export interface CodeEditorProps {
   value: string;
@@ -12,158 +77,26 @@ export interface CodeEditorProps {
   language?: SupportedLanguage;
   readOnly?: boolean;
   filename?: string;
+  /** Model identity. Give each file or draft its own so undo history never crosses them. */
+  path?: string;
   height?: string | number;
   minHeight?: string | number;
+  /** Pass false to keep the minimap off here whatever the learner's setting. */
   showMinimap?: boolean;
   showLineNumbers?: boolean;
-  fontSize?: number;
-  engine?: EditorEngine;
-  onEngineChange?: (engine: EditorEngine) => void;
   onRun?: () => void;
+  onSubmit?: () => void;
   isExecuting?: boolean;
   onCursorChange?: (pos: { line: number; col: number }) => void;
   toolbarActions?: ReactNode;
   headerTitle?: string;
-  headerIcon?: string;
+  headerIcon?: IconName;
   hideHeader?: boolean;
   hideFooter?: boolean;
+  ariaLabel?: string;
 }
 
-// ── Lightweight Syntax Highlighter for Custom Engine ─────────────────────────
-function tokenizeCode(code: string, language: SupportedLanguage): ReactNode[] {
-  const lines = code.split("\n");
-  
-  const keywordsByLang: Record<string, Set<string>> = {
-    python: new Set(["def", "return", "if", "elif", "else", "for", "while", "in", "not", "and", "or", "import", "from", "as", "class", "try", "except", "finally", "with", "yield", "lambda", "pass", "break", "continue", "True", "False", "None", "async", "await", "self"]),
-    javascript: new Set(["function", "return", "if", "else", "for", "while", "import", "export", "from", "as", "class", "const", "let", "var", "new", "this", "try", "catch", "finally", "async", "await", "yield", "typeof", "instanceof", "true", "false", "null", "undefined", "switch", "case", "break", "default"]),
-    typescript: new Set(["function", "return", "if", "else", "for", "while", "import", "export", "from", "as", "class", "interface", "type", "enum", "const", "let", "var", "new", "this", "try", "catch", "finally", "async", "await", "yield", "typeof", "instanceof", "true", "false", "null", "undefined", "switch", "case", "break", "default", "public", "private", "protected", "readonly", "implements", "extends", "declare", "namespace"]),
-    java: new Set(["public", "private", "protected", "class", "interface", "enum", "extends", "implements", "static", "final", "void", "return", "if", "else", "for", "while", "do", "new", "this", "super", "try", "catch", "finally", "throw", "throws", "import", "package", "true", "false", "null"]),
-    cpp: new Set(["auto", "const", "constexpr", "class", "struct", "enum", "namespace", "using", "template", "typename", "public", "private", "protected", "virtual", "override", "void", "return", "if", "else", "for", "while", "do", "new", "delete", "this", "try", "catch", "throw", "include", "true", "false", "nullptr"]),
-    go: new Set(["package", "import", "func", "return", "var", "const", "type", "struct", "interface", "if", "else", "for", "range", "switch", "case", "default", "break", "continue", "fallthrough", "go", "defer", "chan", "select", "make", "new", "len", "cap", "append", "nil", "true", "false"])
-  };
-
-  const typesByLang: Record<string, Set<string>> = {
-    python: new Set(["str", "int", "float", "bool", "list", "dict", "set", "tuple", "Any", "Optional", "Union", "List", "Dict", "Set", "Tuple"]),
-    javascript: new Set(["Array", "Object", "String", "Number", "Boolean", "Promise", "Map", "Set", "Symbol", "Error"]),
-    typescript: new Set(["string", "number", "boolean", "any", "void", "never", "unknown", "Array", "Record", "Partial", "Promise", "Map", "Set"]),
-    java: new Set(["int", "long", "double", "float", "boolean", "char", "byte", "short", "String", "List", "Map", "Set", "ArrayList", "HashMap", "Integer", "Double", "Boolean"]),
-    cpp: new Set(["int", "long", "double", "float", "bool", "char", "size_t", "string", "vector", "map", "unordered_map", "set", "pair", "unique_ptr", "shared_ptr"]),
-    go: new Set(["int", "int64", "float64", "string", "bool", "byte", "rune", "error", "map", "slice"])
-  };
-
-  const keywords = keywordsByLang[language] || keywordsByLang.python!;
-  const types = typesByLang[language] || typesByLang.python!;
-
-  return lines.map((line, lineIdx) => {
-    // Basic regex token parsing
-    const tokens: React.ReactNode[] = [];
-    let remaining = line;
-    let col = 0;
-
-    while (remaining.length > 0) {
-      // Comments
-      if (
-        (language === "python" && remaining.startsWith("#")) ||
-        (["javascript", "typescript", "java", "cpp", "go"].includes(language) && remaining.startsWith("//"))
-      ) {
-        tokens.push(
-          <span key={`comment-${lineIdx}-${col}`} className="token-comment">
-            {remaining}
-          </span>
-        );
-        break;
-      }
-
-      // Strings (single, double, backtick)
-      const stringMatch = remaining.match(/^("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)/);
-      if (stringMatch) {
-        const str = stringMatch[0];
-        tokens.push(
-          <span key={`str-${lineIdx}-${col}`} className="token-string">
-            {str}
-          </span>
-        );
-        remaining = remaining.slice(str.length);
-        col += str.length;
-        continue;
-      }
-
-      // Numbers
-      const numMatch = remaining.match(/^[0-9]+(\.[0-9]+)?\b/);
-      if (numMatch) {
-        const num = numMatch[0];
-        tokens.push(
-          <span key={`num-${lineIdx}-${col}`} className="token-number">
-            {num}
-          </span>
-        );
-        remaining = remaining.slice(num.length);
-        col += num.length;
-        continue;
-      }
-
-      // Words (identifiers, keywords, types)
-      const wordMatch = remaining.match(/^[a-zA-Z_][a-zA-Z0-9_]*/);
-      if (wordMatch) {
-        const word = wordMatch[0];
-        if (keywords.has(word)) {
-          tokens.push(
-            <span key={`kw-${lineIdx}-${col}`} className="token-keyword">
-              {word}
-            </span>
-          );
-        } else if (types.has(word)) {
-          tokens.push(
-            <span key={`type-${lineIdx}-${col}`} className="token-type">
-              {word}
-            </span>
-          );
-        } else if (remaining.slice(word.length).trim().startsWith("(")) {
-          tokens.push(
-            <span key={`fn-${lineIdx}-${col}`} className="token-function">
-              {word}
-            </span>
-          );
-        } else {
-          tokens.push(
-            <span key={`ident-${lineIdx}-${col}`} className="token-ident">
-              {word}
-            </span>
-          );
-        }
-        remaining = remaining.slice(word.length);
-        col += word.length;
-        continue;
-      }
-
-      // Operators and punctuation
-      const opMatch = remaining.match(/^([=+\-*/%&|^!~<>?:;,.()[\]{}]+)/);
-      if (opMatch) {
-        const op = opMatch[0];
-        tokens.push(
-          <span key={`op-${lineIdx}-${col}`} className="token-operator">
-            {op}
-          </span>
-        );
-        remaining = remaining.slice(op.length);
-        col += op.length;
-        continue;
-      }
-
-      // Any other characters (spaces, etc.)
-      const char = remaining[0];
-      tokens.push(<span key={`ch-${lineIdx}-${col}`}>{char}</span>);
-      remaining = remaining.slice(1);
-      col++;
-    }
-
-    return (
-      <div key={`line-${lineIdx}`} className="editor-line">
-        {tokens.length === 0 ? "\u00A0" : tokens}
-      </div>
-    );
-  });
-}
+const SLOW_LOAD_MS = 10000;
 
 export function CodeEditor({
   value,
@@ -171,14 +104,13 @@ export function CodeEditor({
   language = "python",
   readOnly = false,
   filename = "solution.py",
+  path,
   height = "100%",
-  minHeight = "360px",
-  showMinimap = true,
+  minHeight,
+  showMinimap,
   showLineNumbers = true,
-  fontSize: initialFontSize = 14,
-  engine: controlledEngine,
-  onEngineChange,
   onRun,
+  onSubmit,
   isExecuting = false,
   onCursorChange,
   toolbarActions,
@@ -186,323 +118,253 @@ export function CodeEditor({
   headerIcon,
   hideHeader = false,
   hideFooter = false,
+  ariaLabel
 }: CodeEditorProps) {
-  const [internalEngine, setInternalEngine] = useState<EditorEngine>("monaco");
-  const [fontSize, setFontSize] = useState<number>(initialFontSize);
-  const [minimapVisible, setMinimapVisible] = useState(showMinimap);
-  const [copied, setCopied] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ line: 1, col: 1 });
-  const [activeLine, setActiveLine] = useState(1);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const lineNumbersRef = useRef<HTMLDivElement>(null);
+  const workbench = useWorkbench();
+  const prefs = useEditorPreferences();
+  const { theme, hostRef, beforeMount } = useLiveEditorTheme();
+  const [localStatus] = useState(createStatusStore);
+  const status = workbench?.status ?? localStatus;
 
-  const monaco = useMonaco();
-  const engine = controlledEngine ?? internalEngine;
-  const setEngine = onEngineChange ?? setInternalEngine;
+  const editorRef = useRef<MonacoEditor | null>(null);
+  const valueRef = useRef(value);
+  valueRef.current = value;
+  const onRunRef = useRef(onRun);
+  onRunRef.current = onRun;
+  const onSubmitRef = useRef(onSubmit);
+  onSubmitRef.current = onSubmit;
+  const onCursorRef = useRef(onCursorChange);
+  onCursorRef.current = onCursorChange;
 
-  // Language mapping for Monaco
-  const monacoLang = useMemo(() => {
-    switch (language) {
-      case "python": return "python";
-      case "javascript": return "javascript";
-      case "typescript": return "typescript";
-      case "java": return "java";
-      case "cpp": return "cpp";
-      case "go": return "go";
-      case "json": return "json";
-      case "markdown": return "markdown";
-      case "html": return "html";
-      case "css": return "css";
-      default: return "plaintext";
-    }
-  }, [language]);
+  const [mounted, setMounted] = useState(false);
+  const [slow, setSlow] = useState(false);
+  const [fontFamily, setFontFamily] = useState<string | undefined>(undefined);
 
-  // Configure Monaco Theme dynamically from current CSS root tokens
+  const [api] = useState<EditorApi>(() => ({
+    format: () => {
+      void editorRef.current?.getAction("editor.action.formatDocument")?.run();
+    },
+    copy: async () => {
+      try {
+        await navigator.clipboard.writeText(editorRef.current?.getValue() ?? valueRef.current);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    focus: () => editorRef.current?.focus()
+  }));
+
+  const showHeader = !workbench && !hideHeader;
+  const showFooter = !workbench && !hideFooter;
+  const bare = !showHeader && !showFooter;
+  const indentation = indentationFor(language);
+
+  /* The mono family is a token; Monaco measures glyphs, so it needs the resolved stack. */
   useEffect(() => {
-    if (!monaco) return;
+    const host = hostRef.current;
+    if (!host) return;
+    const family = getComputedStyle(host).getPropertyValue("--font-mono").trim();
+    if (family) setFontFamily(family);
+  }, [hostRef]);
 
-    // Define sleek dark theme matching Wizly Design System
-    monaco.editor.defineTheme("wizly-dark", {
-      base: "vs-dark",
-      inherit: true,
-      rules: [
-        { token: "comment", foreground: "767DA0", fontStyle: "italic" },
-        { token: "keyword", foreground: "7C7CF0", fontStyle: "bold" },
-        { token: "type", foreground: "3FB6D8" },
-        { token: "string", foreground: "3DD68C" },
-        { token: "number", foreground: "F0B23D" },
-        { token: "function", foreground: "A8D8F0" },
-        { token: "operator", foreground: "EEF0FA" },
-        { token: "variable", foreground: "EEF0FA" },
-      ],
-      colors: {
-        "editor.background": "#0e1222",
-        "editor.foreground": "#EEF0FA",
-        "editor.lineHighlightBackground": "#161b3380",
-        "editor.selectionBackground": "#7C7CF033",
-        "editor.inactiveSelectionBackground": "#7C7CF01a",
-        "editorLineNumber.foreground": "#565e80",
-        "editorLineNumber.activeForeground": "#A8D8F0",
-        "editorGutter.background": "#0B0E1A",
-        "editorCursor.foreground": "#7C7CF0",
-        "editorBracketMatch.background": "#3FB6D833",
-        "editorBracketMatch.border": "#3FB6D888",
-        "editorOverviewRuler.border": "#00000000",
-        "minimap.background": "#0B0E1A80",
-      },
+  useEffect(() => {
+    if (mounted) return;
+    const t = window.setTimeout(() => setSlow(true), SLOW_LOAD_MS);
+    return () => window.clearTimeout(t);
+  }, [mounted]);
+
+  useEffect(() => {
+    status.set({
+      language,
+      readOnly,
+      tabSize: indentation.tabSize,
+      insertSpaces: indentation.insertSpaces,
+      changes: null
     });
+  }, [status, language, readOnly, indentation.tabSize, indentation.insertSpaces]);
 
-    // Define light theme
-    monaco.editor.defineTheme("wizly-light", {
-      base: "vs",
-      inherit: true,
-      rules: [
-        { token: "comment", foreground: "7C84A3", fontStyle: "italic" },
-        { token: "keyword", foreground: "5150C8", fontStyle: "bold" },
-        { token: "type", foreground: "0E7490" },
-        { token: "string", foreground: "0F7A4C" },
-        { token: "number", foreground: "9A6100" },
-        { token: "function", foreground: "3B82C4" },
-      ],
-      colors: {
-        "editor.background": "#F8FAFC",
-        "editor.foreground": "#1B1F35",
-        "editor.lineHighlightBackground": "#EEF2F6",
-        "editor.selectionBackground": "#5150C822",
-        "editorLineNumber.foreground": "#A0A8C0",
-        "editorLineNumber.activeForeground": "#5150C8",
-        "editorGutter.background": "#F1F5F9",
-        "editorCursor.foreground": "#5150C8",
-      },
-    });
-  }, [monaco]);
+  useEffect(() => {
+    if (!workbench) return;
+    workbench.registerEditor(api);
+    return () => workbench.unregisterEditor(api);
+  }, [workbench, api]);
 
-  const handleEditorMount: OnMount = (editor) => {
-    editor.onDidChangeCursorPosition((e) => {
-      const pos = { line: e.position.lineNumber, col: e.position.column };
-      setCursorPos(pos);
-      onCursorChange?.(pos);
-    });
-  };
+  useEffect(() => {
+    const model = editorRef.current?.getModel();
+    if (model) status.set({ lines: model.getLineCount() });
+  }, [status, value]);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(value);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const handleMount: OnMount = (instance, monacoInstance) => {
+    const editor = instance as unknown as MonacoEditor;
+    const monaco = monacoInstance as unknown as MonacoNamespace;
+    editorRef.current = editor;
+    setMounted(true);
 
-  const lineCount = value.split("\n").length;
-  const lineNumbers = Array.from({ length: lineCount }, (_, i) => i + 1);
+    const { KeyMod, KeyCode } = monaco;
+    const run = () => (onRunRef.current ?? workbench?.runRef.current)?.();
+    const submit = () => (onSubmitRef.current ?? workbench?.submitRef.current)?.();
 
-  // Custom editor textarea sync scroll
-  const handleScroll = (e: UIEvent<HTMLTextAreaElement>) => {
-    if (lineNumbersRef.current) {
-      lineNumbersRef.current.scrollTop = e.currentTarget.scrollTop;
+    if (onRunRef.current || workbench?.runRef.current) {
+      editor.addAction({
+        id: "wizly.run",
+        label: "Run code",
+        keybindings: [KeyMod.CtrlCmd | KeyCode.Enter],
+        contextMenuGroupId: "navigation",
+        contextMenuOrder: 0,
+        run
+      });
     }
+    if (onSubmitRef.current || workbench?.submitRef.current) {
+      editor.addAction({
+        id: "wizly.submit",
+        label: "Submit",
+        keybindings: [KeyMod.CtrlCmd | KeyMod.Shift | KeyCode.Enter],
+        contextMenuGroupId: "navigation",
+        contextMenuOrder: 1,
+        run: submit
+      });
+    }
+    editor.addAction({
+      id: "wizly.save",
+      label: "Save draft",
+      keybindings: [KeyMod.CtrlCmd | KeyCode.KeyS],
+      run: () => status.set({ savedAt: Date.now() })
+    });
+    editor.addAction({
+      id: "wizly.toggleWordWrap",
+      label: "Toggle word wrap",
+      keybindings: [KeyMod.Alt | KeyCode.KeyZ],
+      run: () => setEditorPreferences({ wordWrap: !getEditorPreferences().wordWrap })
+    });
+
+    const reportLines = () => {
+      const model = editor.getModel();
+      if (model) status.set({ lines: model.getLineCount() });
+    };
+    editor.onDidChangeCursorSelection(({ selection }) => {
+      const model = editor.getModel();
+      status.set({
+        line: selection.positionLineNumber,
+        column: selection.positionColumn,
+        selected: model ? model.getValueInRange(selection).length : 0
+      });
+      onCursorRef.current?.({ line: selection.positionLineNumber, col: selection.positionColumn });
+    });
+    editor.onDidChangeModelContent(reportLines);
+    editor.onDidChangeModel(() => {
+      reportLines();
+      status.set({ line: 1, column: 1, selected: 0 });
+    });
+    reportLines();
+
+    /* Web fonts land after Monaco measures; remeasure or the cursor drifts. */
+    void document.fonts?.ready.then(() => monaco.editor.remeasureFonts());
   };
 
-  const handleTextareaClickOrKeyUp = (e: SyntheticEvent<HTMLTextAreaElement>) => {
-    const target = e.currentTarget;
-    const textBefore = target.value.substring(0, target.selectionStart);
-    const lines = textBefore.split("\n");
-    const currentLine = lines.length;
-    const currentCol = lines[lines.length - 1]!.length + 1;
-    const pos = { line: currentLine, col: currentCol };
-    setCursorPos(pos);
-    onCursorChange?.(pos);
-    setActiveLine(currentLine);
-  };
+  const options = useMemo(
+    () => ({
+      readOnly,
+      domReadOnly: readOnly,
+      fontSize: prefs.fontSize,
+      lineHeight: Math.round(prefs.fontSize * 1.6),
+      fontFamily,
+      fontLigatures: true,
+      minimap: { enabled: showMinimap !== false && prefs.minimap, renderCharacters: false },
+      wordWrap: prefs.wordWrap ? ("on" as const) : ("off" as const),
+      lineNumbers: showLineNumbers ? ("on" as const) : ("off" as const),
+      lineNumbersMinChars: 3,
+      tabSize: indentation.tabSize,
+      insertSpaces: indentation.insertSpaces,
+      detectIndentation: false,
+      scrollBeyondLastLine: false,
+      automaticLayout: true,
+      smoothScrolling: true,
+      cursorBlinking: "smooth" as const,
+      cursorSmoothCaretAnimation: "on" as const,
+      padding: { top: prefs.fontSize, bottom: prefs.fontSize },
+      renderLineHighlight: "line" as const,
+      renderWhitespace: "selection" as const,
+      bracketPairColorization: { enabled: true },
+      guides: { bracketPairs: "active" as const, indentation: true },
+      stickyScroll: { enabled: true },
+      fixedOverflowWidgets: true,
+      overviewRulerBorder: false,
+      scrollbar: { useShadows: false, verticalScrollbarSize: 10, horizontalScrollbarSize: 10 },
+      ariaLabel: ariaLabel ?? `Code editor, ${languageName(language)}, ${filename}`
+    }),
+    [
+      readOnly,
+      prefs.fontSize,
+      prefs.minimap,
+      prefs.wordWrap,
+      fontFamily,
+      showMinimap,
+      showLineNumbers,
+      indentation.tabSize,
+      indentation.insertSpaces,
+      ariaLabel,
+      language,
+      filename
+    ]
+  );
 
   return (
     <div
+      ref={hostRef}
       className="pro-editor"
-      style={{ height, minHeight }}
-      data-engine={engine}
+      data-bare={bare || undefined}
       data-readonly={readOnly || undefined}
+      style={workbench ? undefined : { height, minHeight }}
     >
-      {/* ── Editor Chrome Header ────────────────────────────────────────────── */}
-      {!hideHeader && (
+      {showHeader ? (
         <header className="pro-editor__header">
-          <div className="pro-editor__file-meta">
-            <span className="pro-editor__file-icon">
-              <Icon name={(headerIcon as any) || "file"} size={15} />
-            </span>
-            <span className="pro-editor__filename">{headerTitle || filename}</span>
-            <span className="pro-editor__lang-badge">{language}</span>
+          <div className="pro-editor__file">
+            <Icon name={headerIcon ?? fileIcon(filename)} size={14} />
+            <span className="pro-editor__filename">{headerTitle ?? filename}</span>
+            <span className="pro-editor__lang">{languageName(language)}</span>
           </div>
-
           <div className="pro-editor__toolbar">
             {toolbarActions}
-
-            {/* Engine switcher toggle */}
-            <div className="pro-editor__engine-toggle" title="Switch editor engine">
-              <button
-                type="button"
-                className={`engine-btn ${engine === "monaco" ? "is-active" : ""}`}
-                onClick={() => setEngine("monaco")}
-              >
-                Monaco IDE
+            <EditorTools api={mounted ? api : null} status={status} hasRun={Boolean(onRun)} hasSubmit={Boolean(onSubmit)} />
+            {onRun ? (
+              <button type="button" className="pro-editor__run" onClick={onRun} disabled={isExecuting} data-running={isExecuting || undefined}>
+                <Icon name={isExecuting ? "loader" : "play"} size={13} motion={isExecuting ? "orbit" : "none"} />
+                <span>{isExecuting ? "Running…" : "Run"}</span>
+                <Kbd keys={SHORTCUTS.run} />
               </button>
-              <button
-                type="button"
-                className={`engine-btn ${engine === "custom" ? "is-active" : ""}`}
-                onClick={() => setEngine("custom")}
-              >
-                Theme Native
-              </button>
-            </div>
-
-            {/* Font zoom */}
-            <div className="pro-editor__font-controls">
-              <button
-                type="button"
-                className="tool-btn"
-                onClick={() => setFontSize((s) => Math.max(11, s - 1))}
-                title="Decrease font size"
-              >
-                <span style={{ fontSize: "11px", fontWeight: "bold" }}>A-</span>
-              </button>
-              <button
-                type="button"
-                className="tool-btn"
-                onClick={() => setFontSize((s) => Math.min(22, s + 1))}
-                title="Increase font size"
-              >
-                <span style={{ fontSize: "13px", fontWeight: "bold" }}>A+</span>
-              </button>
-            </div>
-
-            {/* Minimap toggle */}
-            <button
-              type="button"
-              className={`tool-btn ${minimapVisible ? "is-active" : ""}`}
-              onClick={() => setMinimapVisible(!minimapVisible)}
-              title={minimapVisible ? "Hide minimap" : "Show minimap"}
-            >
-              <Icon name="dashboard" size={14} />
-            </button>
-
-            {/* Copy button */}
-            <button
-              type="button"
-              className="tool-btn"
-              onClick={handleCopy}
-              title="Copy code"
-            >
-              <Icon name={copied ? "check-mark" : "clipboard"} size={14} />
-            </button>
-
-            {/* Run Button if onRun provided */}
-            {onRun && (
-              <button
-                type="button"
-                className="pro-editor__run-btn btn btn--primary"
-                onClick={onRun}
-                disabled={isExecuting}
-              >
-                <Icon name="zap" size={14} />
-                <span>{isExecuting ? "Executing…" : "Run Code"}</span>
-              </button>
-            )}
+            ) : null}
           </div>
         </header>
-      )}
+      ) : null}
 
-      {/* ── Editor Body (Monaco vs Custom Native) ────────────────────────────── */}
-      <div className="pro-editor__body" style={{ fontSize: `${fontSize}px` }}>
-        {engine === "monaco" ? (
-          <Editor
-            height="100%"
-            language={monacoLang}
-            value={value}
-            theme="wizly-dark"
-            onChange={(val) => onChange?.(val ?? "")}
-            onMount={handleEditorMount}
-            options={{
-              readOnly,
-              fontSize,
-              fontFamily: '"JetBrains Mono Variable", "JetBrains Mono", monospace',
-              fontLigatures: true,
-              minimap: { enabled: minimapVisible },
-              lineNumbers: showLineNumbers ? "on" : "off",
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-              smoothScrolling: true,
-              cursorBlinking: "smooth",
-              cursorSmoothCaretAnimation: "on",
-              padding: { top: 12, bottom: 12 },
-              renderLineHighlight: "all",
-              bracketPairColorization: { enabled: true },
-              tabSize: 4,
-            }}
-            loading={
-              <div className="pro-editor__loading">
-                <span className="spinner" />
-                <span>Initializing Editor Engine…</span>
-              </div>
-            }
-          />
-        ) : (
-          <div className="custom-editor">
-            {showLineNumbers && (
-              <div className="custom-editor__gutter" ref={lineNumbersRef}>
-                {lineNumbers.map((num) => (
-                  <div
-                    key={num}
-                    className={`custom-editor__line-num ${num === activeLine ? "is-active" : ""}`}
-                  >
-                    {num}
-                  </div>
+      <div className="pro-editor__body">
+        <Editor
+          height="100%"
+          language={language}
+          path={path}
+          value={value}
+          theme={theme}
+          beforeMount={beforeMount}
+          onChange={(next) => onChange?.(next ?? "")}
+          onMount={handleMount}
+          options={options}
+          loading={
+            <div className="pro-editor__loading" role="status">
+              <div className="pro-editor__skeleton" aria-hidden="true">
+                {Array.from({ length: 9 }, (_, i) => (
+                  <span key={i} />
                 ))}
               </div>
-            )}
-            <div className="custom-editor__stage">
-              {/* Highlighted syntax background */}
-              <div className="custom-editor__tokens" aria-hidden="true">
-                {tokenizeCode(value, language)}
-              </div>
-              {/* Interactive textarea overlay */}
-              <textarea
-                ref={textareaRef}
-                className="custom-editor__textarea"
-                value={value}
-                onChange={(e) => onChange?.(e.target.value)}
-                onScroll={handleScroll}
-                onClick={handleTextareaClickOrKeyUp}
-                onKeyUp={handleTextareaClickOrKeyUp}
-                readOnly={readOnly}
-                spellCheck={false}
-                autoCapitalize="none"
-                autoComplete="off"
-                aria-label={`Code editor for ${filename}`}
-              />
+              <span className="pro-editor__loading-text">
+                {slow ? "The editor is taking longer than usual to load — check your connection." : "Loading editor…"}
+              </span>
             </div>
-          </div>
-        )}
+          }
+        />
       </div>
 
-      {/* ── Editor Chrome Footer / Status Bar ───────────────────────────────── */}
-      {!hideFooter && (
-        <footer className="pro-editor__status-bar">
-          <div className="status-bar__left">
-            <span className="status-item">
-              Ln {cursorPos.line}, Col {cursorPos.col}
-            </span>
-            <span className="status-sep" />
-            <span className="status-item">{lineCount} lines</span>
-            <span className="status-sep" />
-            <span className="status-item">UTF-8</span>
-          </div>
-
-          <div className="status-bar__right">
-            <span className="status-item engine-indicator">
-              Engine: <strong>{engine === "monaco" ? "Monaco (VS Code)" : "Wizly Theme Native"}</strong>
-            </span>
-            <span className="status-sep" />
-            <span className="status-item">{language.toUpperCase()}</span>
-          </div>
-        </footer>
-      )}
+      {showFooter ? <EditorStatusBar status={status} className="pro-editor__status" /> : null}
     </div>
   );
 }
