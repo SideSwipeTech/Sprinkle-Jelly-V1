@@ -1,0 +1,311 @@
+/* ExamChrome — sealed-sitting chrome. Token-only; every state has a non-colour tell.
+   Sources: Assess.tsx:435-566 & 890-1011, lab.css:129-176 (.sitting, .q-rail),
+   app.css:104-119 (.choice). */
+
+.x-exam-chrome {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* ── IntegrityBanner ── posture strip: dot + icon + label, count at the far end. */
+
+.x-integrity-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width) solid var(--c-accent-primary);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, transparent);
+}
+
+.x-integrity-banner__state {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--c-text-primary);
+}
+
+.x-integrity-banner__dot {
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: 50%;
+  background: var(--c-success);
+  flex: none;
+}
+
+.x-integrity-banner[data-tone="warning"] .x-integrity-banner__dot {
+  background: var(--c-warning);
+}
+
+.x-integrity-banner[data-tone="warning"] {
+  border-color: var(--c-warning);
+  background: color-mix(in srgb, var(--c-warning) 10%, transparent);
+}
+
+.x-integrity-banner__label {
+  color: var(--c-text-primary);
+}
+
+.x-integrity-banner__count {
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+/* ── TimerStrip ── was .sitting__bar + .sitting__clock. */
+
+.x-timer-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--c-accent-primary) 7%, var(--c-surface));
+}
+
+.x-timer-strip__clock {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--c-text-faint);
+}
+
+.x-timer-strip__label {
+  color: var(--c-text-faint);
+}
+
+.x-timer-strip__value {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  letter-spacing: 0.04em;
+  color: var(--c-accent-primary);
+}
+
+.x-timer-strip__meta {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+.x-timer-strip__actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* Urgent (<300s): error tone AND a different icon + label text — the colour is
+   never the only carrier (SHR-R38). */
+.x-timer-strip[data-urgent] {
+  border-color: color-mix(in srgb, var(--c-error) 60%, var(--c-border));
+}
+
+.x-timer-strip[data-urgent] .x-timer-strip__value,
+.x-timer-strip[data-urgent] .x-timer-strip__clock {
+  color: var(--c-error);
+}
+
+.x-timer-strip[data-urgent] .x-timer-strip__label {
+  color: var(--c-error);
+}
+
+/* ── QuestionPalette ── was .q-rail. current/answered/marked = ring / fill+edge / star+dash. */
+
+.x-question-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.x-question-palette__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-width: var(--space-7);
+  height: var(--space-7);
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  background: var(--c-surface);
+  color: var(--c-text-muted);
+  transition: border-color var(--duration-fast) var(--ease-hover),
+              background-color var(--duration-fast) var(--ease-hover),
+              color var(--duration-fast) var(--ease-hover);
+}
+
+.x-question-palette__item:hover {
+  border-color: var(--c-border-strong);
+  color: var(--c-text-primary);
+}
+
+/* Answered: success tint fill + a hard bottom edge. The edge is the non-colour
+   tell — it reads as "recorded" even in greyscale. */
+.x-question-palette__item[data-done] {
+  background: color-mix(in srgb, var(--c-success) 18%, var(--c-surface));
+  color: var(--c-success);
+  box-shadow: inset 0 calc(-1 * var(--space-1)) 0 color-mix(in srgb, var(--c-success) 55%, transparent);
+}
+
+/* Marked: dashed warning border + the star marker. */
+.x-question-palette__item[data-marked] {
+  border-style: dashed;
+  border-color: var(--c-warning);
+}
+
+.x-question-palette__mark {
+  color: var(--c-warning);
+  font-size: var(--text-2xs);
+  line-height: 1;
+}
+
+/* Current wins the paint — the filled cell is the "you are here" — and keeps its
+   done/marked tells in the border/marker so nothing is hidden. */
+.x-question-palette__item[data-on] {
+  background: var(--c-accent-primary);
+  border-color: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+  font-weight: var(--weight-bold);
+  box-shadow: 0 0 0 calc(var(--border-width) + 1px) color-mix(in srgb, var(--c-accent-primary) 45%, transparent);
+}
+
+.x-question-palette__item[data-on][data-done] {
+  box-shadow: 0 0 0 calc(var(--border-width) + 1px) color-mix(in srgb, var(--c-accent-primary) 45%, transparent);
+}
+
+/* ── QuestionCard ── ITEM n OF m + mark toggle + prompt + choices. */
+
+.x-question-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.x-question-card__item {
+  color: var(--c-accent-primary);
+}
+
+.x-question-card__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid transparent;
+  color: var(--c-accent-primary);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  transition: border-color var(--duration-fast) var(--ease-hover),
+              background-color var(--duration-fast) var(--ease-hover);
+}
+
+.x-question-card__mark:hover {
+  border-color: var(--c-border-strong);
+}
+
+/* Marked: warning tint + the label itself changes — never colour alone. */
+.x-question-card__mark[data-on] {
+  border-color: color-mix(in srgb, var(--c-warning) 55%, var(--c-border));
+  background: color-mix(in srgb, var(--c-warning) 12%, transparent);
+  color: var(--c-warning);
+}
+
+.x-question-card__prompt {
+  margin: var(--space-3) 0;
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-primary);
+  max-width: var(--shell-prose-measure);
+}
+
+.x-question-card__choices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ── AnswerChoice ── was .choice; now a real radio. */
+
+.x-answer-choice {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--c-border);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  transition: border-color var(--duration-fast) var(--ease-hover),
+              background-color var(--duration-fast) var(--ease-hover);
+}
+
+.x-answer-choice:hover {
+  border-color: var(--c-border-strong);
+}
+
+.x-answer-choice__letter {
+  font-weight: var(--weight-bold);
+  color: var(--c-text-faint);
+  flex: none;
+}
+
+.x-answer-choice__text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The tick is the non-colour tell for selection; colour only reinforces it. */
+.x-answer-choice__tick {
+  flex: none;
+  color: var(--c-accent-primary);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-enter);
+}
+
+.x-answer-choice[data-on] {
+  border-color: var(--c-accent-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, transparent);
+}
+
+.x-answer-choice[data-on] .x-answer-choice__letter {
+  color: var(--c-accent-primary);
+}
+
+.x-answer-choice[data-on] .x-answer-choice__tick {
+  opacity: 1;
+}
+
+/* ── SittingNav ── */
+
+.x-sitting-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  margin-top: var(--space-6);
+}
+
+/* ── The question card frame (was a Card in the page; the chrome owns the frame). */
+
+.x-exam-chrome__card {
+  padding: var(--card-padding);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+}
+
+/* Forge/meridian read the sitting as an instrument — square the palette cells
+   down a step and let the hairline language show through. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .x-question-palette__item,
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .x-question-palette__item {
+  border-radius: var(--radius-xs);
+}

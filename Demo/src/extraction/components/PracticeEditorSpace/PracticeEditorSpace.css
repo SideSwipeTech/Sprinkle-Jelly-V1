@@ -1,0 +1,310 @@
+/* PracticeEditorSpace — the shared practice editing space. One bordered
+   studio stack: headed sections, a two-column field grid, the code surface,
+   the case table and the publish checklist. Token-only; no accent edge
+   stripes anywhere. */
+
+.x-practice-space {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ── Head ───────────────────────────────────────────────────────────────── */
+
+.x-practice-space__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.x-practice-space__kicker {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-bold);
+  text-transform: var(--micro-case);
+  color: var(--c-text-faint);
+}
+
+.x-practice-space__status-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.x-practice-space__revision {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-faint);
+}
+
+.x-practice-space__readiness {
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}
+
+.x-practice-space__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* The unsaved-work tell is a shape + word, never colour alone. */
+.x-practice-space__dirty {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+}
+
+.x-practice-space__dirty-dot {
+  width: calc(var(--space-1) * 1.5);
+  height: calc(var(--space-1) * 1.5);
+  border-radius: 50%;
+  background: var(--c-warning);
+  box-shadow: 0 0 0 var(--border-width) color-mix(in srgb, var(--c-warning) 35%, transparent);
+}
+
+.x-practice-space__conflict-actions {
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+
+.x-practice-space__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+}
+
+.x-practice-space__section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.x-practice-space__section-title {
+  margin: 0;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-bold);
+  text-transform: var(--micro-case);
+  color: var(--c-text-faint);
+}
+
+.x-practice-space__section-note {
+  font-size: var(--text-xs);
+  color: var(--c-text-faint);
+}
+
+.x-practice-space__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.x-practice-space__empty {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}
+
+/* The resolved award — a read-only fact in the field grid, never an input. */
+.x-practice-space__award {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.x-practice-space__award-label {
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+.x-practice-space__award-value {
+  font-size: var(--text-lg);
+  color: var(--c-text-primary);
+}
+
+.x-practice-space__award-note {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+/* ── Code: language strip + starter/reference side tabs ──────────────────── */
+
+.x-practice-space__section > .x-editor-tabs {
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.x-practice-space__side-tabs {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-2) 0;
+  background: var(--c-surface-inset);
+  border-inline: var(--border-width) solid var(--c-border);
+}
+
+.x-practice-space__side-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-width) solid transparent;
+  border-bottom: none;
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  background: transparent;
+  color: var(--c-text-muted);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.x-practice-space__side-tab:hover {
+  color: var(--c-text-primary);
+  background: var(--c-surface-elevated);
+}
+
+.x-practice-space__side-tab[data-on] {
+  color: var(--c-text-primary);
+  background: var(--c-surface);
+  border-color: var(--c-border);
+  font-weight: var(--weight-semibold);
+}
+
+.x-practice-space__side-tab:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+}
+
+/* The staff-only mark: a quiet outlined tag — a label, never a colour tell. */
+.x-practice-space__staff-only {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  padding: 0 var(--space-1);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--c-text-faint);
+  text-transform: var(--micro-case);
+}
+
+.x-practice-space__editor {
+  height: var(--x-practice-space-editor-height, 20rem);
+}
+
+.x-practice-space__editor > .x-editor {
+  border: var(--border-width) solid var(--c-border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+
+/* ── Cases ──────────────────────────────────────────────────────────────── */
+
+.x-practice-space__case-name {
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-primary);
+  white-space: nowrap;
+}
+
+.x-practice-space__case-input {
+  width: 100%;
+  min-width: var(--space-12);
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-xs);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.x-practice-space__case-input:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+}
+
+.x-practice-space__case-value {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+  white-space: pre-wrap;
+}
+
+/* ── Judging ────────────────────────────────────────────────────────────── */
+
+.x-practice-space__fixed {
+  margin: 0;
+  min-height: var(--space-8);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) dashed var(--c-border-strong);
+  background: var(--c-surface-inset);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ── Checklist — the gate's result, named condition by condition ─────────── */
+
+.x-practice-space__checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.x-practice-space__check {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}
+
+.x-practice-space__check svg {
+  flex: none;
+  align-self: center;
+}
+
+.x-practice-space__check[data-met="met"] { color: var(--c-text-primary); }
+.x-practice-space__check[data-met="met"] svg { color: var(--c-success); }
+.x-practice-space__check[data-met="unmet"] svg { color: var(--c-error); }
+.x-practice-space__check[data-met="unverifiable"] svg { color: var(--c-warning); }
+
+.x-practice-space__check-tag {
+  font-style: normal;
+  font-size: var(--text-2xs);
+  color: var(--c-warning);
+  border: var(--border-width) dashed color-mix(in srgb, var(--c-warning) 55%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-2);
+  white-space: nowrap;
+}
+
+.x-practice-space__check-note {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--c-text-faint);
+}
+
+/* Read-only surfaces keep every fact visible; the controls themselves carry
+   disabled/readOnly semantics — no opacity hacks, per contract §4. */
+
+@media (prefers-reduced-motion: reduce) {
+  .x-practice-space__side-tab {
+    transition: none;
+  }
+}

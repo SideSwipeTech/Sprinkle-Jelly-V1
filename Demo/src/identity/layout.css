@@ -1,0 +1,475 @@
+/* layout.css — identity owns the ARRANGEMENT, not only the paint.
+ *
+ * This is the file that answers "why doesn't it just feel recoloured". Same DOM, four
+ * genuinely different compositions: what is big, what is grouped, how many columns, whether
+ * a card is even a card. The frame CONTRACT is constant (one frame, four bands, drawer below
+ * tablet-narrow); the arrangement within a band is the hybrid's to decide, which SHR-R31's
+ * interim states explicitly.
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HALO — the drifting room
+   Asymmetric, airy, and physically reactive. Planes sit at different depths and
+   tilt toward the pointer; nothing is aligned to a strict grid because the
+   identity is about air, not order.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .shell {
+  --rail-face: transparent;
+}
+
+/* The rail stops being a panel with a border and becomes a floating column. */
+:is([data-subtheme="halo"], html[data-theme="halo"]) .rail {
+  border-right: none;
+  padding-left: var(--space-4);
+}
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .rail__item.is-active {
+  background: color-mix(in srgb, var(--c-surface) 70%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px -10px rgba(var(--c-shadow-rgb), 0.4);
+}
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .shell__header {
+  border-bottom: none;
+}
+
+/* Asymmetric home: the continue card is oversized and offset; the rest drift around it. */
+@media (min-width: 1280px) {
+  :is([data-subtheme="halo"], html[data-theme="halo"]) .home__grid {
+    grid-template-columns: 1.35fr 1fr 0.9fr;
+    gap: var(--space-7);
+  }
+  :is([data-subtheme="halo"], html[data-theme="halo"]) .home__continue { grid-column: span 2; }
+  :is([data-subtheme="halo"], html[data-theme="halo"]) .home__activity { grid-column: span 2; }
+  /* Staggered vertical offsets — the "floating at different heights" reading. */
+  :is([data-subtheme="halo"], html[data-theme="halo"]) .home__grid > *:nth-child(3n + 2) { margin-top: var(--space-6); }
+  :is([data-subtheme="halo"], html[data-theme="halo"]) .home__grid > *:nth-child(3n) { margin-top: var(--space-3); }
+}
+
+/* Halo's card hover stays the lift-and-glow in identity.css. A pointer-parallax tilt was
+   tried here and reverted: it read as a gimmick against the calm the identity is for, and
+   it silently killed the lift — the tilt rule and the hover rule have equal specificity, so
+   simply being in the later file won. Nothing identity-specific belongs here for the card;
+   the transform lives in one place.
+*/
+
+/* The ambient field tracks the pointer (useAmbientTracking writes --ambient-x/y). */
+:is([data-subtheme="halo"], html[data-theme="halo"]) body::before {
+  background:
+    radial-gradient(58% 44% at var(--ambient-x, 18%) var(--ambient-y, 22%), rgba(var(--c-accent-primary-rgb), 0.34), transparent 62%),
+    radial-gradient(52% 46% at 82% 18%, rgba(var(--c-accent-secondary-rgb), 0.24), transparent 60%),
+    radial-gradient(64% 52% at 72% 82%, rgba(var(--c-accent-light-rgb), 0.22), transparent 64%),
+    radial-gradient(46% 40% at 28% 78%, rgba(var(--c-accent-secondary-rgb), 0.18), transparent 58%);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   VOYAGE — the scroll film
+   Full-bleed scenes, type as compositional structure, and figures set at
+   headline scale. Nothing is a neat three-up grid; the page is a sequence.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .shell__main {
+  padding-inline: 0;
+  padding-top: 0;
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .home,
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .courses,
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .sink,
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .assess,
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .proof {
+  gap: 0;
+}
+
+/* Every direct region becomes a full-bleed scene with its own vertical air. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__hero {
+  min-height: 42vh;
+  align-items: flex-end;
+  padding: var(--space-10) var(--space-8) var(--space-8);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+/* The name is the composition, not a heading. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__name {
+  font-size: clamp(3.5rem, 12vw, 11rem);
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__grid {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+@media (min-width: 1280px) {
+  :is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__grid { grid-template-columns: 1fr; }
+  :is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__continue,
+  :is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__activity { grid-column: auto; }
+}
+
+/* Cards become full-width bands separated by hairlines — a filmstrip, not a grid. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__grid > * {
+  border-radius: 0;
+  border: none;
+  border-bottom: var(--border-width) solid var(--c-border);
+  padding: var(--space-9) var(--space-8);
+  background: transparent;
+  box-shadow: none;
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__grid > *::after { display: none; }
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .home__grid > *:hover {
+  background: color-mix(in srgb, var(--c-surface) 55%, transparent);
+  transform: none;
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .card__title { font-size: var(--text-3xl); }
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .card__title--hero { font-size: clamp(2rem, 5vw, 3.6rem); line-height: 1; }
+
+/* Scroll-driven: scale and blur resolve as the scene enters. --in is written by
+   useScrollReveal from the real intersection ratio. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) [data-reveal] {
+  opacity: calc(0.25 + var(--in, 1) * 0.75);
+  transform: scale(calc(0.975 + var(--in, 1) * 0.025));
+  filter: blur(calc((1 - var(--in, 1)) * 3px));
+  transition: opacity 120ms linear, transform 120ms linear, filter 120ms linear;
+}
+
+/* Magnetic controls (--mag-* written by useMagnetic). */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .btn,
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .tile {
+  transform: translate(var(--mag-x, 0), var(--mag-y, 0));
+  transition: transform 220ms var(--ease-hover);
+}
+
+/* The world tints toward the section you are in. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .shell__header {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c-bg) 96%, transparent),
+    transparent
+  );
+  border-bottom: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FORGE — the instrument bay
+   Dense, addressable, bracketed. Every module is a labelled bay on a lattice.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1280px) {
+  :is([data-subtheme="forge"], html[data-theme="forge"]) .home__grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+  }
+  :is([data-subtheme="forge"], html[data-theme="forge"]) .home__continue { grid-column: span 2; }
+  :is([data-subtheme="forge"], html[data-theme="forge"]) .home__activity { grid-column: span 2; }
+  :is([data-subtheme="forge"], html[data-theme="forge"]) .home__recent { grid-column: span 2; }
+}
+
+/* Corner brackets — the bay tell. Two elements, four corners, drawn with borders so
+   they stay crisp at any size. The chamfer already claims the top-right, so the
+   brackets deliberately skip it: one cut per form, never two. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card {
+  position: relative;
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card > .card__header::before,
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card > .card__header::after {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-color: var(--c-accent-primary);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-hover);
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card > .card__header::before {
+  top: calc(var(--card-padding) * -1 + 5px);
+  left: calc(var(--card-padding) * -1 + 5px);
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card > .card__header::after {
+  bottom: auto;
+  top: calc(var(--card-padding) * -1 + 5px);
+  right: calc(var(--card-padding) * -1 + 5px);
+  border-top: 1.5px solid;
+  border-right: 1.5px solid;
+  /* skipped where the chamfer already cuts */
+  display: none;
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card:hover > .card__header::before { opacity: 1; }
+
+/* The address. Every bay carries one, monospace, in the corner — the "everything is
+   addressable" idea from the instrument reading. Hidden by default so it costs the other
+   three identities nothing; only Forge opts in. */
+.card__addr { display: none; }
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card__addr {
+  display: block;
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--c-text-faint);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Scanline sweep on hover — a bay being interrogated. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card::after { z-index: 2; }
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .card:hover {
+  background-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--c-accent-primary) 8%, transparent) 50%,
+    transparent 100%
+  );
+  background-size: 100% 200%;
+  animation: forge-scan 620ms var(--ease-hover) 1;
+}
+
+@keyframes forge-scan {
+  from { background-position: 0 -100%; }
+  to   { background-position: 0 100%; }
+}
+
+/* Denser lattice, and it brightens under the content column. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .rail {
+  background: color-mix(in srgb, var(--c-surface-inset) 55%, transparent);
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .rail__legend {
+  border-bottom: 1px solid var(--c-border);
+  padding-bottom: var(--space-1);
+  margin-bottom: var(--space-1);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MERIDIAN — the ruled sheet
+   The biggest structural departure: there are no cards at all. Hairline rules
+   and whitespace carry the structure, one column, generous measure. Nothing
+   boxes anything in, because the identity exists to get out of the way.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .home__grid,
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .courses__grid,
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .sink__grid,
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .assess__grid,
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .proof__grid {
+  grid-template-columns: 1fr;
+  gap: 0;
+  max-width: 78ch;
+}
+
+@media (min-width: 1280px) {
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .home__grid { grid-template-columns: 1fr; }
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .home__continue,
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .home__activity { grid-column: auto; }
+}
+
+/* A "card" becomes a ruled section: one hairline above, no box, no fill, no shadow. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .card,
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .courses__grid > .card {
+  border: none;
+  border-top: 1px solid var(--c-border-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: var(--space-6) 0;
+  margin: 0;
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .card:hover {
+  background: transparent;
+  border-color: var(--c-accent-primary);
+}
+
+/* The eyebrow moves into the margin, ledger-style, so the title owns the line. */
+@media (min-width: 900px) {
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .card__header {
+    display: grid;
+    grid-template-columns: 12ch 1fr auto;
+    align-items: baseline;
+    gap: var(--space-5);
+  }
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .card__icon { display: none; }
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .card__eyebrow {
+    grid-column: 1;
+    text-align: right;
+    color: var(--c-text-faint);
+  }
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .card__heading { display: contents; }
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .card__title { grid-column: 2; }
+  :is([data-subtheme="meridian"], html[data-theme="meridian"]) .card__action { grid-column: 3; }
+}
+
+/* Figures align on a column, tabular, like a statement. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .stat__value { font-size: var(--text-xl); }
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .home__hero {
+  border-bottom: 1px solid var(--c-border-strong);
+  padding-bottom: var(--space-6);
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .home__name { font-size: var(--text-3xl); }
+
+/* No rail fill, no active pill — just a rule and a weight change. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .rail__item.is-active {
+  background: transparent;
+  font-weight: var(--weight-bold);
+  color: var(--c-accent-primary);
+}
+
+
+/* Tiles lose their boxes too. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .tile {
+  border: none;
+  border-top: 1px solid var(--c-border);
+  border-radius: 0;
+  align-items: flex-start;
+  text-align: left;
+  padding: var(--space-3) 0;
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .home__tiles { grid-template-columns: 1fr 1fr; gap: 0 var(--space-6); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   THE CHROME — the most generic part of any product, so the part that has to
+   differ most. Same rail markup, four different objects.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── HALO · the header dissolves ──────────────────────────────────────────
+   No bar, no rule. The brand and controls float on the aurora, and only the
+   search capsule has a surface. */
+:is([data-subtheme="halo"], html[data-theme="halo"]) .shell__header {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .shell__search {
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--c-surface) 60%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-color: transparent;
+  box-shadow: 0 6px 20px -8px rgba(var(--c-shadow-rgb), 0.35);
+}
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .rail__legend {
+  opacity: 0.55;
+  letter-spacing: 0.16em;
+}
+
+/* ── VOYAGE · the rail is a running order ────────────────────────────────
+   Numbered, uppercase, no pills. Destinations read as scenes in a sequence
+   rather than buttons in a list. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .rail {
+  counter-reset: scene;
+  border-right: none;
+  padding-top: var(--space-8);
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .rail__group { gap: 0; }
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .rail__legend {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  opacity: 0.5;
+  padding-bottom: var(--space-2);
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .rail__item {
+  counter-increment: scene;
+  border-radius: 0;
+  padding-block: var(--space-2);
+  text-transform: uppercase;
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  gap: var(--space-2);
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .rail__item::before {
+  content: counter(scene, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  opacity: 0.45;
+  min-width: 2ch;
+}
+
+/* Icons are noise in a running order — the number and the word carry it. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .rail__item > svg { display: none; }
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .rail__item.is-active {
+  background: transparent;
+  color: var(--c-accent-light);
+  font-weight: var(--weight-bold);
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .rail__item.is-active::before { opacity: 1; }
+
+/* ── FORGE · the rail is an instrument index ─────────────────────────────
+   Every entry addressed, hairline-ruled, tight. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .rail__item {
+  border-radius: 0;
+  padding-block: var(--space-1);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .rail__item.is-active {
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, transparent);
+}
+
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .shell__header {
+  border-bottom-width: 2px;
+  border-bottom-color: var(--c-border-strong);
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .shell__search {
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+/* ── MERIDIAN · the rail is a contents page ──────────────────────────────
+   No icons, no fills, no rule between the rail and the page. Weight alone
+   marks position, exactly as it would in a printed contents. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .rail {
+  border-right: none;
+  padding-top: var(--space-6);
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .rail__item > svg { display: none; }
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .rail__item {
+  border-radius: 0;
+  padding-inline: 0;
+  padding-block: var(--space-1);
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .rail__legend {
+  border-bottom: 1px solid var(--c-border-strong);
+  padding: 0 0 var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .shell__header {
+  border-bottom-color: var(--c-border-strong);
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .shell__search { border-radius: 0; }

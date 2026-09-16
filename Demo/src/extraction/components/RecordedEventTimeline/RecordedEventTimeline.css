@@ -1,0 +1,96 @@
+/* RecordedEventTimeline — the ordered integrity record. The rail is a border
+   on the list; each entry's marker is a disc whose state rides data-counted —
+   filled check for counted, hollow minus for not counted, so the difference
+   survives greyscale. Neutral words only: never a finding about a person. */
+
+.x-event-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 var(--space-2);
+  display: flex;
+  flex-direction: column;
+}
+
+.x-event-timeline__entry {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-2) 0 var(--space-2) var(--space-4);
+  border-left: var(--border-width) solid var(--c-border-strong);
+}
+
+.x-event-timeline__entry:last-child {
+  border-left-color: transparent;
+}
+
+.x-event-timeline__mark {
+  position: absolute;
+  left: calc(-1 * var(--space-3));
+  top: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-6);
+  height: var(--space-6);
+  border-radius: 50%;
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface);
+  color: var(--c-text-faint);
+}
+
+.x-event-timeline__entry[data-counted] .x-event-timeline__mark {
+  border-color: color-mix(in srgb, var(--c-warning) 55%, var(--c-border));
+  background: color-mix(in srgb, var(--c-warning) 14%, var(--c-surface));
+  color: var(--c-warning);
+}
+
+.x-event-timeline__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+  flex: 1;
+}
+
+.x-event-timeline__kind {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--c-text-primary);
+}
+
+.x-event-timeline__meta {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-event-timeline__meta time {
+  font-variant-numeric: var(--numerals);
+}
+
+.x-event-timeline__test,
+.x-event-timeline__source {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--c-text-muted);
+}
+
+.x-event-timeline__note {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+  font-style: italic;
+}
+
+.x-event-timeline__counted {
+  flex: none;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-micro, normal);
+  text-transform: uppercase;
+  color: var(--c-text-faint);
+  padding-top: var(--space-1);
+}
+
+.x-event-timeline__entry[data-counted] .x-event-timeline__counted {
+  color: var(--c-warning);
+}

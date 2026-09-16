@@ -1,0 +1,135 @@
+/* The companion corner — hosted by the frame, fixed, never covering a surface's
+   primary action. Every value below is a package token or derived from one;
+   the character's own material colours live in sparky/sparky.css. */
+
+.companion {
+  position: fixed;
+  right: clamp(10px, 2vw, 24px);
+  bottom: clamp(10px, 2vw, 24px);
+  z-index: var(--z-companion, var(--z-sticky));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  max-width: min(360px, calc(100vw - 20px));
+  pointer-events: none;
+}
+.companion > * { pointer-events: auto; }
+
+/* ── The trigger is the character ───────────────────────────────────────── */
+.companion__trigger {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  line-height: 0;
+}
+.companion__trigger:focus-visible { outline: 2px solid var(--c-focus-ring); outline-offset: 6px; }
+.companion__character { display: block; }
+.companion__character .sparky { display: block; overflow: visible; }
+/* The LEDs follow the identity's AA-gated status tokens; Sparky blue stays the resting colour. */
+.companion .sparky[data-tone="success"] { --sp-led: var(--c-success); --sp-led-soft: color-mix(in srgb, var(--c-success) 45%, white); }
+.companion .sparky[data-tone="warning"] { --sp-led: var(--c-warning); --sp-led-soft: color-mix(in srgb, var(--c-warning) 45%, white); }
+.companion .sparky[data-tone="error"] { --sp-led: var(--c-error); --sp-led-soft: color-mix(in srgb, var(--c-error) 45%, white); }
+.companion[data-presence="quiet"] .sparky { --sp-shadow: transparent; }
+
+/* Plain presentation: a text trigger, no character */
+.companion__button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--c-surface-elevated);
+  color: var(--c-text-primary);
+  font-weight: var(--weight-semibold);
+  box-shadow: 0 12px 32px -18px rgba(var(--c-shadow-rgb), 0.7);
+}
+.companion__button:focus-visible { outline: 2px solid var(--c-focus-ring); outline-offset: 2px; }
+
+/* ── The one passing message ─────────────────────────────────────────────── */
+.companion__moment {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: start;
+  width: min(340px, calc(100vw - 20px));
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-left: 3px solid var(--companion-tone, var(--c-text-faint));
+  border-radius: var(--radius-lg);
+  background: var(--c-surface-elevated);
+  box-shadow: 0 20px 48px -28px rgba(var(--c-shadow-rgb), 0.85);
+  animation: companion-in var(--duration-normal) var(--ease-enter) both;
+}
+.companion__moment--neutral { --companion-tone: var(--c-text-faint); }
+.companion__moment--informational { --companion-tone: var(--c-info); }
+.companion__moment--encouraging { --companion-tone: var(--c-accent-secondary); }
+.companion__moment--warning { --companion-tone: var(--c-warning); }
+.companion__moment--serious { --companion-tone: var(--c-error); }
+.companion__moment--success { --companion-tone: var(--c-success); }
+.companion__tone {
+  display: grid; place-items: center;
+  width: 28px; height: 28px; margin-top: 1px;
+  border-radius: var(--radius-md);
+  color: var(--companion-tone);
+  background: color-mix(in srgb, var(--companion-tone) 14%, transparent);
+}
+.companion__words { display: grid; gap: 2px; min-width: 0; }
+.companion__words p { margin: 0; }
+.companion__fact { font-weight: var(--weight-semibold); line-height: 1.4; overflow-wrap: anywhere; }
+.companion__flourish { color: var(--c-text-muted); line-height: 1.4; }
+.companion__waiting { color: var(--c-text-faint); }
+.companion__dismiss { width: 30px; height: 30px; }
+.companion__dismiss:disabled { opacity: 0.35; cursor: default; }
+
+/* ── The guide + door panel ──────────────────────────────────────────────── */
+.companion__panel {
+  display: grid;
+  gap: var(--space-3);
+  width: min(340px, calc(100vw - 20px));
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface-elevated);
+  box-shadow: 0 24px 70px -32px rgba(var(--c-shadow-rgb), 0.95);
+  animation: companion-in var(--duration-normal) var(--ease-enter) both;
+}
+.companion__head { display: flex; align-items: center; justify-content: space-between; }
+.companion__head p { margin: 0; }
+.companion__guide { margin: 0; line-height: 1.5; color: var(--c-text-primary); display: flex; gap: var(--space-2); align-items: flex-start; }
+.companion__guide--hint { color: var(--c-text-muted); }
+.companion__guide--hint svg { flex: none; margin-top: 4px; color: var(--c-accent-primary); }
+.companion__actions { display: flex; align-items: center; justify-content: space-between; }
+.companion__count { color: var(--c-text-faint); }
+
+.companion__door { display: grid; gap: var(--space-2); padding-top: var(--space-3); border-top: var(--border-width) solid var(--c-border); }
+.companion__door > p { margin: 0; color: var(--c-text-faint); }
+.companion__chips { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.companion__ask { display: flex; gap: var(--space-2); }
+.companion__ask input {
+  flex: 1; min-width: 0;
+  height: 36px; padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+}
+.companion__ask input:focus-visible { outline: 2px solid var(--c-focus-ring); outline-offset: 1px; }
+.companion__answer { display: grid; gap: var(--space-2); padding: var(--space-3); border-radius: var(--radius-md); background: var(--c-surface-inset); }
+.companion__answer p { margin: 0; line-height: 1.45; }
+.companion__answer .btn { justify-self: start; }
+.companion__answer--unavailable { background: color-mix(in srgb, var(--c-warning) 8%, var(--c-surface-inset)); }
+
+@keyframes companion-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .companion__moment, .companion__panel { animation: none; } }
+
+/* Compact band: the corner yields space; the character is smaller, panels are edge-to-edge. */
+@media (max-width: 599px) {
+  .companion { right: 8px; bottom: 8px; max-width: calc(100vw - 16px); }
+  .companion__panel, .companion__moment { width: calc(100vw - 16px); }
+}

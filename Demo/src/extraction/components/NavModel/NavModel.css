@@ -1,0 +1,253 @@
+/* NavModel.css — the in-flow presentations: anchored rail, icon spine + flyout,
+   command strip. The over-content presentations (floating dock, dual rail) and
+   the below-Standard drawer live in NavModel.overlay.css — one component family,
+   two files under the ~400-line bound (contract §9). */
+/* ── Shared bits ── */
+
+/* The rail's component tokens — declared for BOTH hosts of the rail anatomy: the
+   anchored rail and the drawer panel (the drawer reuses .x-nav-rail__* items). */
+.x-nav-rail,
+.x-nav-drawer__panel {
+  --x-nav-icon-size: 20px;
+  --x-nav-group-gap: 14px;
+  --x-nav-item-block: 7px;
+  --x-nav-item-inline: 10px;
+  --x-nav-item-gap: 10px;
+  --x-nav-row-gap: 2px;
+  --x-nav-lab-block: 10px;
+  --x-nav-lab-inline: 12px;
+}
+
+.x-nav-icon {
+  display: grid;
+  place-items: center;
+  width: var(--x-nav-icon-size);
+  height: var(--x-nav-icon-size);
+  flex: none;
+  color: inherit;
+}
+.x-nav-icon .icon {
+  display: block;
+}
+
+/* ── 1 · Anchored rail (active idiom: tinted surface) ── */
+
+.x-nav-rail {
+  grid-area: nav;
+  width: var(--shell-nav-rail-width);
+  padding: var(--space-4) var(--space-3) var(--space-7);
+  border-right: var(--border-width) solid var(--c-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--x-nav-group-gap);
+  position: sticky;
+  top: var(--shell-header-height);
+  align-self: start;
+  max-height: calc(100dvh - var(--shell-header-height));
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.x-nav-rail__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--x-nav-row-gap);
+}
+
+.x-nav-rail__legend {
+  color: var(--c-text-muted);
+  padding: 0 var(--space-2) var(--space-1);
+}
+
+.x-nav-rail__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--x-nav-item-gap);
+  min-height: var(--shell-nav-rail-item-min-height);
+  padding: var(--x-nav-item-block) var(--x-nav-item-inline);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+
+.x-nav-rail__item:hover {
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+}
+
+.x-nav-rail__item[data-active] {
+  background: color-mix(in srgb, var(--c-accent-primary) 14%, transparent);
+  color: var(--c-text-primary);
+}
+
+.x-nav-rail__item[data-active] .x-nav-rail__lab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--x-nav-lab-block) var(--x-nav-lab-inline);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+}
+.x-nav-rail__lab strong {
+  display: block;
+  font-size: var(--text-sm);
+}
+.x-nav-rail__lab small {
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+}
+
+/* ── 2 · Icon spine + flyout (active idiom: accent-text) ── */
+
+.x-nav-spine {
+  /* Component tokens. */
+  --x-nav-icon-size: 20px;
+  --x-nav-row-gap: 2px;
+  --x-spine-tip-gap: var(--space-2);
+  --x-spine-tip-block: 2px;
+
+  grid-area: nav;
+  position: sticky;
+  top: var(--shell-header-height);
+  align-self: start;
+  display: flex;
+}
+
+.x-nav-spine__rail {
+  width: var(--shell-nav-spine-width);
+  padding: var(--space-4) 0;
+  border-right: var(--border-width) solid var(--c-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.x-nav-spine__group {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--shell-nav-spine-group-size);
+  height: var(--shell-nav-spine-group-size);
+  border-radius: var(--radius-md);
+  color: var(--c-text-muted);
+}
+
+.x-nav-spine__group:hover,
+.x-nav-spine__group[data-open] {
+  background: color-mix(in srgb, var(--c-accent-primary) 14%, transparent);
+  color: var(--c-accent-primary);
+}
+
+.x-nav-spine__tip {
+  position: absolute;
+  left: calc(100% + var(--x-spine-tip-gap));
+  padding: var(--x-spine-tip-block) var(--space-2);
+  border-radius: var(--radius-xs);
+  background: var(--c-surface-elevated);
+  border: var(--border-width) solid var(--c-border-strong);
+  color: var(--c-text-primary);
+  font-size: var(--text-2xs);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-hover);
+}
+
+.x-nav-spine__group:hover .x-nav-spine__tip {
+  opacity: 1;
+}
+.x-nav-spine__group[data-open] .x-nav-spine__tip {
+  opacity: 0;
+}
+
+.x-nav-spine__flyout {
+  width: var(--shell-nav-spine-flyout-width);
+  padding: var(--space-4) var(--space-3);
+  border-right: var(--border-width) solid var(--c-border);
+  background: var(--c-surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--x-nav-row-gap);
+  animation: x-flyout-in var(--duration-normal) var(--ease-enter) both;
+}
+
+@keyframes x-flyout-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--space-2) * -1));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.x-nav-spine__flyout-title {
+  color: var(--c-text-faint);
+  padding: 0 var(--space-2) var(--space-2);
+}
+
+.x-nav-spine__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+}
+
+.x-nav-spine__link:hover {
+  background: var(--c-surface-elevated);
+  color: var(--c-text-primary);
+}
+.x-nav-spine__link[data-active] {
+  color: var(--c-accent-primary);
+  font-weight: var(--weight-semibold);
+}
+
+/* ── 3 · Command strip ── */
+
+.x-nav-strip {
+  --x-strip-sep-h: 14px;
+
+  grid-area: nav;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--shell-nav-command-strip-padding-block) var(--shell-nav-command-strip-padding-inline);
+  border-bottom: var(--border-width) solid var(--c-border);
+  background: var(--c-surface);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+  font-family: var(--font-mono);
+  overflow-x: auto;
+}
+
+.x-nav-strip__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+.x-nav-strip__item svg {
+  color: var(--c-accent-primary);
+}
+.x-nav-strip__sep {
+  width: var(--border-width);
+  height: var(--x-strip-sep-h);
+  background: var(--c-border-strong);
+  flex: none;
+}
+.x-nav-strip__hint {
+  margin-left: auto;
+  color: var(--c-text-faint);
+}
+

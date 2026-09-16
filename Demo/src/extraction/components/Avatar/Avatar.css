@@ -1,0 +1,36 @@
+/* Avatar — the person disc. Sizes derive from --space-* (no --size-* scale
+   exists yet — see the family report). lg keeps the hero gradient: the only
+   place the demo spent the second stop. */
+
+.x-avatar {
+  /* md — the shell's 32px */
+  --_size: var(--space-7);
+  display: grid;
+  place-items: center;
+  width: var(--_size);
+  height: var(--_size);
+  border-radius: var(--radius-pill);
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  flex: none;
+  user-select: none;
+}
+
+.x-avatar__initial {
+  line-height: 1;
+}
+
+/* sm — admin top bar, 28px. */
+.x-avatar--sm {
+  --_size: calc(var(--space-6) + var(--space-1));
+  font-size: var(--text-2xs);
+}
+
+/* lg — the profile hero, 56px, two-stop accent gradient. */
+.x-avatar--lg {
+  --_size: calc(var(--space-10) - var(--space-2));
+  font-size: var(--text-xl);
+  background: linear-gradient(135deg, var(--c-accent-primary), var(--c-accent-light));
+}

@@ -1,0 +1,32 @@
+/* MaintenancePreview — was .maintenance-preview (admin-shell.css:176-177) + the
+   settings-note closer. The dl composes containers/x-key-value. */
+
+.x-maintenance-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.x-maintenance-preview__status {
+  align-self: flex-start;
+}
+
+.x-maintenance-preview__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--c-text-primary);
+}
+
+.x-maintenance-preview__message {
+  margin: 0;
+  color: var(--c-text-muted);
+}
+
+.x-maintenance-preview__note {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}

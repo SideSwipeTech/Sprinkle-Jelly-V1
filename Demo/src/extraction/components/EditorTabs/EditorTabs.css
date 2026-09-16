@@ -1,0 +1,133 @@
+/* EditorTabs — the open-files strip. Canonicalises .editor-tabs/.editor-tab. */
+
+.x-editor-tabs {
+  display: flex;
+  align-items: center;
+  background: var(--editor-tabbar, color-mix(in srgb, var(--c-surface-inset) 60%, var(--c-surface)));
+  border-bottom: var(--border-width) solid var(--editor-divider, var(--c-border));
+  padding: 0 var(--space-1);
+  overflow-x: auto;
+}
+
+.x-editor-tabs__list {
+  display: flex;
+  gap: calc(var(--space-1) / 2);
+}
+
+.x-editor-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--editor-muted, var(--c-text-muted));
+  border-bottom: calc(var(--border-width) * 2) solid transparent;
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-enter),
+    background-color var(--duration-fast) var(--ease-enter),
+    border-color var(--duration-fast) var(--ease-enter);
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Hover is a preview, not the selection — half the active wash, a faint
+   underline, so the active tab keeps its distinction. */
+.x-editor-tab:hover {
+  color: var(--c-text-primary);
+  background: color-mix(in srgb, var(--editor-tab-active, var(--c-surface)) 55%, transparent);
+  border-bottom-color: var(--c-border-strong);
+}
+
+/* The selected tab carries the tinted surface + weight — no underline seam. */
+.x-editor-tab[data-on] {
+  color: var(--c-text-primary);
+  background: var(--editor-tab-active, color-mix(in srgb, var(--c-accent-primary) 10%, var(--c-surface)));
+  font-weight: var(--weight-semibold);
+}
+
+.x-editor-tab[data-on]:hover {
+  background: var(--editor-tab-active, color-mix(in srgb, var(--c-accent-primary) 10%, var(--c-surface)));
+}
+
+.x-editor-tab:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: calc(-1 * var(--border-width));
+}
+
+.x-editor-tab__icon {
+  color: var(--c-accent-primary);
+  display: grid;
+  place-items: center;
+}
+
+.x-editor-tab__close {
+  display: grid;
+  place-items: center;
+  padding: calc(var(--space-1) / 2);
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--c-text-faint);
+  cursor: pointer;
+  margin-left: var(--space-1);
+}
+
+/* Closing a tab is routine, not destructive — a neutral hover, not the error
+   wash the kit reached for. */
+.x-editor-tab__close:hover {
+  background: var(--c-surface-elevated);
+  color: var(--c-text-primary);
+}
+
+.x-editor-tab__close:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+}
+
+/* Dirty is a shape tell as well as a tone: a filled dot large enough to read
+   at a glance, in warning (unsaved work), with a quiet ring so it survives on
+   tinted tab surfaces. */
+.x-editor-tab__dirty {
+  width: calc(var(--space-1) * 1.5);
+  height: calc(var(--space-1) * 1.5);
+  border-radius: 50%;
+  background: var(--c-warning);
+  box-shadow: 0 0 0 var(--border-width) color-mix(in srgb, var(--c-warning) 35%, transparent);
+  flex: none;
+}
+
+.x-editor-tabs__add {
+  display: grid;
+  place-items: center;
+  padding: var(--space-1) var(--space-2);
+  background: transparent;
+  border: var(--border-width) solid transparent;
+  color: var(--editor-muted, var(--c-text-muted));
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  margin-left: var(--space-1);
+  transition:
+    color var(--duration-fast) var(--ease-enter),
+    background-color var(--duration-fast) var(--ease-enter),
+    border-color var(--duration-fast) var(--ease-enter);
+}
+
+.x-editor-tabs__add:hover {
+  background: var(--c-surface-elevated);
+  border-color: var(--c-border);
+  color: var(--c-text-primary);
+}
+
+.x-editor-tabs__add:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-editor-tab,
+  .x-editor-tabs__add {
+    transition: none;
+  }
+}

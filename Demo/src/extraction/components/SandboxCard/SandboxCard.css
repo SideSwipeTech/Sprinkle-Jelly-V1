@@ -1,0 +1,42 @@
+/* SandboxCard — the in-lesson mini runner. Chrome classes come from the sibling
+   Workbench (x-workbench__*); this file owns only the card's frame and output.
+   Was: inline #050810 / #2dd4bf / px literals (Learn.tsx:351-388). */
+
+.x-sandbox {
+  margin-top: var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--c-surface);
+}
+
+.x-sandbox__editor {
+  display: flex;
+  /* four row-heights (was 180px) — scales with identity density */
+  min-height: calc(var(--row-height) * 4);
+}
+
+.x-sandbox__editor > .x-editor,
+.x-sandbox__editor > .pro-editor {
+  flex: 1;
+  /* inside the card the editor is chrome-less: the card frame owns the border */
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.x-sandbox__out {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--body-line-height);
+  white-space: pre-wrap;
+  word-break: break-word;
+  /* was #050810 — the families' terminal surface where one exists */
+  background: var(--terminal-bg, var(--c-surface-inset));
+  border-top: var(--border-width) solid var(--c-border);
+  /* was #2dd4bf — per the contract's literal map it IS --c-success; Atlas's
+     terminal-fg wins where a graphite terminal world defines one. */
+  color: var(--terminal-fg, var(--c-success));
+}

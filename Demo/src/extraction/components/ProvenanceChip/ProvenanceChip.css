@@ -1,0 +1,43 @@
+/* ProvenanceChip — where the material came from. The glyph is the tell
+   (shield / layers / user); the tone only reinforces. */
+
+.x-provenance-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: calc(var(--space-1) * 0.5) var(--space-2);
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: transparent;
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.x-provenance-chip__label {
+  min-width: 0;
+}
+
+/* actual — observed in a real sitting. Success tone + shield. */
+.x-provenance-chip[data-kind="actual"] {
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-success) 12%, transparent);
+  color: var(--c-success);
+}
+
+/* curated — authored approximation. Accent tone + layers. */
+.x-provenance-chip[data-kind="curated"] {
+  border-color: color-mix(in srgb, var(--c-accent-primary) 40%, var(--c-border));
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, transparent);
+  color: var(--c-accent-primary);
+}
+
+/* device — derived on this device (IST window, measurement ledger). Neutral
+   tint + user mark: local truth, neither verified nor authored. */
+.x-provenance-chip[data-kind="device"] {
+  border-color: var(--c-border-strong);
+  background: color-mix(in srgb, var(--c-text-primary) 6%, transparent);
+  color: var(--c-text-muted);
+}

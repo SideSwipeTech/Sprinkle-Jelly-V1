@@ -1,0 +1,239 @@
+/* card.css — anatomy. Construction lives in identity.css; this is the skeleton only. */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.card__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--c-accent-primary);
+}
+
+.card__heading {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card__eyebrow {
+  margin: 0;
+  color: var(--c-text-muted);
+}
+
+.card__title {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.card__title--hero {
+  font-size: var(--text-2xl);
+}
+
+.card__action {
+  flex: none;
+  margin-left: auto;
+}
+
+/* ── State block ────────────────────────────────────────────────────────── */
+
+.state-block {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: var(--border-width) dashed var(--c-border-strong);
+  background: color-mix(in srgb, var(--c-surface-inset) 45%, transparent);
+}
+
+.state-block--compact {
+  padding: var(--space-2) var(--space-3);
+  gap: var(--space-2);
+}
+
+.state-block__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--c-text-muted);
+}
+
+.state-block__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.state-block__message {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}
+
+.state-block__meta {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.state-block__action {
+  flex: none;
+}
+
+/* Per-state tone. The icon and the border pattern are the non-colour carriers, so a
+   viewer who cannot distinguish these hues still gets the full distinction. */
+.state-block[data-state="data"] {
+  border-style: solid;
+  border-color: var(--c-border);
+}
+.state-block[data-state="data"] .state-block__mark { color: var(--c-success); }
+
+.state-block[data-state="stale"] {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--c-warning) 45%, var(--c-border));
+}
+.state-block[data-state="stale"] .state-block__mark { color: var(--c-warning); }
+
+.state-block[data-state="pending"] {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--c-info) 40%, var(--c-border));
+}
+.state-block[data-state="pending"] .state-block__mark { color: var(--c-info); }
+
+/* Unavailable is hatched — the same tell the charge track uses, so the two read as one
+   idea across the system rather than two unrelated empty styles. */
+.state-block[data-state="unavailable"] {
+  border-style: solid;
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--c-text-faint) 12%, transparent) 0 3px,
+    transparent 3px 9px
+  );
+}
+
+.state-block[data-state="empty"] {
+  border-style: dashed;
+}
+
+.state-block[data-state="refused"] {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--c-error) 50%, var(--c-border));
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--c-error) 10%, transparent) 0 6px,
+    transparent 6px 14px
+  );
+}
+.state-block[data-state="refused"] .state-block__mark { color: var(--c-error); }
+.state-block[data-state="refused"] .state-block__message { color: var(--c-text-primary); }
+
+.state-block[data-state="pruned"] {
+  border-style: dotted;
+}
+
+/* ── Stat ───────────────────────────────────────────────────────────────── */
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.stat__icon {
+  color: var(--c-accent-primary);
+  margin-bottom: var(--space-1);
+}
+
+.stat__value {
+  font-size: var(--text-2xl);
+  color: var(--c-text-primary);
+  line-height: 1.1;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.stat__unit {
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+  font-weight: var(--weight-medium);
+}
+
+.stat__label {
+  color: var(--c-text-faint);
+}
+
+.stat__note {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.stat[data-unavailable] .stat__value {
+  color: var(--c-text-faint);
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid transparent;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    border-color var(--duration-fast) var(--ease-hover),
+    transform var(--duration-fast) var(--ease-hover);
+}
+
+.btn--primary {
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+}
+
+.btn--primary:hover {
+  background: color-mix(in srgb, var(--c-accent-primary) 86%, var(--c-text-primary));
+}
+
+.btn--secondary {
+  background: transparent;
+  border-color: var(--c-border-strong);
+  color: var(--c-text-primary);
+}
+
+.btn--secondary:hover {
+  border-color: var(--c-accent-primary);
+  color: var(--c-accent-primary);
+}
+
+.btn--quiet {
+  padding: var(--space-1) var(--space-2);
+  background: transparent;
+  color: var(--c-accent-primary);
+}
+
+.btn--quiet:hover {
+  text-decoration: underline;
+}
+
+/* Only the identities with a press language get one. Meridian deliberately has none. */
+[data-theme="halo"] .btn:active { transform: scale(0.97); }
+[data-theme="voyage"] .btn:active { transform: translateY(1px); }
+[data-theme="forge"] .btn:active { transform: translateY(1px); }

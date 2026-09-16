@@ -1,0 +1,25 @@
+/* RestrictedNotice — was the inline policy inset in Account.tsx:718-721. */
+
+.x-restricted-notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.x-restricted-notice__policy {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  font-size: var(--text-sm); /* was 12px */
+  color: var(--c-text-muted);
+}
+
+.x-restricted-notice__policy-title {
+  color: var(--c-text-primary);
+}
+
+.x-restricted-notice__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}

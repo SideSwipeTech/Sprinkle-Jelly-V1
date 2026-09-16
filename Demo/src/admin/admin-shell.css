@@ -1,0 +1,572 @@
+/* admin-shell.css — the staff console's chrome.
+   The frame dims are component tokens (the proposed --admin-* family); every
+   other value reads the shared tokens so the console re-dresses with identity.
+   The rail is the learner rail's sibling: same metrics, denser voice — a staff
+   instrument, not a second learner sidebar. */
+
+.admin-shell {
+  /* Component tokens — frame dimensions with no global token (mirrors the
+     extraction's --x-admin-* declaration; names follow the --admin-* proposal). */
+  --admin-nav-width: 236px;
+  --admin-top-height: 64px;
+  --admin-hit-size: 38px;
+  --admin-item-block: 7px;
+  --admin-item-inline: 10px;
+  --admin-item-gap: 10px;
+
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: var(--admin-nav-width) minmax(0, 1fr);
+  grid-template-rows: var(--admin-top-height) minmax(0, 1fr);
+  grid-template-areas:
+    "brand top"
+    "nav   main";
+  /* The learner world's ambient field bleeds through faintly — the console sits
+     inside the same sky, dimmed, rather than behind its own backdrop. */
+  background: color-mix(in srgb, var(--c-bg) 88%, transparent);
+}
+
+/* ── Brand corner ───────────────────────────────────────────────────────── */
+
+.admin-brand {
+  grid-area: brand;
+  position: sticky;
+  top: 0;
+  z-index: calc(var(--z-header) + 1);
+  display: flex;
+  padding: var(--space-2) var(--space-3);
+  border-right: var(--border-width) solid var(--c-border);
+  border-bottom: var(--border-width) solid var(--c-border);
+  /* Raised plate against the rail's recessed shelf. */
+  background: color-mix(in srgb, var(--c-bg) 80%, var(--c-surface));
+}
+
+.admin-brand__home {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-hover);
+}
+.admin-brand__home:hover { background: var(--c-surface); }
+
+.admin-brand__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  color: var(--c-accent-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, var(--c-surface-elevated));
+  box-shadow: inset 0 0 0 var(--border-width) color-mix(in srgb, var(--c-accent-primary) 28%, transparent);
+}
+
+.admin-brand__word {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.admin-brand__word strong {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--heading-tracking);
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.admin-brand__word small { color: var(--c-text-faint); }
+
+/* ── Nav rail ────────────────────────────────────────────────────────────── */
+
+.admin-nav {
+  grid-area: nav;
+  position: sticky;
+  top: var(--admin-top-height);
+  align-self: start;
+  height: calc(100dvh - var(--admin-top-height));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-3) 0;
+  border-right: var(--border-width) solid var(--c-border);
+  /* Recessed shelf — a touch deeper than the page so the rail reads as a
+     channel the items are set into. */
+  background: color-mix(in srgb, var(--c-bg) 82%, var(--c-surface-inset));
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* The operations hub sits above the groups under no legend. */
+.admin-nav__hub {
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+.admin-nav__group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.admin-nav__legend {
+  margin: 0;
+  padding: 0 var(--space-2) var(--space-1);
+  color: var(--c-text-faint);
+}
+
+.admin-nav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-item-gap);
+  min-height: var(--shell-nav-rail-item-min-height);
+  padding: var(--admin-item-block) var(--admin-item-inline);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover),
+    box-shadow var(--duration-fast) var(--ease-hover);
+}
+.admin-nav__item:hover { background: var(--c-surface); color: var(--c-text-primary); }
+
+/* Active = accent tint + a whisper of inset ring (the staff "engaged" read,
+   same idiom as .settings-tab[data-on]) — never an accent edge stripe. */
+.admin-nav__item.is-active {
+  color: var(--c-text-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 14%, var(--c-surface));
+  box-shadow: inset 0 0 0 var(--border-width) color-mix(in srgb, var(--c-accent-primary) 32%, transparent);
+}
+.admin-nav__item.is-active .icon-slot { color: var(--c-accent-primary); }
+
+/* The console exit — pinned to the rail's foot, visible without scrolling to
+   the end of a long section list. */
+.admin-nav__foot {
+  position: sticky;
+  bottom: 0;
+  margin: auto calc(-1 * var(--space-3)) 0;
+  padding: var(--space-3) var(--space-3) var(--space-4);
+  border-top: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-bg) 82%, var(--c-surface-inset));
+}
+.admin-nav__exit { color: var(--c-text-muted); }
+
+.admin-nav__mobile-head { display: none; }
+
+/* ── Top bar ─────────────────────────────────────────────────────────────── */
+
+.admin-top {
+  grid-area: top;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: 0 clamp(var(--space-3), 2vw, var(--space-6));
+  border-bottom: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-bg) 80%, transparent);
+  backdrop-filter: blur(var(--backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--backdrop-blur));
+}
+
+.admin-menu { display: none; }
+
+/* The stacked crumb — the staff console's Breadcrumbs "current" reading:
+   the group path as a tracked micro line, the page as the bar's title. */
+.admin-crumb {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.admin-crumb .micro { color: var(--c-text-faint); }
+.admin-crumb strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--heading-tracking);
+}
+
+.admin-top-end {
+  position: relative;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Compact operational-health read — a small status pill. The word and its icon
+   carry the verdict's tone; the border stays quiet (unknown is dashed, the
+   non-colour tell — an unread signal is never painted healthy). */
+.admin-health-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--c-surface) 55%, transparent);
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+}
+.admin-health-chip strong {
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.admin-health-chip[data-verdict="healthy"] { color: var(--c-success); }
+.admin-health-chip[data-verdict="degraded"] { color: var(--c-warning); }
+.admin-health-chip[data-verdict="unknown"] { border-style: dashed; color: var(--c-text-faint); }
+
+.admin-user {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+}
+.admin-user__name { font-weight: var(--weight-medium); }
+
+/* ── Main ────────────────────────────────────────────────────────────────── */
+
+.admin-main {
+  grid-area: main;
+  min-width: 0;
+  padding: var(--space-6) var(--band-standard-gutter) var(--space-12);
+}
+
+@media (min-width: 1280px) {
+  .admin-main { padding-inline: var(--band-wide-gutter); }
+}
+
+.admin-main { padding-top: clamp(24px, 3vw, 42px); }
+
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2vw, 28px);
+}
+.admin-page .sink__head {
+  padding-bottom: var(--space-4);
+  border-bottom: var(--border-width) solid color-mix(in srgb, var(--c-border) 72%, transparent);
+}
+.admin-page .sink__title { font-size: clamp(var(--text-3xl), 3.4vw, var(--text-4xl)); }
+.admin-page .page__lead { margin-top: var(--space-2); }
+
+/* ── Dependency-health strip ───────────────────────────────────────────────
+   One cell per published reading. The verdict WORD carries the tone (and the
+   mark icon echoes it); the cell border stays quiet — unknown is dashed, the
+   system's non-colour tell for an unread signal. */
+
+.admin-health {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+  gap: var(--space-3);
+}
+.admin-health__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 92px;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--c-surface-inset) 55%, transparent);
+}
+.admin-health__cell[data-verdict="unknown"] { border-style: dashed; }
+
+.admin-health__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.admin-health__name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--c-text-primary);
+}
+.admin-health__mark { display: grid; place-items: center; color: var(--c-text-faint); }
+.admin-health__cell[data-verdict="healthy"] .admin-health__mark { color: var(--c-success); }
+.admin-health__cell[data-verdict="degraded"] .admin-health__mark { color: var(--c-warning); }
+
+.admin-health__verdict {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-text-faint);
+}
+.admin-health__cell[data-verdict="healthy"] .admin-health__verdict { color: var(--c-success); }
+.admin-health__cell[data-verdict="degraded"] .admin-health__verdict { color: var(--c-warning); }
+.admin-health__detail { margin-top: -2px; color: var(--c-text-faint); font-size: var(--text-2xs); }
+
+/* ── Human-attention conditions ────────────────────────────────────────────
+   Exactly four named conditions, each a row into the page that owns the work.
+   Composed on the extracted ListRow; the interiors live here. The status word
+   carries the tone — the row itself never gets a colour stripe. */
+
+/* Combined selectors keep these overrides order-proof: ListRow.css may land
+   after this sheet depending on the route chunk's import order. */
+.x-list.admin-conditions { gap: var(--space-2); }
+
+.x-list-row.admin-condition { gap: var(--space-4); }
+.admin-condition__id {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.admin-condition__name {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-primary);
+  word-break: break-word;
+}
+.admin-condition__note {
+  color: var(--c-text-faint);
+  font-size: var(--text-xs);
+}
+.admin-condition__read {
+  flex: none;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.admin-condition__figure {
+  min-width: 2rem;
+  font-size: var(--text-xl);
+  line-height: 1.1;
+  color: var(--c-text-primary);
+  text-align: right;
+}
+.admin-condition__status {
+  min-width: 5.6rem;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--c-text-faint);
+}
+.admin-condition[data-condition="attention"] .admin-condition__status { color: var(--c-warning); }
+.admin-condition[data-condition="clear"] .admin-condition__status { color: var(--c-success); }
+.admin-condition__go {
+  color: var(--c-text-faint);
+  transition:
+    color var(--duration-fast) var(--ease-hover),
+    transform var(--duration-fast) var(--ease-hover);
+}
+a.admin-condition:hover .admin-condition__go {
+  color: var(--c-accent-primary);
+  transform: translateX(2px);
+}
+
+/* Unavailable reads hatched — the same tell the state-block carries, so the
+   row and the block speak one idea. The rest of the hub still serves. */
+.admin-condition[data-condition="unavailable"] {
+  border-style: solid;
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--c-text-faint) 10%, transparent) 0 3px,
+    transparent 3px 9px
+  );
+}
+.admin-condition[data-condition="unavailable"] .admin-condition__name,
+.admin-condition[data-condition="unavailable"] .admin-condition__note { color: var(--c-text-faint); }
+
+/* ── Table / shared domain chrome ──────────────────────────────────────────
+   These class names are a shared contract — domain pages compose onto them.
+   Polish stays inside the contract. */
+
+.admin-table-wrap { overflow-x: auto; }
+.admin-table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+.admin-table thead, .admin-table tbody { display: table; width: 100%; min-width: 680px; table-layout: auto; }
+.admin-table th, .admin-table td {
+  padding: 12px 10px;
+  border-bottom: var(--border-width) solid var(--c-border);
+  text-align: left;
+  vertical-align: top;
+}
+.admin-table th {
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.admin-table td { font-variant-numeric: var(--numerals); }
+.admin-table tbody tr { transition: background-color var(--duration-fast) var(--ease-hover); }
+.admin-table tbody tr:hover { background: color-mix(in srgb, var(--c-surface) 55%, transparent); }
+.admin-table tbody tr:last-child td { border-bottom: none; }
+
+.admin-tools { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+.admin-action-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+}
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: var(--space-3) 0 var(--space-4);
+}
+.admin-form-grid__wide { grid-column: 1 / -1; }
+.admin-filterbar {
+  display: grid;
+  grid-template-columns: 180px minmax(220px, 1fr) 210px;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+}
+.maintenance-preview { display: flex; flex-direction: column; gap: var(--space-3); }
+.maintenance-preview h3, .maintenance-preview p { margin: 0; }
+
+/* ── Refusal surface ─────────────────────────────────────────────────────── */
+
+.admin-refusal {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--c-surface) 62%, transparent), transparent 26rem),
+    var(--c-bg);
+}
+.admin-refusal .auth__card { width: min(440px, 100%); }
+
+.admin-nav-scrim { display: none; }
+
+/* ── Below Standard (--band-tablet-narrow-max: 899px) — rail becomes drawer ── */
+
+@media (max-width: 899px) {
+  .admin-shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--admin-top-height) minmax(0, 1fr);
+    grid-template-areas: "top" "main";
+  }
+  .admin-brand { display: none; }
+  .admin-menu {
+    display: grid;
+    place-items: center;
+    width: var(--admin-hit-size);
+    height: var(--admin-hit-size);
+    flex: none;
+    border-radius: var(--radius-sm);
+    color: var(--c-text-muted);
+    transition:
+      background-color var(--duration-fast) var(--ease-hover),
+      color var(--duration-fast) var(--ease-hover);
+  }
+  .admin-menu:hover { background: var(--c-surface); color: var(--c-text-primary); }
+  .admin-nav {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: var(--z-modal);
+    width: min(var(--shell-drawer-width), var(--shell-drawer-max-width));
+    height: 100dvh;
+    padding-top: var(--space-3);
+    transform: translateX(-102%);
+    transition: transform var(--duration-normal) var(--ease-enter);
+    box-shadow: 20px 0 60px -28px rgba(var(--c-shadow-rgb), .9);
+    overscroll-behavior: contain;
+  }
+  .admin-nav.is-open { transform: translateX(0); }
+  .admin-nav__mobile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: 0;
+    padding: 0 var(--space-2) var(--space-3);
+    border-bottom: var(--border-width) solid var(--c-border);
+  }
+  .admin-nav__mobile-head strong {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: var(--display-weight);
+    letter-spacing: var(--heading-tracking);
+  }
+  .admin-nav-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-modal) - 1);
+    width: 100%;
+    background: rgba(var(--c-shadow-rgb), .62);
+    backdrop-filter: blur(2px);
+    animation: admin-fade-in var(--duration-fast) var(--ease-enter) both;
+  }
+  .admin-top { padding: 0 var(--space-3); }
+  .admin-main { padding: var(--space-6) var(--space-4) var(--space-10); }
+  /* The name stays in the accessibility tree — visually hidden, not font-size:0
+     (which silently emptied the avatar's initial too). */
+  .admin-user { gap: 0; }
+  .admin-user__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .admin-filterbar, .admin-form-grid { grid-template-columns: 1fr; }
+  .admin-form-grid__wide { grid-column: auto; }
+}
+
+@keyframes admin-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Compact band (--band-compact-max: 599px) ────────────────────────────── */
+
+@media (max-width: 599px) {
+  .admin-top-end { gap: var(--space-1); }
+  .admin-main { padding-inline: var(--space-3); }
+  .admin-page .sink__title { font-size: var(--text-2xl); }
+  .admin-health { grid-template-columns: 1fr; }
+  .admin-condition { flex-wrap: wrap; }
+  .admin-condition__read { margin-left: 0; width: 100%; justify-content: flex-end; }
+}
+
+/* ── Identity nudges ─────────────────────────────────────────────────────── */
+
+html[data-theme="forge"] .admin-nav { font-family: var(--font-mono); }
+html[data-theme="forge"] .admin-shell,
+html[data-theme="meridian"] .admin-shell { background: var(--c-bg); }
+html[data-theme="meridian"] .admin-nav { background: var(--c-bg); }
+/* No-blur identities get an opaque bar — content must not bleed under it. */
+html[data-theme="forge"] .admin-top,
+html[data-theme="meridian"] .admin-top {
+  background: var(--c-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html[data-theme="atelier"] .admin-nav { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }

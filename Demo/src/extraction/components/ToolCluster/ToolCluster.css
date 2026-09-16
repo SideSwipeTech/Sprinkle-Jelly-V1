@@ -1,0 +1,20 @@
+/* ToolCluster — was .admin-tools (admin-shell.css:149) + its readout line. */
+
+.x-tool-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.x-tool-cluster__tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.x-tool-cluster__readout {
+  margin: 0;
+  color: var(--c-text-muted);
+  max-width: var(--shell-prose-measure);
+}

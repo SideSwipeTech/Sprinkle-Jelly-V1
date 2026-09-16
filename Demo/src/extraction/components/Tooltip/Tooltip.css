@@ -1,0 +1,80 @@
+/* Tooltip — generalised .spine__tip (shell.css:242-258). Pure CSS: the tip lives in the
+   DOM and shows on :hover / :focus-within of the host — pointer and keyboard alike. */
+
+.x-tip {
+  position: relative;
+  display: inline-flex;
+}
+
+.x-tip__label {
+  position: absolute;
+  z-index: var(--z-popover);
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-xs);
+  background: var(--c-surface-elevated);
+  color: var(--c-text-primary);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-hover);
+}
+
+/* Side placements — the offset is --space-2, matching the spine's 8px. */
+.x-tip__label[data-side="right"] {
+  left: calc(100% + var(--space-2));
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.x-tip__label[data-side="left"] {
+  right: calc(100% + var(--space-2));
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.x-tip__label[data-side="top"] {
+  bottom: calc(100% + var(--space-2));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.x-tip__label[data-side="bottom"] {
+  top: calc(100% + var(--space-2));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.x-tip:hover .x-tip__label,
+.x-tip:focus-within .x-tip__label {
+  opacity: 1;
+}
+
+/* When the trigger is already expanded/pressed (the spine's is-open case), the tip adds
+   noise — a host marked data-tip-quiet suppresses it. */
+.x-tip[data-quiet] .x-tip__label,
+.x-tip:has([aria-expanded="true"]) .x-tip__label {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-tip__label { transition: none; }
+}
+
+/* State-matrix fixtures — force the tip visible for the sink, and a plausible trigger. */
+.x-tip--force .x-tip__label { opacity: 1; }
+
+.x-tip__demo-btn {
+  display: grid;
+  place-items: center;
+  width: var(--space-9);
+  height: var(--space-9);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-text-muted);
+  cursor: pointer;
+}

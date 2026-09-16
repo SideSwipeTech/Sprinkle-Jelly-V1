@@ -1,0 +1,346 @@
+/* identity.css — where the four subthemes stop sharing a look.
+ *
+ * The token layer (generated) carries the VALUES. This file carries the STRUCTURE those
+ * values can't express on their own: a chamfer is a clip-path, frosted is a backdrop
+ * filter, a lattice is a repeating gradient, and each identity's entrance is its own
+ * keyframe. Everything below reads from tokens and hardcodes nothing.
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   AMBIENT FIELDS — one element (body::before), four completely different skies
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Halo — a slow aurora mesh. Four offset radial pools drifting on independent cycles,
+   so the field never visibly loops. ~40s: change is felt, never watched. */
+:is([data-subtheme="halo"], html[data-theme="halo"]) body::before {
+  background:
+    radial-gradient(58% 44% at 18% 22%, rgba(var(--c-accent-primary-rgb), 0.30), transparent 62%),
+    radial-gradient(52% 46% at 82% 18%, rgba(var(--c-accent-secondary-rgb), 0.24), transparent 60%),
+    radial-gradient(64% 52% at 72% 82%, rgba(var(--c-accent-light-rgb), 0.20), transparent 64%),
+    radial-gradient(46% 40% at 28% 78%, rgba(var(--c-accent-secondary-rgb), 0.16), transparent 58%);
+  animation: halo-drift 42s var(--ease-linear) infinite alternate;
+}
+
+@keyframes halo-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  33%  { transform: translate3d(-2.5%, 1.8%, 0) scale(1.06); }
+  66%  { transform: translate3d(2%, -2.2%, 0) scale(1.03); }
+  100% { transform: translate3d(-1.2%, -1%, 0) scale(1.08); }
+}
+
+/* On a light page an additive wash lightens near-white into nothing. `multiply` makes the
+   same gradients DARKEN the page instead, so the aurora reads at the same strength it does
+   on dark without touching the palette. Dark themes keep normal blending. */
+html[data-theme="halo"][data-scheme="light"] body::before,
+html[data-theme="voyage"][data-scheme="light"] body::before,
+html[data-theme="forge"][data-scheme="light"] body::before,
+html[data-theme="meridian"][data-scheme="light"] body::before {
+  mix-blend-mode: multiply;
+  opacity: calc(var(--ambient-opacity) * 1.15);
+}
+
+/* Voyage — a duotone field. Two large washes anchored to opposite corners, with a
+   vignette pulling the eye to centre. Cinema, not weather. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) body::before {
+  background:
+    radial-gradient(78% 62% at 12% 8%, rgba(var(--c-accent-primary-rgb), 0.34), transparent 70%),
+    radial-gradient(72% 58% at 92% 96%, rgba(var(--c-accent-secondary-rgb), 0.30), transparent 68%),
+    radial-gradient(120% 100% at 50% 50%, transparent 42%, rgba(var(--c-surface-inset-rgb), 0.55) 100%);
+  animation: voyage-breathe 26s var(--ease-cinematic) infinite alternate;
+}
+
+@keyframes voyage-breathe {
+  from { transform: scale(1); opacity: calc(var(--ambient-opacity) * 0.82); }
+  to   { transform: scale(1.05); opacity: var(--ambient-opacity); }
+}
+
+/* Forge — a measured lattice. A dot grid on the spacing rhythm, plus a faint accent
+   wash so the field belongs to the palette rather than sitting on top of it. Static:
+   an instrument panel does not drift. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) body::before {
+  background-image:
+    radial-gradient(circle at center, rgba(var(--c-border-strong-rgb), 0.55) 1px, transparent 1px),
+    radial-gradient(70% 50% at 8% 4%, rgba(var(--c-accent-primary-rgb), 0.14), transparent 58%),
+    radial-gradient(60% 46% at 96% 92%, rgba(var(--c-accent-secondary-rgb), 0.12), transparent 56%);
+  background-size: var(--space-6) var(--space-6), 100% 100%, 100% 100%;
+}
+
+/* Meridian — nothing. Stated, not forgotten: this identity exists to get out of the way. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) body::before {
+  background: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SURFACE — the card, four ways
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.surface {
+  position: relative;
+  background: var(--c-surface);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: var(--card-padding);
+  transition:
+    transform var(--duration-normal) var(--ease-hover),
+    box-shadow var(--duration-normal) var(--ease-hover),
+    border-color var(--duration-normal) var(--ease-hover),
+    background-color var(--duration-normal) var(--ease-hover);
+}
+
+/* Halo — a frosted plane floating over the aurora. The surface is translucent so the
+   field reads THROUGH it; that is the whole point of the identity. */
+:is([data-subtheme="halo"], html[data-theme="halo"]) .surface {
+  background: color-mix(in srgb, var(--c-surface) 72%, transparent);
+  backdrop-filter: blur(var(--backdrop-blur)) saturate(var(--backdrop-saturate));
+  -webkit-backdrop-filter: blur(var(--backdrop-blur)) saturate(var(--backdrop-saturate));
+  /* Shadows resolve through --c-shadow, which is dark in BOTH themes. Sourcing them from
+     a surface token meant the light palette cast a light-coloured shadow — i.e. none —
+     which is why light Halo had no depth at all despite being the depth identity. */
+  box-shadow:
+    0 1px 0 0 color-mix(in srgb, var(--c-text-primary) 8%, transparent) inset,
+    0 18px 48px -12px rgba(var(--c-shadow-rgb), 0.55);
+}
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .surface:where(:hover, :focus-within) {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--c-accent-primary) 40%, var(--c-border));
+  box-shadow:
+    0 1px 0 0 color-mix(in srgb, var(--c-text-primary) 10%, transparent) inset,
+    0 26px 64px -14px rgba(var(--c-accent-primary-rgb), 0.32);
+}
+
+/* Light Halo needs a denser plane than dark Halo: a 72% white card over a near-white page
+   has almost nothing to separate it. More opacity, plus a real shadow above, restores the
+   floating-plane reading without abandoning the frost. */
+:is([data-subtheme="halo"][data-theme="light"], html[data-theme="halo"][data-scheme="light"]) .surface {
+  background: color-mix(in srgb, var(--c-surface) 88%, transparent);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.9) inset,
+    0 12px 32px -10px rgba(var(--c-shadow-rgb), 0.20),
+    0 2px 6px -2px rgba(var(--c-shadow-rgb), 0.12);
+}
+
+:is([data-subtheme="halo"][data-theme="light"], html[data-theme="halo"][data-scheme="light"]) .surface:where(:hover, :focus-within) {
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.9) inset,
+    0 20px 44px -12px rgba(var(--c-accent-primary-rgb), 0.28),
+    0 3px 8px -2px rgba(var(--c-shadow-rgb), 0.14);
+}
+
+/* Voyage — a layered plate. A second plane sits behind and below, so the card reads as
+   the front of a stack rather than a rectangle. Hover pushes INTO the scene. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .surface {
+  box-shadow: 0 20px 44px -18px rgba(var(--c-shadow-rgb), 0.7);
+}
+
+/* The backing plate sits ENTIRELY below the card rather than behind it. The previous
+   version used z-index:-1 to tuck it under — but .surface has no stacking context of its
+   own, so -1 put it behind the parent's background and it never painted at all. Sitting it
+   fully below needs no z-index and reads more clearly as a stack. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .surface::after {
+  content: "";
+  position: absolute;
+  inset: auto 14px -9px 14px;
+  height: 9px;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: color-mix(in srgb, var(--c-surface) 55%, var(--c-bg));
+  border: var(--border-width) solid var(--c-border);
+  border-top: none;
+  transition:
+    inset var(--duration-normal) var(--ease-hover),
+    border-color var(--duration-normal) var(--ease-hover);
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .surface:where(:hover, :focus-within) {
+  transform: translateY(-2px) scale(1.008);
+  border-color: color-mix(in srgb, var(--c-accent-primary) 55%, var(--c-border));
+}
+
+/* On hover the stack fans out — the plate widens and drops further, so the card reads as
+   lifting off it rather than merely moving. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .surface:where(:hover, :focus-within)::after {
+  inset: auto 7px -14px 7px;
+  border-color: color-mix(in srgb, var(--c-accent-primary) 35%, var(--c-border));
+}
+
+/* Forge — a chamfered plate. Exactly one corner is cut, at the token angle. This is the
+   family tell carried over from the Keyline icon contract: every containment form loses
+   one corner to a 45° cut, and never two. The cut corner is where the charge seam lives. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .surface {
+  border-radius: var(--radius-sm);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--chamfer)) 0,
+    100% var(--chamfer),
+    100% 100%,
+    0 100%
+  );
+  box-shadow: 0 2px 0 0 rgba(var(--c-shadow-rgb), 0.6);
+}
+
+/* The clip-path removes the border along the diagonal, so the family tell had no line on
+   it and read as a rounded corner rather than a cut. This draws the cut edge: a hairline
+   from (100% - chamfer, 0) to (100%, chamfer) — length chamfer x sqrt(2), rotated 45deg
+   about its left end. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .surface::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(100% - var(--chamfer));
+  width: calc(var(--chamfer) * 1.4142);
+  height: 1px;
+  background: var(--c-border-strong);
+  transform-origin: left top;
+  transform: rotate(45deg);
+  transition: background-color var(--duration-fast) var(--ease-hover);
+}
+
+/* On a live card the cut carries the charge, so the seam and the chamfer read as one
+   continuous edge rather than two unrelated marks. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .surface--live::after {
+  background: var(--c-accent-light);
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .surface:where(:hover, :focus-within)::after {
+  background: var(--c-accent-primary);
+}
+
+/* The seam — a hairline of charge along the top edge, stopping at the chamfer. Present
+   only where a card has live state; .surface--live opts in. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .surface--live::before {
+  content: "";
+  position: absolute;
+  inset: 0 var(--chamfer) auto 0;
+  height: 2px;
+  background: var(--charge-gradient);
+  opacity: 0.9;
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .surface:where(:hover, :focus-within) {
+  border-color: color-mix(in srgb, var(--c-accent-primary) 50%, var(--c-border));
+  background: color-mix(in srgb, var(--c-surface-elevated) 100%, transparent);
+}
+
+/* Meridian — ruled. Flat fill, a border strong enough to be the sole boundary (the
+   generator gates it at 3:1 for exactly this reason), and no shadow at all. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .surface {
+  border-color: var(--c-border-strong);
+  box-shadow: none;
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .surface:where(:hover, :focus-within) {
+  border-color: var(--c-accent-primary);
+  background: var(--c-surface-elevated);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ENTRANCE — each identity arrives in its own language
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.enter {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-enter);
+  /* `backwards`, NOT `both`. Both holds the final keyframe forever, and an animation's
+     value outranks a normal declaration in the cascade — so the entrance was pinning
+     transform to its end state and silently killing every card's hover lift. Backwards
+     still applies the from-state during the stagger delay (no flash), then gets out of
+     the way. */
+  animation-fill-mode: backwards;
+  animation-delay: calc(var(--enter-index, 0) * 45ms);
+}
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .enter { animation-name: enter-rise-settle; }
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .enter { animation-name: enter-depth-arrive; }
+:is([data-subtheme="forge"], html[data-theme="forge"]) .enter { animation-name: enter-power-on; }
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .enter { animation-name: enter-fade; }
+
+/* Halo — rises and settles. The overshoot lives in --ease-settle, not here. */
+@keyframes enter-rise-settle {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Voyage — arrives from the front of the scene, out of focus, and lands. */
+@keyframes enter-depth-arrive {
+  from { opacity: 0; transform: scale(1.06) translateZ(0); filter: blur(6px); }
+  to   { opacity: 1; transform: scale(1) translateZ(0); filter: blur(0); }
+}
+
+/* Forge — powers on. A hairline snaps to full height, then the content is there.
+   Not a fade: an instrument coming up. */
+@keyframes enter-power-on {
+  0%   { opacity: 0; transform: scaleY(0.02); transform-origin: center; }
+  45%  { opacity: 1; transform: scaleY(0.02); }
+  70%  { transform: scaleY(1.015); }
+  100% { opacity: 1; transform: scaleY(1); }
+}
+
+/* Meridian — it fades. Nothing moves, because movement is what this identity spends
+   its budget avoiding. */
+@keyframes enter-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   IDLE — the resting state, which is where "alive" is actually decided
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .idle-alive {
+  animation: idle-breathe 6.5s var(--ease-hover) infinite;
+}
+
+@keyframes idle-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.004); }
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .idle-alive {
+  animation: idle-drift 9s var(--ease-cinematic) infinite alternate;
+}
+
+@keyframes idle-drift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+
+/* Forge and Meridian have no idle animation, by choice. An instrument at rest is still,
+   and a low-stimulus identity that fidgets has failed at the one thing it is for. */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TYPE — the display face is where identity is loudest
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--heading-tracking);
+  line-height: 1.1;
+  color: var(--c-text-primary);
+  margin: 0;
+}
+
+.micro {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case);
+  letter-spacing: 0.08em;
+  color: var(--c-text-muted);
+}
+
+/* Voyage's micro-labels carry more tracking because they are set in caps at small sizes,
+   where the default would set them too tight to read. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .micro { letter-spacing: 0.14em; }
+
+.numeral {
+  font-family: var(--font-display);
+  font-variant-numeric: var(--numerals);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--heading-tracking);
+}
+
+/* Voyage treats a figure as a headline — the identity's stated compositional rule. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .numeral--hero { font-size: var(--text-6xl); line-height: 0.9; }
+:is([data-subtheme="halo"], html[data-theme="halo"]) .numeral--hero { font-size: var(--text-5xl); line-height: 1; font-weight: var(--weight-semibold); }
+:is([data-subtheme="forge"], html[data-theme="forge"]) .numeral--hero { font-size: var(--text-4xl); line-height: 1; }
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .numeral--hero { font-size: var(--text-4xl); line-height: 1; }

@@ -1,0 +1,63 @@
+/* WeekStrip — 7-day completion dots. Every status has a shape tell:
+   done = filled + tick, today = accent ring, open = hollow, missed = x. */
+
+.x-week-strip {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  list-style: none;
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  text-align: center;
+}
+
+.x-week-strip__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.x-week-strip__label {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+  font-weight: var(--weight-medium);
+}
+
+.x-week-strip__dot {
+  display: grid;
+  place-items: center;
+  width: var(--space-5);
+  height: var(--space-5);
+  border-radius: 50%;
+  border: var(--border-width) solid var(--c-border);
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+}
+
+/* done — filled success disc + tick (tick is the tell; fill reinforces). */
+.x-week-strip__dot[data-status="done"] {
+  background: var(--c-success);
+  border-color: var(--c-success);
+  color: var(--c-on-success);
+}
+
+/* today — the accent ring: "you are here", hollow centre. */
+.x-week-strip__dot[data-status="today"] {
+  border-color: var(--c-accent-primary);
+  border-width: calc(var(--border-width) * 2);
+  color: var(--c-accent-primary);
+}
+
+/* open — hollow dot, still to come. */
+.x-week-strip__dot[data-status="open"] {
+  background: transparent;
+}
+
+/* missed — hollow with an x: stated, not zeroed. */
+.x-week-strip__dot[data-status="missed"] {
+  color: var(--c-text-faint);
+}

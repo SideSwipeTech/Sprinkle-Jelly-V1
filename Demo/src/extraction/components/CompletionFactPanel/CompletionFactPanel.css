@@ -1,0 +1,30 @@
+/* CompletionFactPanel — the panel frame. The dl itself is the containers
+   family's x-key-value (was .account-facts); only spacing local to the panel
+   lives here. */
+
+.x-completion-facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.x-completion-facts__note {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}
+
+.x-completion-facts__note strong,
+.x-completion-facts__note b {
+  color: var(--c-text-primary);
+  display: block;
+}
+
+.x-completion-facts__extra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}

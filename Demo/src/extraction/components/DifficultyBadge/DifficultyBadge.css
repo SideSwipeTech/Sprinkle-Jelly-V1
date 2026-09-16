@@ -1,0 +1,65 @@
+/* DifficultyBadge — the level tag. The pip meter (1/2/3 filled) is the
+   non-colour tell; the tone only reinforces. */
+
+.x-difficulty-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: calc(var(--space-1) * 0.5) var(--space-2);
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: transparent;
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.x-difficulty-badge__meter {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) * 0.5);
+}
+
+.x-difficulty-badge__pip {
+  width: var(--space-1);
+  height: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--c-border);
+}
+
+.x-difficulty-badge__meta {
+  color: var(--c-text-faint);
+  font-weight: var(--weight-regular);
+}
+
+/* easy — one pip, success tone. */
+.x-difficulty-badge[data-level="easy"] {
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-success) 12%, transparent);
+  color: var(--c-success);
+}
+.x-difficulty-badge[data-level="easy"] .x-difficulty-badge__pip[data-filled] {
+  background: var(--c-success);
+}
+
+/* medium — two pips, warning tone. */
+.x-difficulty-badge[data-level="medium"] {
+  border-color: color-mix(in srgb, var(--c-warning) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-warning) 12%, transparent);
+  color: var(--c-warning);
+}
+.x-difficulty-badge[data-level="medium"] .x-difficulty-badge__pip[data-filled] {
+  background: var(--c-warning);
+}
+
+/* hard — three pips, error tone. */
+.x-difficulty-badge[data-level="hard"] {
+  border-color: color-mix(in srgb, var(--c-error) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-error) 12%, transparent);
+  color: var(--c-error);
+}
+.x-difficulty-badge[data-level="hard"] .x-difficulty-badge__pip[data-filled] {
+  background: var(--c-error);
+}

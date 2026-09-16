@@ -1,0 +1,92 @@
+/* SchedulingCard — the product-date schedule card. A quiet framed card whose
+   tone rides the StatusText chip and a data-status accent wash on the gap/
+   clash notes — never an edge stripe. */
+
+.x-schedule-card {
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+}
+
+.x-schedule-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+.x-schedule-card__mark {
+  display: grid;
+  place-items: center;
+  color: var(--c-accent-primary);
+}
+
+.x-schedule-card__title {
+  flex: 1;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-bold);
+  text-transform: var(--micro-case);
+  color: var(--c-text-faint);
+}
+
+.x-schedule-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.x-schedule-card__date-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.x-schedule-card__date-label {
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+.x-schedule-card__date {
+  font-size: var(--text-lg);
+  color: var(--c-text-primary);
+}
+
+.x-schedule-card__date-input {
+  min-height: var(--space-8);
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color-scheme: inherit;
+}
+
+.x-schedule-card__date-input:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+}
+
+/* The gap and clash notes — tint + words, no edge stripe. */
+.x-schedule-card__note {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}
+
+.x-schedule-card__note[data-tone="warning"] {
+  background: color-mix(in srgb, var(--c-warning) 10%, transparent);
+  color: var(--c-text-primary);
+}
+
+.x-schedule-card__note[data-tone="error"] {
+  background: color-mix(in srgb, var(--c-error) 8%, transparent);
+  color: var(--c-text-primary);
+}

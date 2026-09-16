@@ -1,0 +1,30 @@
+/* StaleNote — the freshness strip. Dashed border + clock mark are the
+   non-colour tells; tone stays muted because stale is information, not alarm. */
+
+.x-stale-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) dashed var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+}
+
+.x-stale-note__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  margin-top: calc(var(--space-1) * 0.5);
+  color: var(--c-warning);
+}
+
+.x-stale-note__text {
+  min-width: 0;
+}
+
+.x-stale-note__asof {
+  color: var(--c-text-faint);
+}

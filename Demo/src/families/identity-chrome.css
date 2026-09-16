@@ -1,0 +1,30 @@
+/* Extra chrome that identity/layout.css does not cover (product nav models + Atlas/Atelier). */
+
+html[data-theme="voyage"] .rail .icon-slot,
+html[data-theme="meridian"] .rail .icon-slot {
+  display: none;
+}
+
+html[data-theme="atlas"] .shell {
+  --shell-header-height: 52px;
+  --shell-rail-expanded: 240px;
+}
+
+html[data-theme="atelier"] .shell {
+  --shell-header-height: 60px;
+  --shell-rail-expanded: 248px;
+}
+
+html[data-theme="halo"] .sink__grid > .card:nth-child(3n + 2) {
+  margin-top: var(--space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none !important;
+  }
+  html[data-theme="halo"] .rail__item.is-active,
+  html[data-theme="voyage"] .btn {
+    transform: none;
+  }
+}

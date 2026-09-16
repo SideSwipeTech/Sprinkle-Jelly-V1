@@ -1,0 +1,75 @@
+/* ConfirmByTyping — the echo-to-arm gate (AdminPages.tsx:164-169). Field-styled input,
+   code-rendered phrase, live status line, gated actions slot. */
+
+.x-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.x-confirm__label {
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+/* The phrase is set in code — findable at a glance, copyable by eye not by select. */
+.x-confirm__phrase {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-primary);
+  background: var(--c-surface-inset);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-xs);
+  padding: 0 var(--space-1);
+  user-select: none;
+}
+
+.x-confirm__input {
+  min-height: var(--space-8);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  transition: border-color var(--duration-fast) var(--ease-hover);
+}
+
+.x-confirm__input:focus-visible {
+  border-color: var(--c-border-interactive);
+}
+
+.x-confirm__input[aria-invalid="true"] {
+  border-color: var(--c-error);
+}
+
+.x-confirm[data-matched] .x-confirm__input {
+  border-color: var(--c-success);
+}
+
+.x-confirm__status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-confirm[data-matched] .x-confirm__status {
+  color: var(--c-success);
+}
+
+.x-confirm__status .icon {
+  flex: none;
+}
+
+.x-confirm__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  margin-top: var(--space-1);
+}

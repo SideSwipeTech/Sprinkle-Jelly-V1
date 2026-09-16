@@ -1,0 +1,142 @@
+/* Sheet — edge panel docked under the header. Was .notes-panel (shell.css:726-763);
+   the 599px full-width rule is kept at its source threshold but keyed to the
+   sheet's own dock context (container query) — the viewport in the app, the
+   state cell in the sink. Band numbers are canonical (tokens.css:68-88). */
+
+.x-sheet {
+  position: fixed;
+  inset: var(--shell-header-height) 0 0;
+  z-index: var(--z-modal);
+  pointer-events: none; /* no scrim by default — the page stays interactive */
+  /* The root IS the dock context — the panel's width floor and the compact
+     full-width rule below measure this box, not the viewport. */
+  container-type: inline-size;
+}
+
+.x-sheet__scrim {
+  position: absolute;
+  inset: calc(-1 * var(--shell-header-height)) 0 0;
+  width: 100%;
+  border: none;
+  background: rgba(var(--c-shadow-rgb), 0.55);
+  cursor: default;
+  pointer-events: auto;
+  animation: x-sheet-fade var(--duration-fast) var(--ease-enter) both;
+}
+
+.x-sheet__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(27rem, 100%);
+  padding: var(--space-5);
+  border-left: var(--border-width) solid var(--c-border-strong);
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      color-mix(in srgb, var(--c-accent-primary) 12%, transparent),
+      transparent 24rem
+    ),
+    var(--c-surface);
+  box-shadow: calc(-1 * var(--space-6)) 0 var(--space-10) calc(-1 * var(--space-8)) rgba(var(--c-shadow-rgb), 0.9);
+  outline: none;
+  pointer-events: auto;
+  animation: x-sheet-in var(--duration-normal) var(--ease-enter) both;
+}
+
+.x-sheet[data-side="left"] .x-sheet__panel {
+  right: auto;
+  left: 0;
+  border-left: none;
+  border-right: var(--border-width) solid var(--c-border-strong);
+  box-shadow: var(--space-6) 0 var(--space-10) calc(-1 * var(--space-8)) rgba(var(--c-shadow-rgb), 0.9);
+  animation-name: x-sheet-in-left;
+}
+
+.x-sheet__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.x-sheet__heading { flex: 1; min-width: 0; }
+
+.x-sheet__close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  cursor: pointer;
+}
+
+.x-sheet__close:hover { background: var(--c-surface-elevated); color: var(--c-text-primary); }
+
+.x-sheet__close:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-1);
+}
+
+/* Compact dock context — the sheet takes the full width at the source's own
+   threshold (the notes-panel 599px rule, the compact band boundary). Measured
+   on .x-sheet, not the viewport, so a narrow demo cell shows the compact form
+   while a wide cell shows the docked panel. */
+@container (max-width: 599px) {
+  .x-sheet__panel {
+    width: 100%;
+    border-left: none;
+    box-shadow: none;
+  }
+
+  .x-sheet[data-side="left"] .x-sheet__panel {
+    border-right: none;
+    box-shadow: none;
+  }
+}
+
+@keyframes x-sheet-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes x-sheet-in {
+  from { opacity: 0; transform: translateX(var(--space-6)); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes x-sheet-in-left {
+  from { opacity: 0; transform: translateX(calc(-1 * var(--space-6))); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-sheet__scrim,
+  .x-sheet__panel { animation: none; }
+}
+
+/* State-matrix fixtures — plausible sheet content for the sink. */
+.x-sheet__demo-kicker {
+  margin: 0;
+}
+
+.x-sheet__demo-title {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--c-text-primary);
+}
+
+.x-sheet__demo-text {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-sm);
+  line-height: var(--body-line-height);
+  color: var(--c-text-muted);
+}

@@ -1,0 +1,21 @@
+/* SolvedBadge — the done marker. Tick + word carry it; success tone reinforces.
+   data-done is the contract's complete/answered attribute (contract §3). */
+
+.x-solved-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--space-1) * 0.5);
+  padding: calc(var(--space-1) * 0.5) var(--space-2);
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-success) 12%, transparent);
+  color: var(--c-success);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.x-solved-badge__label {
+  min-width: 0;
+}

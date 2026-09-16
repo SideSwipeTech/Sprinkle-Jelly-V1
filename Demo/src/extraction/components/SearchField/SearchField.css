@@ -1,0 +1,47 @@
+/* SearchField — `.filters__search` (courses.css:96-116) as a standalone control.
+   Inside FilterBar the grow modifier gives the legacy flex: 1 1 260px behaviour. */
+
+.x-searchfield {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  color: var(--c-text-faint);
+  cursor: text;
+  transition:
+    border-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+
+.x-searchfield--grow {
+  /* legacy flex-basis 260px, restated in space tokens */
+  flex: 1 1 calc(var(--space-10) * 4);
+}
+
+.x-searchfield:focus-within {
+  border-color: var(--c-accent-primary);
+  color: var(--c-text-muted);
+}
+
+.x-searchfield__input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--c-text-primary);
+  font-size: var(--text-sm);
+}
+
+.x-searchfield__input::placeholder {
+  color: var(--c-text-faint);
+}
+
+.x-searchfield[data-disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

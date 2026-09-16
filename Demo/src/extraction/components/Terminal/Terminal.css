@@ -1,0 +1,341 @@
+/* Terminal — the output dock. Canonicalises .pro-terminal; reads the families'
+   --terminal-* palette where it exists (Atlas ships a graphite terminal world),
+   --c-* elsewhere. */
+
+.x-terminal {
+  display: flex;
+  flex-direction: column;
+  background: var(--terminal-bg, var(--c-surface-inset));
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 100%;
+  /* five row-heights (was 220px) — scales with identity density */
+  min-height: calc(var(--row-height) * 5);
+}
+
+.x-terminal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-1) var(--space-3);
+  background: var(--editor-shell, var(--c-surface));
+  border-bottom: var(--border-width) solid var(--c-border);
+  user-select: none;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.x-terminal__tabs {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.x-terminal__tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--terminal-muted, var(--c-text-muted));
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition:
+    color var(--duration-fast) var(--ease-enter),
+    background-color var(--duration-fast) var(--ease-enter);
+}
+
+.x-terminal__tab:hover {
+  color: var(--terminal-fg, var(--c-text-primary));
+}
+
+.x-terminal__tab[data-on] {
+  background: var(--c-surface-elevated);
+  color: var(--terminal-fg, var(--c-text-primary));
+  font-weight: var(--weight-semibold);
+  /* The accent underline — the same "you are here" seam EditorTabs carries. */
+  box-shadow: inset 0 calc(-1 * var(--border-width) * 2) 0 0 var(--c-accent-primary);
+}
+
+.x-terminal__tab:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+.x-terminal__dot {
+  width: var(--space-1);
+  height: var(--space-1);
+  border-radius: 50%;
+}
+
+.x-terminal__dot[data-tone="ready"] { background: var(--c-info); }
+.x-terminal__dot[data-tone="pass"]  { background: var(--c-success); }
+.x-terminal__dot[data-tone="fail"]  { background: var(--c-error); }
+
+.x-terminal__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.x-terminal__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: calc(var(--space-1) / 2) var(--space-2);
+  font-size: var(--text-2xs);
+  font-family: inherit;
+  border-radius: var(--radius-xs);
+  border: var(--border-width) solid var(--c-border);
+  background: var(--c-surface);
+  color: var(--c-text-muted);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-enter),
+    border-color var(--duration-fast) var(--ease-enter);
+}
+
+.x-terminal__btn:hover {
+  color: var(--c-text-primary);
+  border-color: var(--c-border-strong);
+}
+
+.x-terminal__btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.x-terminal__btn--run {
+  background: color-mix(in srgb, var(--c-accent-primary) 15%, var(--c-surface));
+  color: var(--c-accent-primary);
+  border-color: color-mix(in srgb, var(--c-accent-primary) 55%, var(--c-border));
+  font-weight: var(--weight-semibold);
+}
+
+.x-terminal__btn--run:hover:not(:disabled) {
+  color: var(--c-accent-primary);
+  border-color: var(--c-accent-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 22%, var(--c-surface));
+}
+
+.x-terminal__btn:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+.x-terminal__body {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--body-line-height);
+}
+
+.x-terminal__output {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-variant-numeric: var(--numerals, tabular-nums);
+  color: var(--terminal-fg, var(--c-text-primary));
+}
+
+/* The echoed command — a real console shows what ran, not just what it said.
+   The `$` sign is `aria-hidden`; the text itself is the announcement. */
+.x-terminal__prompt {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  color: var(--terminal-muted, var(--c-text-muted));
+}
+
+.x-terminal__prompt-sign {
+  color: var(--c-accent-primary);
+  font-weight: var(--weight-bold);
+  user-select: none;
+}
+
+/* The verdict line under a finished run — icon carries the tell, the dash-top
+   hairline marks it as the run's receipt rather than more output. */
+.x-terminal__status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: var(--border-width) dashed var(--c-border);
+  font-variant-numeric: var(--numerals, tabular-nums);
+}
+
+.x-terminal__status[data-tone="pass"] { color: var(--c-success); }
+.x-terminal__status[data-tone="fail"] { color: var(--c-error); }
+.x-terminal__status[data-tone="info"] { color: var(--c-info); }
+
+.x-terminal__executing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 100%;
+  color: var(--c-accent-primary);
+  font-family: var(--font-mono);
+}
+
+.x-terminal__spinner {
+  width: var(--space-3);
+  height: var(--space-3);
+  border: calc(var(--border-width) * 2) solid var(--c-border);
+  border-top-color: var(--c-accent-primary);
+  border-radius: 50%;
+  animation: x-terminal-spin var(--duration-slow) linear infinite;
+  flex: none;
+}
+
+@keyframes x-terminal-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Test cases ──────────────────────────────────────────────────────────── */
+
+.x-terminal__tests {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.x-terminal__case {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  border: var(--border-width) solid var(--c-border);
+}
+
+/* Verdict is icon + wash — never colour alone, and no edge stripe. */
+.x-terminal__case[data-verdict="pass"] {
+  background: color-mix(in srgb, var(--c-success) 5%, var(--c-surface));
+}
+.x-terminal__case[data-verdict="fail"] {
+  background: color-mix(in srgb, var(--c-error) 7%, var(--c-surface));
+}
+
+.x-terminal__case-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-semibold);
+}
+
+/* Circled glyph — the badge is the tell's shape carrier, tint reinforces. */
+.x-terminal__case-status {
+  display: grid;
+  place-items: center;
+  width: var(--space-5);
+  height: var(--space-5);
+  flex: none;
+  border-radius: 50%;
+  border: var(--border-width) solid currentColor;
+}
+
+.x-terminal__case[data-verdict="pass"] .x-terminal__case-status { color: var(--c-success); }
+.x-terminal__case[data-verdict="fail"] .x-terminal__case-status { color: var(--c-error); }
+
+.x-terminal__case-name {
+  color: var(--c-text-primary);
+}
+
+.x-terminal__case-time {
+  margin-left: auto;
+  font-size: var(--text-2xs);
+  font-variant-numeric: var(--numerals, tabular-nums);
+  color: var(--c-text-faint);
+}
+
+.x-terminal__case-details {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-muted);
+}
+
+.x-terminal__diff {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding: var(--space-2);
+  background: var(--c-surface-inset);
+  border-radius: var(--radius-xs);
+  font-size: var(--text-2xs);
+}
+
+.x-terminal__diff-label {
+  color: var(--c-text-faint);
+}
+
+.x-terminal__diff-col code {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--c-text-primary);
+}
+
+/* ── Judge box ───────────────────────────────────────────────────────────── */
+
+.x-terminal__judge {
+  padding: var(--space-4);
+  background: var(--c-surface);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--c-border);
+}
+
+.x-terminal__judge-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.x-terminal__judge-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: calc(var(--space-1) / 2) var(--space-2);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-bold);
+  text-transform: var(--micro-case, uppercase);
+  letter-spacing: var(--tracking-micro, normal);
+  color: var(--c-accent-primary);
+  border: var(--border-width) solid color-mix(in srgb, var(--c-accent-primary) 40%, transparent);
+  border-radius: var(--radius-xs);
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, transparent);
+}
+
+.x-terminal__judge-rule {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-terminal__judge-lead {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+  line-height: var(--body-line-height);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-terminal__tab,
+  .x-terminal__btn {
+    transition: none;
+  }
+  .x-terminal__spinner {
+    animation: none;
+  }
+}

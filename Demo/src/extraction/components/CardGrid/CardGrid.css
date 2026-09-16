@@ -1,0 +1,28 @@
+/* CardGrid — the auto-fit card field. Canonicalises `.sink__grid` /
+   `.assess__grid` (surfaces.css:29-35, min 280px), `.courses__grid`
+   (courses.css:133-138, min 320px) and `.home__grid` (home.css:26-38, min 300px).
+
+   Column floors are off-scale metrics — held as component tokens, declared once,
+   overridden per data-min. Candidates for a `--card-grid-min-*` family. */
+
+.x-card-grid {
+  --x-card-min: 280px;
+
+  display: grid;
+  gap: var(--stack-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--x-card-min), 100%), 1fr));
+  align-items: start;
+}
+
+.x-card-grid[data-min="md"] { --x-card-min: 300px; }
+.x-card-grid[data-min="lg"] { --x-card-min: 320px; }
+
+/* Wide-band spanning — the demo's home__continue / home__activity
+   `grid-column: span 2`, now a data hook instead of page-local classes.
+   Scoped to the wide band (--band-wide-min: 1280px) where at least three
+   tracks exist; auto-fit cannot promise two below it. */
+@media (min-width: 1280px) {
+  .x-card-grid > [data-span="2"] {
+    grid-column: span 2;
+  }
+}

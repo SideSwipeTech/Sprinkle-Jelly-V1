@@ -1,0 +1,39 @@
+/* ExamFlagRow — name + status chip. State is data-on + icon + word. */
+
+.x-exam-flag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-2xs);
+}
+
+.x-exam-flag-row__name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--c-text-primary);
+  min-width: 0;
+}
+
+.x-exam-flag-row__hint {
+  color: var(--c-text-faint);
+  font-weight: var(--weight-regular);
+}
+
+/* The status is a sibling chip (controls/Chip); the row only tunes its tone
+   under its own scope so the state never rests on colour alone — the icon and
+   the word already carry it. */
+.x-exam-flag-row__status {
+  flex: none;
+}
+
+.x-exam-flag-row[data-on] .x-exam-flag-row__status {
+  background: color-mix(in srgb, var(--c-success) 15%, transparent);
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+  color: var(--c-success);
+}
+
+.x-exam-flag-row:not([data-on]) .x-exam-flag-row__status {
+  color: var(--c-text-faint);
+}

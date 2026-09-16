@@ -1,0 +1,42 @@
+/* PreferenceRow — was .preference-row (app.css:203-206). */
+
+.x-preference-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: calc(var(--space-9) + var(--space-6)); /* was 72px */
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+}
+
+.x-preference-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.x-preference-row__title {
+  color: var(--c-text-primary);
+}
+
+.x-preference-row__hint {
+  color: var(--c-text-muted);
+  line-height: 1.45;
+}
+
+.x-preference-row__note {
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+}
+
+.x-preference-row__control {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}

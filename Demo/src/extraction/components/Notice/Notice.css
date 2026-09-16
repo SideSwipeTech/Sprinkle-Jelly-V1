@@ -1,0 +1,107 @@
+/* Notice — five tones, each with a non-colour tell: icon + border construction.
+   Colour reinforces; it never carries the meaning alone (SHR-R38). */
+
+.x-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--c-text-primary);
+}
+
+.x-notice--compact {
+  padding: var(--space-2) var(--space-3);
+  gap: var(--space-2);
+}
+
+.x-notice__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  margin-top: calc(var(--space-1) * 0.5);
+  color: var(--c-text-muted);
+}
+
+.x-notice__body {
+  min-width: 0;
+  flex: 1;
+}
+
+/* The micro label — uppercase micro type. letter-spacing follows the global
+   .micro convention; --tracking-micro does not exist yet (see extraction report). */
+.x-notice__title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-bold);
+  text-transform: var(--micro-case);
+  color: var(--c-text-muted);
+}
+
+.x-notice__content {
+  color: var(--c-text-muted);
+}
+.x-notice__content > p { margin: 0; }
+.x-notice__content > p + p { margin-top: var(--space-2); }
+
+.x-notice__action {
+  flex: none;
+  align-self: center;
+}
+
+/* ── Tones ────────────────────────────────────────────────────────────────── */
+
+/* neutral — the quiet inset panel (.settings-note). No border, no tint: its
+   tell is restraint itself — it is the only tone with no frame. */
+.x-notice[data-tone="neutral"] {
+  background: var(--c-surface-inset);
+}
+
+/* info — the tinted callout: tone washes the surface, icon + title carry the
+   colour. No edge stripe. */
+.x-notice[data-tone="info"] {
+  background: color-mix(in srgb, var(--c-info) 8%, transparent);
+}
+.x-notice[data-tone="info"] .x-notice__mark,
+.x-notice[data-tone="info"] .x-notice__title {
+  color: var(--c-info);
+}
+
+/* success — the full tinted frame (form-message, quiz "Correct Choice").
+   Solid, quiet, complete — the check mark carries it. */
+.x-notice[data-tone="success"] {
+  background: color-mix(in srgb, var(--c-success) 10%, transparent);
+  border: var(--border-width) solid color-mix(in srgb, var(--c-success) 40%, transparent);
+}
+.x-notice[data-tone="success"] .x-notice__mark,
+.x-notice[data-tone="success"] .x-notice__title {
+  color: var(--c-success);
+}
+
+/* warning — DASHED tinted frame: attention that is not yet an emergency.
+   The dash is the tell (the same freshness/hold language as StateBlock[stale]). */
+.x-notice[data-tone="warning"] {
+  background: color-mix(in srgb, var(--c-warning) 10%, transparent);
+  border: var(--border-width) dashed color-mix(in srgb, var(--c-warning) 55%, transparent);
+}
+.x-notice[data-tone="warning"] .x-notice__mark,
+.x-notice[data-tone="warning"] .x-notice__title {
+  color: var(--c-warning);
+}
+
+/* error — solid frame plus the -45deg barrier hatch, the same language as
+   StateBlock[refused]: a stop, not a suggestion. */
+.x-notice[data-tone="error"] {
+  background-color: color-mix(in srgb, var(--c-error) 8%, transparent);
+  border: var(--border-width) solid color-mix(in srgb, var(--c-error) 55%, transparent);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--c-error) 8%, transparent) 0 var(--space-2),
+    transparent var(--space-2) calc(var(--space-3) + var(--space-1))
+  );
+}
+.x-notice[data-tone="error"] .x-notice__mark,
+.x-notice[data-tone="error"] .x-notice__title {
+  color: var(--c-error);
+}

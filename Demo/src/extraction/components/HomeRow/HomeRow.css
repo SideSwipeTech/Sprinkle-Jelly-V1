@@ -1,0 +1,62 @@
+/* HomeRow — rehomed from home.css:109-135 (.home__list / .home__row).
+   The quiet in-card row: no box, hairline rule between items, --row-height tall.
+   Used by Dashboard, Learn, Practice, Assess, Account, More and Admin. */
+
+.x-home-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.x-home-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: var(--border-width) solid var(--c-border);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+  min-height: var(--row-height);
+}
+
+.x-home-row:last-child {
+  border-bottom: none;
+}
+
+/* The marker. The demo coloured every row icon success-teal regardless of
+   meaning — tone now follows `data-tone`, success kept as the default to
+   match the dominant "done / confirmed" usage. */
+.x-home-row__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--c-text-faint);
+}
+
+.x-home-row__icon[data-tone="success"] { color: var(--c-success); }
+.x-home-row__icon[data-tone="accent"]  { color: var(--c-accent-primary); }
+.x-home-row__icon[data-tone="info"]    { color: var(--c-info); }
+.x-home-row__icon[data-tone="warning"] { color: var(--c-warning); }
+.x-home-row__icon[data-tone="muted"]   { color: var(--c-text-faint); }
+
+.x-home-row__title {
+  flex: 1;
+  min-width: 0;
+  color: var(--c-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A linked title announces its affordance on hover; the demo left it flat. */
+a.x-home-row__title:hover {
+  color: var(--c-accent-primary);
+}
+
+.x-home-row__when {
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+  flex: none;
+}

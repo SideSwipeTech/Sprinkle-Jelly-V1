@@ -1,0 +1,101 @@
+/* StatusText — the tonal status label. Every tone has a default glyph so the
+   state never rides colour alone; neutral's tell is a square dot — the shape
+   of "no signal". */
+
+.x-status-text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: calc(var(--space-1) * 0.5) var(--space-2);
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: transparent;
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.x-status-text__label {
+  min-width: 0;
+}
+
+/* neutral's tell — a square dot, the shape of "no signal". */
+.x-status-text__dot {
+  flex: none;
+  width: var(--space-1);
+  height: var(--space-1);
+  border-radius: var(--radius-xs);
+  background: currentColor;
+}
+
+/* ── chip variant (default): tinted frame ────────────────────────────────── */
+
+.x-status-text[data-tone="info"] {
+  border-color: color-mix(in srgb, var(--c-info) 40%, var(--c-border));
+  background: color-mix(in srgb, var(--c-info) 12%, transparent);
+  color: var(--c-info);
+}
+.x-status-text[data-tone="success"] {
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-success) 12%, transparent);
+  color: var(--c-success);
+}
+.x-status-text[data-tone="warning"] {
+  border-color: color-mix(in srgb, var(--c-warning) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-warning) 12%, transparent);
+  color: var(--c-warning);
+}
+.x-status-text[data-tone="error"] {
+  border-color: color-mix(in srgb, var(--c-error) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-error) 12%, transparent);
+  color: var(--c-error);
+}
+.x-status-text[data-tone="accent"] {
+  border-color: color-mix(in srgb, var(--c-accent-primary) 40%, var(--c-border));
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, transparent);
+  color: var(--c-accent-primary);
+}
+
+/* ── inline — bare text + icon, no frame (`.status-good`, diagnostics) ────── */
+
+.x-status-text--inline {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+/* ── solid — filled pill, on-tone ink (DEGRADED / SEALED / NEW / Score) ─────
+   The on-* tokens exist per scheme so the fill is readable in both. */
+
+.x-status-text--solid[data-tone="neutral"] {
+  background: var(--c-text-muted);
+  border-color: var(--c-text-muted);
+  color: var(--c-surface);
+}
+.x-status-text--solid[data-tone="info"] {
+  background: var(--c-info);
+  border-color: var(--c-info);
+  color: var(--c-on-info);
+}
+.x-status-text--solid[data-tone="success"] {
+  background: var(--c-success);
+  border-color: var(--c-success);
+  color: var(--c-on-success);
+}
+.x-status-text--solid[data-tone="warning"] {
+  background: var(--c-warning);
+  border-color: var(--c-warning);
+  color: var(--c-on-warning);
+}
+.x-status-text--solid[data-tone="error"] {
+  background: var(--c-error);
+  border-color: var(--c-error);
+  color: var(--c-on-error);
+}
+.x-status-text--solid[data-tone="accent"] {
+  background: var(--c-accent-primary);
+  border-color: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+}

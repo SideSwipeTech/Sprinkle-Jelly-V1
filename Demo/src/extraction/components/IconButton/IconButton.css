@@ -1,0 +1,36 @@
+/* IconButton — the 36px icon-only square. `position: relative` is the
+   BadgeDot host; muted ink → primary on hover. */
+
+.x-icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--space-7) + var(--space-1));
+  height: calc(var(--space-7) + var(--space-1));
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+
+.x-icon-btn:hover {
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+}
+
+/* data-on — the toggle-on state (spine/dock pinned controls). */
+.x-icon-btn[data-on] {
+  color: var(--c-accent-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, transparent);
+}
+
+.x-icon-btn[data-disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.x-icon-btn[data-disabled]:hover {
+  background: none;
+  color: var(--c-text-muted);
+}

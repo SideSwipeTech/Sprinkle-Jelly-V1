@@ -1,0 +1,19 @@
+/* ChipGroup — the `.filters` chip-row pattern with its micro prefix made real.
+   Chips render the sibling x-chip classes; this file owns only the row + prefix. */
+
+.x-chipgroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.x-chipgroup__label {
+  flex: none;
+  align-self: center;
+  margin-right: var(--space-1);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case);
+  color: var(--c-text-faint);
+}

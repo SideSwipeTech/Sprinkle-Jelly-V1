@@ -1,0 +1,46 @@
+/* CodeBlock — canonical pre.code + editable textarea variant.
+   Was app.css:138-146; the raw 14px/rgba border/mono stack literals are tokens now. */
+
+.x-code {
+  display: block;
+  margin: var(--space-2) 0;
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--body-line-height);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.x-code code {
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* Output tone — the terminal palette where a family defines it. */
+.x-code--out {
+  background: var(--terminal-bg, var(--c-surface-inset));
+  color: var(--terminal-fg, var(--c-text-primary));
+}
+
+/* Editable — same inset field, real input semantics. */
+.x-code--edit {
+  width: 100%;
+  resize: vertical;
+}
+
+.x-code--edit:focus-visible {
+  outline: calc(var(--border-width) * 2) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+  border-color: var(--c-focus-ring);
+}

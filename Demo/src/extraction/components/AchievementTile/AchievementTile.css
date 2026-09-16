@@ -1,0 +1,55 @@
+/* AchievementTile — real locked/unlocked states (the demo was text-only). */
+
+.x-achievement-tile__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.x-achievement-tile__seal {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--c-accent-primary);
+}
+
+.x-achievement-tile__title {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.x-achievement-tile__detail {
+  margin: 0;
+  color: var(--c-text-muted);
+}
+
+.x-achievement-tile__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case);
+  letter-spacing: 0.08em;
+  color: var(--c-success);
+}
+
+/* Locked: the whole tile recedes — dashed border, inset ground, faint type —
+   and the seal swaps the trophy for a lock. Shape and word carry the state. */
+.x-achievement-tile[data-locked] {
+  border-style: dashed;
+  background: color-mix(in srgb, var(--c-surface-inset) 45%, transparent);
+}
+
+.x-achievement-tile[data-locked] .x-achievement-tile__seal {
+  color: var(--c-text-faint);
+}
+
+.x-achievement-tile[data-locked] .x-achievement-tile__title {
+  color: var(--c-text-muted);
+}
+
+.x-achievement-tile[data-locked] .x-achievement-tile__status {
+  color: var(--c-text-faint);
+}

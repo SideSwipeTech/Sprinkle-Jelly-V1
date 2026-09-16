@@ -1,0 +1,50 @@
+/* CompanionNameField — sits inside the x-preference-row frame (PreferenceRow.css). */
+
+.x-companion-name__text {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.x-companion-name__hint {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+  line-height: 1.45;
+}
+
+.x-companion-name__hint b {
+  color: var(--c-text-primary);
+}
+
+.x-companion-name__note {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+}
+
+.x-companion-name__controls {
+  /* shrinkable + wrapping — on narrow rows the controls wrap internally
+     rather than crushing the text column to zero */
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.x-companion-name__controls .x-field {
+  min-width: 0;
+}
+
+.x-companion-name__field {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .x-companion-name { flex-direction: column; }
+  .x-companion-name__controls { align-items: flex-start; }
+}

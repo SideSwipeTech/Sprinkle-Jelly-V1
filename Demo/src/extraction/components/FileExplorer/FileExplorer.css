@@ -1,0 +1,219 @@
+/* FileExplorer — the file rail. Canonicalises .file-explorer; inside a
+   workbench it fuses (loses its own frame) via Workbench's panel rules. */
+
+.x-file-explorer {
+  display: flex;
+  flex-direction: column;
+  background: var(--c-surface);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  height: 100%;
+}
+
+.x-file-explorer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--c-surface-inset) 40%, var(--c-surface));
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+.x-file-explorer__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  /* Identity decides caps — Atlas/Atelier set none. */
+  text-transform: var(--micro-case, uppercase);
+  letter-spacing: var(--tracking-micro, normal);
+  color: var(--c-text-muted);
+}
+
+.x-file-explorer__action {
+  display: grid;
+  place-items: center;
+  padding: calc(var(--space-1) / 2) var(--space-1);
+  background: transparent;
+  border: none;
+  color: var(--c-text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+}
+
+.x-file-explorer__action:hover,
+.x-file-explorer__action[data-on] {
+  background: var(--c-surface-elevated);
+  color: var(--c-text-primary);
+}
+
+.x-file-explorer__new {
+  padding: var(--space-1) var(--space-2);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+.x-file-explorer__form {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+.x-file-explorer__input {
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--c-surface-inset);
+  border: var(--border-width) solid var(--c-accent-primary);
+  border-radius: var(--radius-xs);
+  color: var(--c-text-primary);
+  outline: none;
+}
+
+.x-file-explorer__input:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+.x-file-explorer__tree {
+  padding: var(--space-1) 0;
+  margin: 0;
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.x-file-explorer__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  /* The edge tell — the card seam's thickness so selection reads as a shape,
+     not a tint. */
+  border-inline-start: calc(var(--border-width) * 3) solid transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-enter),
+    border-color var(--duration-fast) var(--ease-enter);
+}
+
+.x-file-explorer__item:hover {
+  background: var(--c-surface-inset);
+}
+
+.x-file-explorer__item[data-on] {
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, var(--c-surface));
+}
+
+.x-file-explorer__select {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline-end: var(--space-3);
+  /* Depth indent — --x-fe-depth comes from the row's inline style (runtime
+     data, like the editor's --x-editor-zoom). One --space-3 step per segment. */
+  padding-inline-start: calc(var(--space-3) + var(--x-fe-depth, 0) * var(--space-3));
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.x-file-explorer__item:hover .x-file-explorer__select {
+  color: var(--c-text-primary);
+}
+
+.x-file-explorer__item[data-on] .x-file-explorer__select {
+  color: var(--c-accent-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.x-file-explorer__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.x-file-explorer__label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.x-file-explorer__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The directory suffix — `parse.py  helpers/`. Faint and smaller so the
+   basename owns the row; the higher shrink factor means it yields first on a
+   narrow rail. */
+.x-file-explorer__dir {
+  flex-shrink: 2;
+  min-width: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Row actions: hover reveals them, and — unlike the kit's opacity-only rule —
+   keyboard focus reveals them too so the affordances are reachable. */
+.x-file-explorer__item-actions {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--space-1) / 2);
+  margin-right: var(--space-2);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-enter);
+}
+
+.x-file-explorer__item:hover .x-file-explorer__item-actions,
+.x-file-explorer__item:focus-within .x-file-explorer__item-actions {
+  opacity: 1;
+}
+
+.x-file-explorer__icon-btn {
+  display: grid;
+  place-items: center;
+  padding: calc(var(--space-1) / 2);
+  background: transparent;
+  border: none;
+  color: var(--c-text-faint);
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+}
+
+.x-file-explorer__icon-btn:hover {
+  color: var(--c-text-primary);
+  background: var(--c-surface-elevated);
+}
+
+.x-file-explorer__icon-btn--danger:hover {
+  color: var(--c-error);
+  background: color-mix(in srgb, var(--c-error) 15%, transparent);
+}
+
+.x-file-explorer__select:focus-visible,
+.x-file-explorer__icon-btn:focus-visible,
+.x-file-explorer__action:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-file-explorer__item,
+  .x-file-explorer__item-actions {
+    transition: none;
+  }
+}

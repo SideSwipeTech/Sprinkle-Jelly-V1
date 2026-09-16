@@ -1,0 +1,122 @@
+/* Sparky — character tokens and paint.
+   Phase 2: materials. Every colour is a token on .sparky; gradient stops read
+   them through `stop-color`, so tone tints and a host accent retint the whole
+   rig without touching the SVG. */
+
+.sparky {
+  /* shell (white polymer) */
+  --sp-shell-top: #FFFFFF;
+  --sp-shell-mid: #F2F4F7;
+  --sp-shell-bot: #D9DEE6;
+  --sp-rim-mid: #FFFFFF;
+  --sp-rim-bot: #AEB6C3;
+  --sp-ao: rgba(30, 38, 52, 0.22);
+  /* visor (glossy black display) */
+  --sp-bevel-top: #3A404B;
+  --sp-bevel-bot: #161A20;
+  --sp-glass-a: #23272F;
+  --sp-glass-b: #0B0D11;
+  --sp-glass-c: #171B22;
+  /* pods (dark turned rings) */
+  --sp-pod-top: #3C424C;
+  --sp-pod-mid: #22262D;
+  --sp-pod-bot: #15181E;
+  /* topper */
+  --sp-socket: #14171C;
+  --sp-socket-hi: #353B45;
+  --sp-bolt-top: #C8F4FF;
+  --sp-bolt-mid: #3EC1FF;
+  --sp-bolt-bot: #0E8EE8;
+  /* LEDs — Sparky blue (#00CFFF on the sheet, tuned so the glow stays saturated on white) */
+  --sp-led: #2FB6FF;
+  --sp-led-soft: #A6EBFF;
+  --sp-ink: #0B1018;
+  --sp-shadow: rgba(20, 28, 40, 0.20);
+  --sp-shadow-contact: rgba(20, 28, 40, 0.30);
+  --sp-stroke: 6px;
+  display: block;
+  overflow: visible;
+}
+
+/* gradient stops */
+.sp-st-white { stop-color: #FFFFFF; }
+.sp-st-ink { stop-color: #0B1018; }
+.sp-st-shell-top { stop-color: var(--sp-shell-top); }
+.sp-st-shell-mid { stop-color: var(--sp-shell-mid); }
+.sp-st-shell-bot { stop-color: var(--sp-shell-bot); }
+.sp-st-rim-mid { stop-color: var(--sp-rim-mid); }
+.sp-st-rim-bot { stop-color: var(--sp-rim-bot); }
+.sp-st-bevel-top { stop-color: var(--sp-bevel-top); }
+.sp-st-bevel-bot { stop-color: var(--sp-bevel-bot); }
+.sp-st-glass-a { stop-color: var(--sp-glass-a); }
+.sp-st-glass-b { stop-color: var(--sp-glass-b); }
+.sp-st-glass-c { stop-color: var(--sp-glass-c); }
+.sp-st-led { stop-color: var(--sp-led); }
+.sp-st-led-soft { stop-color: var(--sp-led-soft); }
+.sp-st-bolt-top { stop-color: var(--sp-bolt-top); }
+.sp-st-bolt-mid { stop-color: var(--sp-bolt-mid); }
+.sp-st-bolt-bot { stop-color: var(--sp-bolt-bot); }
+.sp-st-socket { stop-color: var(--sp-socket); }
+.sp-st-socket-hi { stop-color: var(--sp-socket-hi); }
+.sp-st-pod-top { stop-color: var(--sp-pod-top); }
+.sp-st-pod-mid { stop-color: var(--sp-pod-mid); }
+.sp-st-pod-bot { stop-color: var(--sp-pod-bot); }
+
+/* layers */
+.sp-shadow--soft { fill: var(--sp-shadow); }
+.sp-shadow--contact { fill: var(--sp-shadow-contact); }
+.sp-shell-inshadow { fill: none; stroke-width: 9; }
+.sp-shell-inlight { fill: none; stroke-width: 2.2; }
+.sp-topper-shadow { fill: var(--sp-ink); opacity: .32; }
+.sp-pod-contact { fill: var(--sp-ink); opacity: .22; }
+.sp-shell-spec { fill: #fff; opacity: .75; }
+.sp-visor-overhang { fill: var(--sp-ink); opacity: .55; }
+.sp-visor-floor { fill: none; stroke-width: 1.2; stroke-linecap: round; }
+.sp-bolt-rim { fill: none; stroke-width: .7; stroke-linejoin: round; }
+.sp-halo-use { opacity: .55; }
+.sp-visor-gloss2 { pointer-events: none; }
+.sp-shell-ao { fill: var(--sp-ao); }
+.sp-shell-rim { fill: none; stroke-width: 1.6; }
+.sp-visor-gloss, .sp-visor-spec { pointer-events: none; }
+.sp-visor-spec { fill: #fff; opacity: .14; }
+.sp-visor-gloss-soft { opacity: .5; }
+.sp-visor-edge { fill: none; stroke-width: 1.4; stroke-linecap: round; }
+
+.sp-pod-ring-hi { fill: none; stroke-width: 1.2; }
+.sp-pod-cap-rim { fill: none; stroke-width: 1.2; }
+.sp-pod-light { fill: var(--sp-led-soft); }
+
+.sp-socket-rim { fill: none; stroke: rgba(255,255,255,.22); stroke-width: .8; }
+.sp-bolt-glow { fill: var(--sp-led); opacity: .55; }
+
+.sp-status { fill: var(--sp-led-soft); }
+.sp-scan { fill: var(--sp-led-soft); pointer-events: none; }
+
+.sp-stroke { fill: none; stroke: var(--sp-led); stroke-width: var(--sp-stroke); stroke-linecap: round; stroke-linejoin: round; }
+.sp-fill { fill: var(--sp-led); stroke: none; }
+.sp-eye-dot { fill: var(--sp-led); }
+.sp-mouth-path { stroke-width: 5px; }
+
+/* Badge (shell corner) */
+.sp-badge-bg { fill: var(--sp-led); }
+.sp-badge-bg--check { fill: #22C55E; }
+.sp-badge-bg--triangle { fill: #F5B020; }
+.sp-badge-bg--alert { fill: #FF3B30; }
+.sp-badge-mark { fill: none; stroke: #fff; stroke-width: 2.2px; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Tones tint the LEDs (bolt stays Sparky blue — it is the identity mark, not a status light) */
+.sparky[data-tone="success"] { --sp-led: #22E07A; --sp-led-soft: #B4FAD4; }
+.sparky[data-tone="warning"] { --sp-led: #FFB020; --sp-led-soft: #FFE3A6; }
+.sparky[data-tone="error"] { --sp-led: #FF4D45; --sp-led-soft: #FFC2BD; }
+.sparky[data-tone="celebration"] { --sp-led: #45D4FF; --sp-led-soft: #E0F8FF; }
+.sparky[data-tone="encouraging"] { --sp-led: #4FD0FF; }
+.sparky[data-tone="serious"] { --sp-led: #7FA9C2; --sp-led-soft: #C3D8E4; }
+.sparky.is-dim { --sp-led: #4E86A6; --sp-led-soft: #8FBFD8; --sp-bolt-mid: #5C9FC8; --sp-bolt-bot: #2F6E9E; }
+.sp-sparkle { fill: var(--sp-led-soft); }
+
+/* Motion-friendly transitions: tone changes cross-fade the LED colour instead of snapping. */
+.sparky stop { transition: stop-color .35s ease; }
+.sp-stroke, .sp-fill, .sp-eye-dot, .sp-pod-light, .sp-status, .sp-bolt-glow { transition: stroke .35s ease, fill .35s ease; }
+.sp-badge-bg { transition: fill .25s ease; }
+.sp-confetti-a { fill: var(--sp-led); } .sp-confetti-b { fill: var(--sp-led-soft); } .sp-confetti-c { fill: #FFD447; }
+@media (prefers-reduced-motion: reduce) { .sparky stop, .sp-stroke, .sp-fill { transition: none; } }

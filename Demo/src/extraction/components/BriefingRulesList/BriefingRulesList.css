@@ -1,0 +1,42 @@
+/* BriefingRulesList — rehomed from home.css .home__list/.home__row.
+   Icons are decorative markers here (the text carries the rule), so they take
+   the accent tint rather than home__row's success tint. */
+
+.x-briefing-rules {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.x-briefing-rules__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: var(--border-width) solid var(--c-border);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+  min-height: var(--row-height);
+}
+
+.x-briefing-rules__row:last-child {
+  border-bottom: none;
+}
+
+.x-briefing-rules__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--c-accent-primary);
+}
+
+.x-briefing-rules__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.x-briefing-rules__text strong {
+  color: var(--c-text-primary);
+}

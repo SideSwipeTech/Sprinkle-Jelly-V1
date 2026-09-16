@@ -1,0 +1,139 @@
+/* NotesPanel — the floating scratch pad. Not a docked sheet: it lifts off the
+   bottom-right corner like a desk notepad, bounded in height, rounded all round. */
+
+.x-notes {
+  position: fixed;
+  inset: auto var(--space-6) var(--space-6) auto;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  width: min(27rem, calc(100vw - var(--space-12)));
+  max-height: min(70dvh, 36rem);
+  padding: var(--space-5);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      color-mix(in srgb, var(--c-accent-primary) 12%, transparent),
+      transparent 24rem
+    ),
+    var(--c-surface);
+  box-shadow: 0 var(--space-8) var(--space-12) calc(-1 * var(--space-4)) rgba(var(--c-shadow-rgb), 0.5);
+  animation: x-notes-in var(--duration-normal) var(--ease-enter) both;
+}
+
+.x-notes__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.x-notes__heading { min-width: 0; }
+
+.x-notes__kicker {
+  margin: 0;
+}
+
+.x-notes__title {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--display-weight);
+  color: var(--c-text-primary);
+}
+
+.x-notes__close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  cursor: pointer;
+}
+
+.x-notes__close:hover { background: var(--c-surface-elevated); color: var(--c-text-primary); }
+
+.x-notes__close:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-1);
+}
+
+.x-notes__lead {
+  margin: var(--space-3) 0 var(--space-4);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.x-notes__area {
+  flex: 1;
+  min-height: 18rem;
+  width: 100%;
+  padding: var(--space-4);
+  resize: none;
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--c-surface-inset) 88%, transparent);
+  color: var(--c-text-primary);
+  font: inherit;
+  line-height: 1.65;
+}
+
+.x-notes__area:focus-visible {
+  outline: calc(var(--border-width) * 2) solid color-mix(in srgb, var(--c-accent-primary) 55%, transparent);
+  outline-offset: var(--space-1);
+}
+
+.x-notes__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  color: var(--c-text-faint);
+  font-size: var(--text-xs);
+}
+
+/* Save-state — colour AND text, never colour alone. */
+.x-notes__save {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--c-success);
+}
+
+.x-notes__save-dot {
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 var(--space-1) color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.x-notes__save[data-saving] { color: var(--c-warning); }
+
+.x-notes__count { font-variant-numeric: var(--numerals); }
+
+@media (max-width: 899px) {
+  .x-notes {
+    inset: auto var(--space-3) var(--space-3);
+    width: auto;
+    max-height: 72dvh;
+    padding: var(--space-4);
+  }
+}
+
+@keyframes x-notes-in {
+  from { opacity: 0; transform: translateY(var(--space-4)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-notes { animation: none; }
+}

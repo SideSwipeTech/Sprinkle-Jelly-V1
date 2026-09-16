@@ -1,0 +1,179 @@
+/* base.css — the layer every identity shares.
+   Nothing here decides how anything LOOKS; it decides what is true regardless of identity. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* The one global type anchor. Identity moves --body-size; nothing else restates it. */
+  font-size: var(--body-size);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Native widgets follow data-scheme. Platform stores dusk/day/… on data-theme. */
+html[data-scheme="dark"] { color-scheme: dark; }
+html[data-scheme="light"] { color-scheme: light; }
+
+body {
+  position: relative;
+  overflow-x: hidden; /* SHR-R31: the page never scrolls horizontally as a whole. */
+  font-family: var(--font-sans);
+  font-size: var(--body-size);
+  line-height: var(--body-line-height);
+  font-variant-numeric: var(--numerals);
+  color: var(--c-text-primary);
+  background: var(--c-bg);
+}
+
+/* ── The ambient field ──────────────────────────────────────────────────────
+   One element, four identities. Halo gets a drifting aurora mesh, Voyage a duotone
+   field, Forge a grid lattice, Meridian nothing at all — and "nothing at all" is a
+   design position, not an omission: Meridian is the identity for a sealed sitting,
+   where ambience is a distraction with integrity implications. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-base);
+  pointer-events: none;
+  opacity: var(--ambient-opacity);
+}
+
+#root {
+  position: relative;
+  z-index: var(--z-raised);
+  min-height: 100dvh;
+}
+
+/* ── Identity switching ─────────────────────────────────────────────────────
+   A subtheme change swaps geometry, type, density AND motion at once. Tweening that
+   would interpolate values with no meaningful midpoint (a radius mid-morph, a font
+   mid-swap) and read as a slow mush. So: kill transitions for the swap frame, then
+   let the incoming identity announce itself in its own entrance language. */
+[data-switching] *,
+[data-switching] *::before,
+[data-switching] *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* ── Focus ──────────────────────────────────────────────────────────────────
+   One ring, every interactive element, gated at 3:1 by the generator (SC 1.4.11).
+   Never removed — only ever restyled. */
+:focus-visible {
+  outline: 2px solid var(--c-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: calc(var(--space-3) * -10);
+  z-index: var(--z-modal);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+  font-weight: var(--weight-semibold);
+  transition: top var(--duration-fast) var(--ease-enter);
+}
+
+.skip-link:focus {
+  top: var(--space-3);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+::selection {
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+}
+
+/* ── Scrollbar ── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-border-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────────
+   SHR-R38: motion follows the platform's reduced-motion signal, and depth, celebration
+   and parallax each need a non-motion equivalent carrying the same meaning.
+
+   This is the floor — the OS signal, honoured unconditionally. The in-product preference
+   is account-scoped and travels with the person; the more restrictive of the two governs,
+   which is why it sets data-reduced-motion on <html> rather than competing here. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+[data-reduced-motion="true"] *,
+[data-reduced-motion="true"] *::before,
+[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Ambient fields are motion. Under reduction they hold still rather than vanish —
+   the surface keeps its character, it just stops moving. */
+[data-reduced-motion="true"] body::before {
+  animation: none !important;
+}

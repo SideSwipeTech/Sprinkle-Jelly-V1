@@ -1,0 +1,604 @@
+/* daily admin — the scheduling calendar and schedule-health shapes the
+   shared kit does not already carry. Layered surfaces, quiet borders,
+   tokens only; state reads through tint and construction, never an accent
+   edge stripe. Prefix `da-` keeps clear of the extraction x- space. */
+
+/* ── The summary strip — framed figures, unknown never drawn as zero ──────── */
+
+.da-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-3);
+}
+
+.da-stats .stat {
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--c-surface-inset) 82%, transparent);
+}
+
+/* ── Month toolbar — the calendar and its chrome read as one instrument ──── */
+
+.da-calwrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.da-cal-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+}
+
+.da-cal-bar__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.da-cal-bar__month {
+  min-width: 9rem;
+  text-align: center;
+  font-size: var(--text-lg);
+  line-height: 1.2;
+  color: var(--c-text-primary);
+}
+
+.da-cal-bar__legend {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ── The month grid — one framed panel; the cells inside stay quiet ───────── */
+
+.da-cal {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-1);
+  padding: var(--space-2);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+}
+
+.da-cal__dow {
+  padding: var(--space-1) var(--space-2) var(--space-2);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case);
+  letter-spacing: 0.08em;
+  color: var(--c-text-faint);
+  text-align: center;
+}
+
+.da-cal__cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+  min-height: var(--space-11);
+  padding: var(--space-1) var(--space-2) var(--space-2);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-primary);
+  font: inherit;
+  font-size: var(--text-xs);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    border-color var(--duration-fast) var(--ease-hover);
+}
+
+button.da-cal__cell:hover {
+  background: var(--c-surface-elevated);
+  border-color: var(--c-border-strong);
+}
+
+.da-cal__cell.is-pad {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+/* Begun dates are settled ground — recessed, quieter ink, and the pill goes
+   neutral: history rather than a live state. */
+.da-cal__cell[data-past] {
+  background: var(--c-surface-inset);
+  color: var(--c-text-muted);
+}
+
+button.da-cal__cell[data-past]:hover {
+  background: var(--c-surface-inset);
+  border-color: var(--c-border-strong);
+}
+
+/* On approach a state frame holds its tone — the border is the meaning, so
+   the hover never strips it back to neutral. */
+button.da-cal__cell[data-state="empty"]:not([data-past]):not([data-risk]):hover {
+  border-color: var(--c-border-interactive);
+}
+
+button.da-cal__cell[data-risk]:hover {
+  border-color: var(--c-warning);
+}
+
+button.da-cal__cell[data-state="clash"]:hover {
+  background: color-mix(in srgb, var(--c-error) 8%, transparent);
+  border-color: var(--c-error);
+}
+
+button.da-cal__cell[data-today]:hover {
+  border-color: var(--c-accent-primary);
+}
+
+/* An empty product date still ahead is a fillable outline — the dashed frame
+   is the system's empty tell. Inside the health window the same frame
+   escalates to warning: schedule risk while there is still time to fix it.
+   The :not([data-risk]) keeps the plain rule under the escalation. */
+.da-cal__cell[data-state="empty"]:not([data-past]):not([data-risk]) {
+  border-style: dashed;
+  border-color: var(--c-border-strong);
+}
+
+.da-cal__cell[data-risk] {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--c-warning) 55%, var(--c-border));
+}
+
+/* The clash is a hard fault — a solid error frame and a whisper of wash. */
+.da-cal__cell[data-state="clash"] {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--c-error) 50%, var(--c-border));
+  background: color-mix(in srgb, var(--c-error) 5%, transparent);
+}
+
+/* Today — the accent ring, and the numeral fills to the accent disc. */
+.da-cal__cell[data-today] {
+  border-color: var(--c-accent-primary);
+}
+
+.da-cal__cell:focus-visible {
+  outline: calc(var(--border-width) + 1px) solid var(--c-focus-ring);
+  outline-offset: calc(var(--border-width) + 1px);
+}
+
+.da-cal__num {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: var(--space-5);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  color: var(--c-text-faint);
+  font-variant-numeric: var(--numerals);
+}
+
+.da-cal__cell[data-today] .da-cal__num {
+  min-width: var(--space-5);
+  justify-content: center;
+  padding-inline: calc(var(--space-1) * 0.5);
+  border-radius: var(--radius-pill);
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+  font-weight: var(--weight-semibold);
+}
+
+/* The occupant — the title rides a quiet success tint pinned to the foot of
+   the cell, so every row of the month aligns. */
+.da-cal__pill {
+  display: block;
+  margin-top: auto;
+  padding: calc(var(--space-1) * 0.5) var(--space-2);
+  border-radius: var(--radius-xs);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--c-text-primary);
+  background: color-mix(in srgb, var(--c-success) 12%, transparent);
+  box-shadow: inset 0 0 0 var(--border-width) color-mix(in srgb, var(--c-success) 25%, transparent);
+}
+
+.da-cal__pill[data-state="clash"] {
+  background: color-mix(in srgb, var(--c-error) 10%, transparent);
+  box-shadow: inset 0 0 0 var(--border-width) color-mix(in srgb, var(--c-error) 30%, transparent);
+  color: var(--c-error);
+}
+
+.da-cal__cell[data-past] .da-cal__pill {
+  background: color-mix(in srgb, var(--c-text-primary) 7%, transparent);
+  box-shadow: none;
+  color: var(--c-text-muted);
+}
+
+/* The fill affordance — a quiet target that takes the accent on approach. */
+.da-cal__add,
+.da-cal__none {
+  align-self: center;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  color: var(--c-text-faint);
+}
+
+.da-cal__add {
+  width: var(--space-5);
+  height: var(--space-5);
+  border-radius: var(--radius-pill);
+  transition:
+    color var(--duration-fast) var(--ease-hover),
+    background-color var(--duration-fast) var(--ease-hover);
+}
+
+button.da-cal__cell:hover .da-cal__add,
+.da-cal__cell:focus-visible .da-cal__add {
+  color: var(--c-accent-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, transparent);
+}
+
+/* The flags — `gap` is the store's registered gap (it gets the tint), `risk`
+   the other in-window misses (bare ink). */
+.da-cal__gapflag,
+.da-cal__riskflag {
+  position: absolute;
+  inset-block-start: var(--space-1);
+  inset-inline-end: var(--space-1);
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-xs);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.5;
+  text-transform: var(--micro-case);
+  letter-spacing: 0.08em;
+  color: var(--c-warning);
+}
+
+.da-cal__gapflag {
+  background: color-mix(in srgb, var(--c-warning) 14%, transparent);
+}
+
+/* ── The per-date list and the health rows ────────────────────────────────── */
+
+.da-dates,
+.da-health {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.da-note {
+  margin: 0;
+}
+
+.da-date-row,
+.da-health-row {
+  gap: var(--space-3);
+}
+
+/* Schedule risk on a row is the dashed warning frame — attention that is
+   still fixable. The blocked/clash row escalates the same frame to the fault;
+   today carries the quiet accent frame. Never an edge stripe. */
+.da-date-row[data-risk],
+.da-health-row[data-risk] {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--c-warning) 55%, var(--c-border));
+}
+
+.da-date-row[data-state="clash"],
+.da-health-row[data-state="blocked"] {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--c-error) 55%, var(--c-border));
+}
+
+.da-date-row[data-today] {
+  border-color: color-mix(in srgb, var(--c-accent-primary) 45%, var(--c-border));
+}
+
+.da-date-row__date,
+.da-health-row__date {
+  flex: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  min-width: 12rem;
+}
+
+.da-date-row__body,
+.da-health-row__body {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  min-width: 14rem;
+}
+
+.da-date-row__acts,
+.da-health-row__acts {
+  margin-inline-start: auto;
+  gap: var(--space-2);
+}
+
+/* ── The collapsed fixture drawer — one coherent scenario on the page ──────
+   Demo tools holds the state previews and the product date the whole domain
+   runs on; closed it is a single quiet disclosure, never part of the flow. */
+
+.da-demotools {
+  border: var(--border-width) dashed var(--c-border-strong);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--c-surface-inset) 82%, transparent);
+  font-size: var(--text-xs);
+  color: var(--c-text-faint);
+}
+
+.da-demotools > summary {
+  padding: var(--space-2) var(--space-3);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.da-demotools__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.da-demotools__clock {
+  margin: 0;
+}
+
+/* Inside the drawer the chip rows lose their own dashed frame — the
+   disclosure is already the enclosure. */
+.da-demotools .a-preview {
+  padding: 0;
+  border: none;
+}
+
+/* ── Inside the date dialog — one rhythm for every mode ───────────────────── */
+
+.da-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.da-stack > p {
+  margin: 0;
+}
+
+/* The assignment detail's two acts, kept unmistakable: "the challenge"
+   (Edit content — what learners solve) beside "the product date" (Move…,
+   Unschedule, Archive — when it publishes). A micro label over each group
+   does the separation; no divider line pretends a hard split. */
+.da-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+}
+
+.da-acts__group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 13rem;
+}
+
+.da-acts__label {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case);
+  letter-spacing: 0.08em;
+  color: var(--c-text-faint);
+}
+
+.da-acts__hint {
+  font-size: var(--text-xs);
+}
+
+/* The assign picker — an inset tray of catalog rows; the chosen one takes
+   the accent frame and its check. */
+.da-pick {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-1);
+  max-height: 16rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+  scrollbar-gutter: stable;
+}
+
+.da-pick__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-primary);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    border-color var(--duration-fast) var(--ease-hover);
+}
+
+.da-pick__row:hover {
+  background: var(--c-surface);
+  border-color: var(--c-border-strong);
+}
+
+.da-pick__row[data-on] {
+  border-color: color-mix(in srgb, var(--c-accent-primary) 55%, var(--c-border));
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, transparent);
+}
+
+.da-pick__row:focus-visible {
+  outline: calc(var(--border-width) + 1px) solid var(--c-focus-ring);
+  outline-offset: calc(-1 * (var(--border-width) + 1px));
+}
+
+.da-pick__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space-1) * 0.5);
+}
+
+.da-pick__text .meta {
+  font-size: var(--text-xs);
+}
+
+.da-pick__check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-5);
+  height: var(--space-5);
+  border-radius: var(--radius-pill);
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+}
+
+.da-pick__empty {
+  margin: 0;
+  padding: var(--space-3);
+}
+
+/* The clash's occupants — each named with its repair control. */
+/* The assign act's other path — create a draft when nothing eligible is
+   listed. */
+.da-create {
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) dashed var(--c-border);
+}
+
+.da-occupants {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.da-occupant {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+}
+
+/* ── The catalog — drafts and the scheduled as a CRUD list ─────────────────
+   The Content destination's own view; rows read like the date rows, the same
+   state frames doing the same work — the clash's fault frame, a draft's
+   quiet dashed outline (it holds no product date). Never an edge stripe. */
+
+.da-catalog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.da-catalog__head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+}
+
+.da-catalog__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  color: var(--c-text-primary);
+}
+
+.da-catalog__meta {
+  flex: 1;
+  min-width: 14rem;
+}
+
+.da-catalog__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.da-cat-row {
+  gap: var(--space-3);
+}
+
+.da-cat-row[data-state="clash"] {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--c-error) 55%, var(--c-border));
+}
+
+.da-cat-row[data-state="draft"] {
+  border-style: dashed;
+  border-color: var(--c-border-strong);
+}
+
+.da-cat-row__body {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  min-width: 14rem;
+}
+
+.da-cat-row__unread {
+  font-size: var(--text-xs);
+  color: var(--c-warning);
+}
+
+.da-cat-row__acts {
+  margin-inline-start: auto;
+  gap: var(--space-2);
+}
+
+/* The compact band — the grid stays seven-up but breathes less. */
+@media (max-width: 599px) {
+  .da-cal { padding: var(--space-1); }
+  .da-cal__cell { min-height: var(--space-10); padding: var(--space-1); }
+  .da-cal__dow { padding-inline: var(--space-1); }
+  .da-date-row__date,
+  .da-health-row__date { min-width: 0; }
+}

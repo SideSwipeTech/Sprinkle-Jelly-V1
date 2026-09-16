@@ -1,0 +1,164 @@
+/* GENERATED FILE — DO NOT EDIT BY HAND.
+   Source of truth: package/values.json
+   Regenerate:      pnpm design:generate      Verify no drift: pnpm design:check
+   Emitted by:      package/generate.mjs -> src/tokens/tokens.css */
+
+
+/* ── Primitives — identity-independent. Nothing here varies by subtheme. ── */
+:root {
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+  --space-11: 80px;
+  --space-12: 96px;
+
+  --text-2xs: 11px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 21px;
+  --text-2xl: 26px;
+  --text-3xl: 33px;
+  --text-4xl: 42px;
+  --text-5xl: 54px;
+  --text-6xl: 68px;
+
+  --tracking-micro: 0.08em;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+  --weight-black: 900;
+
+  --z-base: 0;
+  --z-raised: 10;
+  --z-rail: 40;
+  --z-sticky: 50;
+  --z-header: 60;
+  --z-overlay: 500;
+  --z-dropdown: 600;
+  --z-popover: 700;
+  --z-modal: 1000;
+  --z-companion: 1000;
+  --z-notice: 1100;
+  --z-dev: 9000;
+
+  --ease-linear: linear;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-mechanical: cubic-bezier(0.5, 0, 0.75, 0);
+  --ease-settle: cubic-bezier(0.34, 1.26, 0.64, 1);
+}
+
+/* ── Bands (SHR-R31) — the names are canon, these numbers are this package's. ──
+   The ONLY place a viewport number is stated. A component may wrap intrinsically
+   or query its own container; it may never invent another global breakpoint. */
+:root {
+  --band-compact-min: 0px;
+  --band-compact-max: 599px;
+  --band-compact-gutter: 16px;
+  --band-compact-content-max: 100%;
+  --band-compact-columns: 1;
+  --band-tablet-narrow-min: 600px;
+  --band-tablet-narrow-max: 899px;
+  --band-tablet-narrow-gutter: 24px;
+  --band-tablet-narrow-content-max: 720px;
+  --band-tablet-narrow-columns: 1;
+  --band-standard-min: 900px;
+  --band-standard-max: 1279px;
+  --band-standard-gutter: 24px;
+  --band-standard-content-max: 1040px;
+  --band-standard-columns: 2;
+  --band-wide-min: 1280px;
+  --band-wide-gutter: 32px;
+  --band-wide-content-max: 1440px;
+  --band-wide-columns: 3;
+}
+
+/* ── Shell dimensions ── */
+:root {
+  --shell-rail-expanded: 260px;
+  --shell-rail-compact: 72px;
+  --shell-header-height: 56px;
+  --shell-drawer-width: 300px;
+  --shell-drawer-max-width: 86vw;
+  --shell-prose-measure: 68ch;
+}
+
+/* ── Navigation models (SHR-R31 band table; O-A, pack O) ───────────────────
+   Five models, `rail` the default, chosen in Settings › Appearance. Below
+   Standard EVERY model gives way to the drawer, whichever is chosen (OR-O2),
+   and the drawer's own dimensions stay --shell-drawer-width /
+   --shell-drawer-max-width above — this block does not restate them.
+   Each dimension is lifted from src/nav/shell.css; see shell.nav._source. */
+:root {
+  --shell-nav-default: rail;
+  --shell-nav-below-standard: drawer;
+
+  --shell-nav-rail-wide-form: rail-expanded;
+  --shell-nav-rail-standard-form: rail-compact;
+  --shell-nav-rail-below-standard-form: drawer;
+  --shell-nav-rail-width: 224px;
+  --shell-nav-rail-item-min-height: 36px;
+
+  --shell-nav-spine-wide-form: icon-spine-flyout;
+  --shell-nav-spine-standard-form: icon-spine-flyout;
+  --shell-nav-spine-below-standard-form: drawer;
+  --shell-nav-spine-width: 72px;
+  --shell-nav-spine-flyout-width: 220px;
+  --shell-nav-spine-group-size: 44px;
+
+  --shell-nav-command-wide-form: command-strip;
+  --shell-nav-command-standard-form: command-strip;
+  --shell-nav-command-below-standard-form: drawer;
+  --shell-nav-command-strip-padding-block: 8px;
+  --shell-nav-command-strip-padding-inline: 16px;
+  --shell-nav-command-palette-width: min(560px, 92vw);
+  --shell-nav-command-palette-top: 12vh;
+
+  --shell-nav-dock-wide-form: floating-dock;
+  --shell-nav-dock-standard-form: floating-dock;
+  --shell-nav-dock-below-standard-form: drawer;
+  --shell-nav-dock-offset: 20px;
+  --shell-nav-dock-clearance: 56px;
+  --shell-nav-dock-popover-min-width: 220px;
+
+  --shell-nav-dual-wide-form: dual-rail;
+  --shell-nav-dual-standard-form: dual-rail;
+  --shell-nav-dual-below-standard-form: drawer;
+  --shell-nav-dual-spine-width: 56px;
+  --shell-nav-dual-local-width: 190px;
+}
+
+/* ── Honesty states (PRODUCT.md §10) — seven, each with a non-colour tell. ──
+   The tell is what keeps meaning off colour alone (SHR-R38). */
+:root {
+  --state-data-tone: neutral;
+  --state-data-tell: none;
+  --state-stale-tone: warning;
+  --state-stale-tell: clock;
+  --state-pending-tone: info;
+  --state-pending-tell: pulse;
+  --state-unavailable-tone: muted;
+  --state-unavailable-tell: hatch;
+  --state-empty-tone: muted;
+  --state-empty-tell: outline;
+  --state-refused-tone: error;
+  --state-refused-tell: barrier;
+  --state-pruned-tone: muted;
+  --state-pruned-tell: dotted;
+}

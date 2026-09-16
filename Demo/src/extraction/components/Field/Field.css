@@ -1,0 +1,71 @@
+/* Field — `.field` (app.css:121-136) made explicit: label + control + hint + error.
+   The control styling still works structurally (any input/select/textarea descendant),
+   so a sibling Select dropped inside picks the same chrome. */
+
+.x-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.x-field__label {
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+.x-field__required {
+  color: var(--c-error);
+}
+
+.x-field :is(input, textarea, select, .x-select__input) {
+  min-height: var(--space-8);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font: inherit;
+  transition:
+    border-color var(--duration-fast) var(--ease-hover),
+    background-color var(--duration-fast) var(--ease-hover);
+}
+
+.x-field textarea {
+  min-height: var(--space-12);
+  padding: var(--space-2) var(--space-3);
+  resize: vertical;
+}
+
+.x-field :is(input, textarea, select, .x-select__input)::placeholder {
+  color: var(--c-text-faint);
+}
+
+.x-field :is(input, textarea, select, .x-select__input):focus-visible {
+  border-color: var(--c-border-interactive);
+}
+
+.x-field[data-invalid] :is(input, textarea, select, .x-select__input) {
+  border-color: var(--c-error);
+}
+
+.x-field[data-disabled] .x-field__label {
+  color: var(--c-text-faint);
+}
+
+.x-field[data-disabled] :is(input, textarea, select, .x-select__input) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.x-field__hint {
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-field__error {
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-error);
+}

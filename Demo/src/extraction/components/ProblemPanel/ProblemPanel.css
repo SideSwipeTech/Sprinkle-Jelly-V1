@@ -1,0 +1,95 @@
+/* ProblemPanel — the statement pane. Tag chips are the controls family's
+   x-chip hooks (sibling class reference, contract §6) — this file styles only
+   the panel's own anatomy. */
+
+.x-problem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.x-problem__statement {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--c-text-muted);
+  font-size: var(--text-base);
+  line-height: var(--body-line-height);
+}
+
+.x-problem__statement p {
+  margin: 0 0 var(--space-3);
+}
+
+.x-problem__statement p:last-child {
+  margin-bottom: 0;
+}
+
+.x-problem__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.x-problem__heading {
+  margin: 0;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-micro, normal);
+  color: var(--c-text-muted);
+  font-weight: var(--weight-semibold);
+}
+
+.x-problem__tags {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.x-problem__constraints {
+  padding: var(--space-3);
+  background: var(--c-surface-inset);
+  border-radius: var(--radius-sm);
+}
+
+.x-problem__constraints-title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--c-text-primary);
+}
+
+.x-problem__constraints-list {
+  margin: 0;
+  padding-left: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space-1) / 2);
+}
+
+.x-problem__constraints-list code {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+/* Accepted banner — was color-mix/#2dd4bf literals (Practice.tsx:439-447). */
+.x-problem__verdict {
+  padding: var(--space-3);
+  background: color-mix(in srgb, var(--c-success) 12%, var(--c-surface));
+  border: var(--border-width) solid var(--c-success);
+  border-radius: var(--radius-sm);
+}
+
+.x-problem__verdict-text {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: var(--weight-semibold);
+  color: var(--c-success);
+  font-size: var(--text-sm);
+}
+
+.x-problem__verdict-action {
+  margin-top: var(--space-2);
+}

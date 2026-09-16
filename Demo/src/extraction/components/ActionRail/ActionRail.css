@@ -1,0 +1,117 @@
+/* ActionRail — the stakes-grouped action rail. Tokens only; no literals.
+   Tones ride data-stakes on the group: elevated = warning, destructive =
+   error, restorative = success (the opposite tone from destructive, per the
+   confirmation-friction spec). The group frame and heading carry the tone —
+   never an edge stripe. */
+
+.x-action-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.x-action-rail__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+}
+
+.x-action-rail__group[data-stakes="elevated"] {
+  border-color: color-mix(in srgb, var(--c-warning) 45%, var(--c-border));
+}
+.x-action-rail__group[data-stakes="destructive"] {
+  border-color: color-mix(in srgb, var(--c-error) 45%, var(--c-border));
+}
+.x-action-rail__group[data-stakes="restorative"] {
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+}
+
+.x-action-rail__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-micro, normal);
+  color: var(--c-text-faint);
+}
+.x-action-rail__group[data-stakes="elevated"] > .x-action-rail__heading { color: var(--c-warning); }
+.x-action-rail__group[data-stakes="destructive"] > .x-action-rail__heading { color: var(--c-error); }
+.x-action-rail__group[data-stakes="restorative"] > .x-action-rail__heading { color: var(--c-success); }
+
+.x-action-rail__note {
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-action-rail__items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.x-action-rail__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-primary);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-hover);
+}
+.x-action-rail__item:hover { border-color: var(--c-border-interactive); }
+.x-action-rail__group[data-stakes="destructive"] .x-action-rail__item:hover {
+  border-color: color-mix(in srgb, var(--c-error) 60%, var(--c-border));
+}
+.x-action-rail__group[data-stakes="restorative"] .x-action-rail__item:hover {
+  border-color: color-mix(in srgb, var(--c-success) 60%, var(--c-border));
+}
+.x-action-rail__item:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-1);
+}
+.x-action-rail__item[data-disabled] {
+  cursor: not-allowed;
+  border-style: dashed;
+  color: var(--c-text-faint);
+}
+.x-action-rail__item[data-disabled]:hover { border-color: var(--c-border); }
+
+.x-action-rail__lead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  color: var(--c-text-muted);
+}
+.x-action-rail__item[data-disabled] .x-action-rail__lead { color: var(--c-text-faint); }
+.x-action-rail__name { color: var(--c-text-primary); font-weight: var(--weight-medium); }
+.x-action-rail__item[data-disabled] .x-action-rail__name { color: var(--c-text-muted); }
+
+.x-action-rail__friction {
+  margin-left: auto;
+  flex: none;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+  white-space: nowrap;
+}
+
+.x-action-rail__hint {
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+}
+.x-action-rail__hint--disabled { color: var(--c-warning); }

@@ -1,0 +1,90 @@
+/* Breadcrumbs — the trail (was all inline styles in Breadcrumbs.tsx) and the admin
+   crumb (admin-shell.css:81-83). One anatomy, two presentations. */
+
+.x-crumbs {
+  margin-bottom: var(--space-4);
+  animation: x-crumbs-in var(--duration-fast) var(--ease-enter);
+}
+
+.x-crumbs__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+}
+
+.x-crumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.x-crumbs__sep {
+  display: grid;
+  place-items: center;
+  color: var(--c-text-faint);
+}
+
+.x-crumbs__link {
+  color: var(--c-text-muted);
+  text-decoration: none;
+}
+
+.x-crumbs__link:hover {
+  color: var(--c-accent-primary);
+  text-decoration: underline;
+}
+
+.x-crumbs__link:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-1);
+  border-radius: var(--radius-xs);
+}
+
+.x-crumbs__label {
+  color: var(--c-text-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.x-crumbs__label[aria-current] {
+  cursor: default;
+}
+
+/* ── "current" variant — the admin topbar crumb (group context + page title). ── */
+
+.x-crumbs--current {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-bottom: 0;
+  animation: none;
+}
+
+.x-crumbs__context {
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+}
+
+.x-crumbs__here {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-primary);
+}
+
+@keyframes x-crumbs-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-crumbs { animation: none; }
+}

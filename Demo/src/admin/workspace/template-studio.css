@@ -1,0 +1,346 @@
+/* Template studio — page-local layout for the workspace domain's admin page.
+   Tokens only; no accent edge stripes. */
+
+/* ── The index ──────────────────────────────────────────────────────────── */
+
+/* The count a lifecycle filter chip carries — read live under this
+   authorization and snapshot, kept faint inside the label it qualifies. */
+.tstudio-filter-count {
+  font-variant-numeric: var(--numerals, tabular-nums);
+  color: var(--c-text-faint);
+}
+
+/* A selected chip inverts to the accent face — the count follows the chip's
+   ink rather than holding its own. */
+.x-chip[data-on] .tstudio-filter-count {
+  color: inherit;
+}
+
+/* The count-and-page bar — the LoadedLine beside its pager, ruled under so it
+   reads as the list's own toolbar rather than loose text. */
+.tstudio-pagebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+.tstudio-pagebar .meta {
+  margin: 0;
+  font-variant-numeric: var(--numerals, tabular-nums);
+}
+
+/* The row's file-set facts — revision, runtime, sizes and counts set in
+   tabular figures so like figures line up row over row. */
+.tstudio-facts {
+  font-variant-numeric: var(--numerals, tabular-nums);
+}
+
+/* A figure that could not be counted is said in words and kept dim — never a
+   zero blast radius. */
+.tstudio-dim {
+  font-style: italic;
+}
+
+/* ── Row verbs — the index's per-template acts as visible words ─────────── */
+
+/* The record's name keeps its own link — the row itself is a static record
+   now that it carries real verbs. */
+.tstudio-name {
+  color: var(--c-text-primary);
+  text-decoration: none;
+}
+
+.tstudio-name:hover {
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.tstudio-name:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+/* The record block grows and shrinks — long names truncate inside it rather
+   than pushing the verbs off the row. */
+.tstudio-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The row's right edge: the lifecycle chip above its verb cluster, pushed to
+   the row's end so the acts read as its actions. */
+.tstudio-row-side {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  margin-inline-start: auto;
+}
+
+.tstudio-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-1) var(--space-2);
+  max-width: 30rem;
+}
+
+/* The destructive pair — archive and delete — sits behind a hairline so a
+   careless eye never groups them with Open. */
+.tstudio-row-actions__tail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin-inline-start: var(--space-1);
+  padding-inline-start: var(--space-2);
+  border-inline-start: var(--border-width) solid var(--c-border);
+}
+
+/* The delete verb warns on approach, not at rest — the same tell the path
+   row's danger buttons carry. */
+.tstudio-row-actions .x-btn.tstudio-danger:hover {
+  color: var(--c-error);
+  border-color: color-mix(in srgb, var(--c-error) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-error) 8%, transparent);
+}
+
+/* ── The publish checklist — evidence before the decision. Each row is a
+   state reading plus, where only the author can attest it, a real checkbox. ── */
+
+.tstudio-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tstudio-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--c-surface-inset) 45%, transparent);
+  transition: border-color var(--duration-fast) var(--ease-hover);
+}
+
+/* A met row keeps the quiet frame — the mark turns and the border warms, so
+   the state reads through shape and tint together, not a recoloured panel. */
+.tstudio-check[data-state="met"] {
+  border-color: color-mix(in srgb, var(--c-success) 30%, var(--c-border));
+}
+
+.tstudio-check__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-4);
+  height: var(--space-4);
+  margin-top: var(--space-0);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-xs);
+  color: var(--c-text-faint);
+  transition:
+    border-color var(--duration-fast) var(--ease-hover),
+    background-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+
+.tstudio-check[data-state="met"] .tstudio-check__mark {
+  border-color: color-mix(in srgb, var(--c-success) 55%, var(--c-border));
+  background: color-mix(in srgb, var(--c-success) 12%, transparent);
+  color: var(--c-success);
+}
+
+.tstudio-check[data-state="unverifiable"] .tstudio-check__mark {
+  border-style: dashed;
+  color: var(--c-warning);
+}
+
+.tstudio-check__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+  min-width: 0;
+}
+
+.tstudio-check__label {
+  font-size: var(--text-sm);
+  color: var(--c-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.tstudio-check__evidence {
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+  font-variant-numeric: var(--numerals, tabular-nums);
+}
+
+.tstudio-check input[type="checkbox"] {
+  width: var(--space-4);
+  height: var(--space-4);
+  margin: 0;
+  flex: none;
+  cursor: pointer;
+  accent-color: var(--c-accent-primary);
+}
+
+/* ── The learner-checklist editor — ordered task rows with the bound live. ── */
+
+.tstudio-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: tstudio-task;
+}
+
+.tstudio-task {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tstudio-task::before {
+  counter-increment: tstudio-task;
+  content: counter(tstudio-task);
+  flex: none;
+  width: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-variant-numeric: var(--numerals, tabular-nums);
+  color: var(--c-text-faint);
+  text-align: right;
+}
+
+.tstudio-task input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--space-8);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font: inherit;
+  transition: border-color var(--duration-fast) var(--ease-hover);
+}
+
+.tstudio-task input:hover:not(:disabled) {
+  border-color: var(--c-border-interactive);
+}
+
+.tstudio-task input:focus-visible {
+  border-color: var(--c-border-interactive);
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+.tstudio-task input:disabled {
+  opacity: 0.6;
+}
+
+/* Over the instruction bound the field shows it — error frame plus a faint
+   error wash, and the live character count turns with it. */
+.tstudio-task[data-over] input {
+  border-color: var(--c-error);
+  background: color-mix(in srgb, var(--c-error) 6%, var(--c-surface-inset));
+}
+
+/* The live character count — the bound visible before it is crossed. */
+.tstudio-task__chars {
+  flex: none;
+  min-width: var(--space-7);
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-variant-numeric: var(--numerals, tabular-nums);
+  color: var(--c-text-faint);
+}
+
+.tstudio-task[data-over] .tstudio-task__chars {
+  color: var(--c-error);
+}
+
+/* ── The path row — inside the TemplateFileSet pathRow slot. ─────────────── */
+
+/* The entry-file tell: the file a run starts from earns the accent — a small
+   pill, never an edge stripe. */
+.tstudio-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: calc(var(--space-1) / 2) var(--space-2);
+  border: var(--border-width) solid color-mix(in srgb, var(--c-accent-primary) 40%, var(--c-border));
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, transparent);
+  color: var(--c-accent-primary);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  white-space: nowrap;
+}
+
+/* The open file's size — the file-browser fact the path row states. */
+.tstudio-path-size {
+  flex: none;
+  color: var(--c-text-faint);
+  font-variant-numeric: var(--numerals, tabular-nums);
+}
+
+.tstudio-path-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  font-family: inherit;
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-hover),
+    border-color var(--duration-fast) var(--ease-hover),
+    background-color var(--duration-fast) var(--ease-hover);
+}
+
+.tstudio-path-btn:hover {
+  color: var(--c-text-primary);
+  border-color: var(--c-border-strong);
+  background: var(--c-surface-elevated);
+}
+
+.tstudio-path-btn:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+/* A destructive row action warns on approach, not at rest. */
+.tstudio-path-btn[data-tone="danger"]:hover {
+  color: var(--c-error);
+  border-color: color-mix(in srgb, var(--c-error) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-error) 8%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tstudio-check,
+  .tstudio-check__mark,
+  .tstudio-task input,
+  .tstudio-path-btn,
+  .tstudio-row-actions .x-btn {
+    transition: none;
+  }
+}

@@ -1,0 +1,124 @@
+/* Shared identity arrangement for inner learner surfaces. */
+
+.sink,
+.courses,
+.assess {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap);
+  width: 100%;
+}
+
+.sink__head,
+.courses__head,
+.assess__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.sink__title,
+.courses__title,
+.assess__title {
+  margin: var(--space-1) 0;
+  font-size: var(--text-4xl);
+}
+
+.sink__grid,
+.assess__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--stack-gap);
+  align-items: start;
+}
+
+.split {
+  display: grid;
+  gap: var(--stack-gap);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .split { grid-template-columns: 1.15fr 0.85fr; }
+}
+
+.split--editor {
+  display: grid;
+  gap: var(--stack-gap);
+  grid-template-columns: 1fr;
+  min-height: 52vh;
+}
+@media (min-width: 1100px) {
+  .split--editor { grid-template-columns: 0.42fr 0.58fr; }
+}
+
+html[data-theme="halo"] .sink,
+html[data-theme="halo"] .courses,
+html[data-theme="halo"] .assess {
+  padding-inline: var(--space-2);
+}
+
+html[data-theme="forge"] .sink,
+html[data-theme="forge"] .courses,
+html[data-theme="forge"] .assess {
+  gap: var(--space-3);
+}
+
+html[data-theme="atlas"] .sink,
+html[data-theme="atlas"] .courses,
+html[data-theme="atlas"] .assess {
+  max-width: 1120px;
+}
+
+html[data-theme="atelier"] .sink,
+html[data-theme="atelier"] .courses,
+html[data-theme="atelier"] .assess {
+  max-width: 1180px;
+}
+
+html[data-theme="voyage"] .sink__title,
+html[data-theme="voyage"] .courses__title,
+html[data-theme="voyage"] .assess__title {
+  font-size: clamp(2.4rem, 8vw, 6.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+}
+
+html[data-theme="voyage"] .sink__head,
+html[data-theme="voyage"] .courses__head,
+html[data-theme="voyage"] .assess__head {
+  min-height: 28vh;
+  align-items: flex-end;
+  padding: var(--space-10) var(--space-8) var(--space-8);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+html[data-theme="voyage"] .sink__grid > .card,
+html[data-theme="voyage"] .courses__grid > .card,
+html[data-theme="voyage"] .assess__grid > .card {
+  border-radius: 0;
+  border: none;
+  border-bottom: var(--border-width) solid var(--c-border);
+  padding: var(--space-8);
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-theme="meridian"] .sink__title,
+html[data-theme="meridian"] .courses__title {
+  font-size: var(--text-3xl);
+}
+
+.stale {
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) dashed var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+}
+
+.output {
+  margin: 0;
+  white-space: pre-wrap;
+}

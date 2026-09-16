@@ -1,0 +1,95 @@
+/* ScorecardHero — verdict hero. Verdict is carried by icon + label + attribute;
+   colour is only a reinforcement. */
+
+.x-scorecard-hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.x-scorecard-hero__main {
+  min-width: 0;
+  flex: 1;
+}
+
+.x-scorecard-hero__verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--c-text-muted);
+}
+
+.x-scorecard-hero[data-verdict="met"] .x-scorecard-hero__verdict {
+  color: var(--c-success);
+}
+
+.x-scorecard-hero[data-verdict="below"] .x-scorecard-hero__verdict {
+  color: var(--c-warning);
+}
+
+.x-scorecard-hero[data-verdict="ungraded"] .x-scorecard-hero__verdict {
+  color: var(--c-accent-primary);
+}
+
+.x-scorecard-hero__score {
+  margin: var(--space-1) 0;
+  color: var(--c-text-primary);
+}
+
+.x-scorecard-hero__score-unit {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  color: var(--c-text-muted);
+}
+
+.x-scorecard-hero__meta {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+/* The raw-fraction dial. Its ring follows the verdict tone; inside, the figure
+   is always text so it never depends on reading a gauge. */
+.x-scorecard-hero__dial {
+  flex: none;
+  width: var(--space-10);
+  height: var(--space-10);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+  font-variant-numeric: var(--numerals);
+  color: var(--c-text-muted);
+  border: calc(var(--border-width) + 1px) solid var(--c-border-strong);
+  background: color-mix(in srgb, var(--c-text-primary) 6%, transparent);
+}
+
+.x-scorecard-hero[data-verdict="met"] .x-scorecard-hero__dial {
+  color: var(--c-success);
+  border-color: var(--c-success);
+  background: color-mix(in srgb, var(--c-success) 15%, transparent);
+}
+
+.x-scorecard-hero[data-verdict="below"] .x-scorecard-hero__dial {
+  color: var(--c-warning);
+  border-color: var(--c-warning);
+  background: color-mix(in srgb, var(--c-warning) 15%, transparent);
+}
+
+.x-scorecard-hero[data-verdict="ungraded"] .x-scorecard-hero__dial {
+  color: var(--c-accent-primary);
+  border-color: var(--c-accent-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, transparent);
+}
+
+.x-scorecard-hero__actions {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}

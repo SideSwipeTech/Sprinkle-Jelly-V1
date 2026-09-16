@@ -1,0 +1,120 @@
+/* Drawer — scrim + edge panel. Was .drawer (shell.css:473-515) and the admin mobile
+   .admin-nav.is-open / .admin-nav-scrim (admin-shell.css:189-233). */
+
+.x-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+}
+
+.x-drawer__scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: none;
+  background: rgba(var(--c-shadow-rgb), 0.55);
+  cursor: default;
+  animation: x-drawer-fade var(--duration-fast) var(--ease-enter) both;
+}
+
+.x-drawer__panel {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: var(--shell-drawer-width);
+  max-width: var(--shell-drawer-max-width);
+  padding: var(--space-4) var(--space-3);
+  overflow-y: auto;
+  background: var(--c-surface);
+  border-right: var(--border-width) solid var(--c-border-strong);
+  outline: none;
+  animation: x-drawer-in var(--duration-normal) var(--ease-enter) both;
+}
+
+.x-drawer[data-side="right"] .x-drawer__panel {
+  inset: 0 0 0 auto;
+  border-right: none;
+  border-left: var(--border-width) solid var(--c-border-strong);
+  animation-name: x-drawer-in-right;
+}
+
+.x-drawer__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.x-drawer__heading {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-primary);
+}
+
+.x-drawer__close {
+  display: grid;
+  place-items: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  margin-left: auto;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  cursor: pointer;
+}
+
+.x-drawer__close:hover { background: var(--c-surface-elevated); color: var(--c-text-primary); }
+
+.x-drawer__close:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-1);
+}
+
+.x-drawer__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 0;
+}
+
+/* State-matrix fixture — the sink needs plausible drawer content; real consumers pass
+   their own nav-model links (rail/spine items belong to companion-shell). */
+.x-drawer__demo-link {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.x-drawer__demo-link:hover { background: var(--c-surface-elevated); color: var(--c-text-primary); }
+.x-drawer__demo-link[data-on] {
+  background: color-mix(in srgb, var(--c-accent-primary) 14%, transparent);
+  color: var(--c-text-primary);
+}
+
+@keyframes x-drawer-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes x-drawer-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes x-drawer-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-drawer__scrim,
+  .x-drawer__panel { animation: none; }
+}

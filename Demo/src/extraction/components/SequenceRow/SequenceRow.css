@@ -1,0 +1,51 @@
+/* SequenceRow — composes containers/x-list-row; adds the mono prefix + done chip. */
+
+/* Centering is the sibling's own variant (x-list-row--center); only the tighter
+   padding of the sequence row is local. */
+.x-sequence-row {
+  padding: var(--space-2) var(--space-3);
+}
+
+.x-sequence-row__n {
+  flex: none;
+  width: var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-faint);
+}
+
+.x-sequence-row[data-done] .x-sequence-row__n {
+  color: var(--c-success);
+}
+
+.x-sequence-row__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.x-sequence-row__title {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--c-text-primary);
+}
+
+.x-sequence-row__meta {
+  display: block;
+  margin-top: 2px;
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+}
+
+.x-sequence-row__trailing {
+  flex: none;
+  display: flex;
+  align-items: center;
+  color: var(--c-text-faint);
+}
+
+/* Done chip: success tint + check + word — colour is reinforcement only. */
+.x-sequence-row__done {
+  background: color-mix(in srgb, var(--c-success) 15%, transparent);
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+  color: var(--c-success);
+}

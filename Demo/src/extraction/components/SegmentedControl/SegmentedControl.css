@@ -1,0 +1,48 @@
+/* SegmentedControl — `.segmented-control` (app.css:220-222), tokenized.
+   Inset track, cells fill, selected cell goes accent solid. */
+
+.x-segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+}
+
+.x-segmented__option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  /* legacy 36px = --space-8 minus --space-1 */
+  min-height: calc(var(--space-8) - var(--space-1));
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+
+.x-segmented__option:hover {
+  color: var(--c-text-primary);
+}
+
+.x-segmented__option[data-on] {
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.x-segmented__option[data-disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.x-segmented__option[data-disabled]:hover {
+  color: var(--c-text-muted);
+}

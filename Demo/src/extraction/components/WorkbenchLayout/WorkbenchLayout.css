@@ -1,0 +1,154 @@
+/* WorkbenchLayout — the bare pane split Practice hand-rolled three times
+   (:379, :879, :1077). Arrangement only: the bench chrome (toolbar, stdin,
+   status bar) is the work/ family's x-workbench suite.
+
+   Off-scale metrics resolved against named tokens:
+   - the 200px canonical rail → --shell-nav-dual-local-width (190px)
+   - the 220px workspace rail → --shell-nav-rail-width (224px)
+   - the ~540-620px inline min-heights → the bench's canonical floor,
+     min(78dvh, --band-tablet-narrow-content-max)
+   - the 16px/12px gaps → --stack-gap (density-aware, the page-grid gap)
+   - the 200/240px output docks → 4 × --row-height (the canonical dock) */
+
+.x-workbench-layout {
+  display: grid;
+  gap: var(--stack-gap);
+  grid-template-columns: 1fr;
+  min-height: min(78dvh, var(--band-tablet-narrow-content-max));
+  min-width: 0;
+}
+
+/* Standard band and up (--band-standard-min: 900px). Below it every layout is
+   one column — the demo's inline grids never collapsed, a real defect. */
+@media (min-width: 900px) {
+  .x-workbench-layout[data-layout="statement"] { grid-template-columns: 1fr 1.35fr; }
+  .x-workbench-layout[data-layout="split"]     { grid-template-columns: 1fr 1fr; }
+  .x-workbench-layout[data-layout="tri"]       { grid-template-columns: var(--shell-nav-rail-width) 1.4fr 1fr; }
+  .x-workbench-layout[data-layout="sidebar"]   { grid-template-columns: var(--shell-nav-dual-local-width) minmax(0, 1fr); }
+}
+
+/* ── Panes ───────────────────────────────────────────────────────────────── */
+
+.x-workbench-layout__pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Flush panes — the editor column: tabs + editor + dock joined as one stack. */
+.x-workbench-layout__pane[data-flush] {
+  gap: 0;
+}
+
+/* ── Pane head — the caption row (eyebrow + title + meta) ──────────────────
+   Above a pane it is a quiet caption; inside a dock it becomes the title bar
+   (one line, header hairline, chrome tint). */
+
+.x-workbench-layout__pane-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-1);
+  min-width: 0;
+  user-select: none;
+}
+
+.x-workbench-layout__head-text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space-1) / 2);
+  min-width: 0;
+}
+
+.x-workbench-layout__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case, uppercase);
+  letter-spacing: var(--tracking-micro, normal);
+  color: var(--c-text-faint);
+}
+
+/* The accent tick — the card edge in miniature, so the caption belongs to the
+   same seam language as the panels it labels. */
+.x-workbench-layout__eyebrow::before {
+  content: "";
+  width: calc(var(--border-width) * 3);
+  height: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--c-accent-primary);
+  flex: none;
+}
+
+.x-workbench-layout__title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.x-workbench-layout__meta {
+  margin-left: auto;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-variant-numeric: var(--numerals, tabular-nums);
+  color: var(--c-text-faint);
+}
+
+/* As a dock's first child the head becomes the dock's title bar: one compact
+   line, chrome-tinted, closed on the header hairline. */
+.x-workbench-layout__dock > .x-workbench-layout__pane-head {
+  flex: none;
+  min-height: 0;
+  padding: var(--space-1) var(--space-3);
+  border-bottom: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-surface-inset) 40%, var(--c-surface));
+}
+
+.x-workbench-layout__dock > .x-workbench-layout__pane-head .x-workbench-layout__head-text {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.x-workbench-layout__dock > .x-workbench-layout__pane-head .x-workbench-layout__title {
+  font-size: var(--text-xs);
+}
+
+/* The region a suite panel fills — the editor stretch (was flex:1 +
+   minHeight:280px literals; the min was a floor against the dock, which the
+   layout now guarantees structurally). */
+.x-workbench-layout__fill {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.x-workbench-layout__fill > * {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The output dock — four row-heights, the same density-aware measure the
+   canonical x-workbench output uses (was height:200px / flex:0 0 240px). */
+.x-workbench-layout__dock {
+  flex: none;
+  height: calc(var(--row-height) * 4);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dock children surrender their own floors — a Terminal's five-row min-height
+   must yield to the dock's four. Two-class specificity so this never depends on
+   stylesheet order. */
+.x-workbench-layout .x-workbench-layout__dock > * {
+  flex: 1;
+  min-height: 0;
+}

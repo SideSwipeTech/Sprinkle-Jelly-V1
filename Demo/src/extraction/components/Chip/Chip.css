@@ -1,0 +1,96 @@
+/* Chip — one canonical pill. Replaces the duplicated `.chip` (app.css + home.css) and
+   gives `quiet` / `accent` the real styles they never had in the demo. */
+
+.x-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: transparent;
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  text-align: center;
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    border-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+
+.x-chip__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Interactive chips are buttons — they get the hover conversation, static tags do not. */
+button.x-chip:hover {
+  border-color: var(--c-accent-primary);
+  color: var(--c-text-primary);
+}
+
+.x-chip[data-on] {
+  background: var(--c-accent-primary);
+  border-color: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+}
+
+/* quiet — the recessive metadata pill (`chip--quiet` in the demo was only ever a
+   background-strip on the dead home.css variant; here it is a real modifier). */
+.x-chip--quiet {
+  border-color: var(--c-border);
+  color: var(--c-text-faint);
+  font-weight: var(--weight-regular);
+}
+
+button.x-chip--quiet:hover {
+  border-color: var(--c-border-strong);
+  color: var(--c-text-muted);
+}
+
+.x-chip--quiet[data-on] {
+  background: color-mix(in srgb, var(--c-accent-primary) 14%, transparent);
+  border-color: color-mix(in srgb, var(--c-accent-primary) 45%, transparent);
+  color: var(--c-accent-primary);
+  font-weight: var(--weight-semibold);
+}
+
+/* accent — the accent-tinted tag (`chip--accent` was used on eleven sites with zero
+   styles behind it). Tinted, never solid: solid accent is what `data-on` says. */
+.x-chip--accent {
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, transparent);
+  border-color: color-mix(in srgb, var(--c-accent-primary) 35%, transparent);
+  color: var(--c-accent-primary);
+  font-weight: var(--weight-semibold);
+}
+
+button.x-chip--accent:hover {
+  border-color: var(--c-accent-primary);
+}
+
+.x-chip--accent[data-on] {
+  background: var(--c-accent-primary);
+  border-color: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+}
+
+/* sm — the fontSize:10–11px inline overrides that rode on ~20 chips. */
+.x-chip--sm {
+  padding: calc(var(--space-1) * 0.5) var(--space-2);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+}
+
+.x-chip[data-disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button.x-chip[data-disabled]:hover {
+  border-color: var(--c-border-strong);
+  color: var(--c-text-muted);
+}

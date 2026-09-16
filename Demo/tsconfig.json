@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "types": ["vite/client", "node"],
+    "paths": {
+      "@tokens/*": ["./src/tokens/*"],
+      "@foundation/*": ["./src/foundation/*"],
+      "@components/*": ["./src/components/*"],
+      "@icons/*": ["./src/icons/*"],
+      "@nav/*": ["./src/nav/*"],
+      "@identity/*": ["./src/identity/*"],
+      "@families/*": ["./src/families/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@data/*": ["./src/data/*"],
+      "@state/*": ["./src/state/*"],
+      "@admin/*": ["./src/admin/*"],
+      "@companion/*": ["./src/companion/*"],
+      "@demo/*": ["./src/demo/*"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

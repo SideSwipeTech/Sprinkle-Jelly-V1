@@ -1,0 +1,78 @@
+/* AcknowledgeGate — a real styled checkbox + gated actions region. The gate itself is
+   honest state (children get `acknowledged` and set real disabled/aria-disabled); this
+   file owns only the gate's own chrome. */
+
+.x-ackgate {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.x-ackgate__label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.x-ackgate__text {
+  font-size: var(--text-sm);
+  color: var(--c-text-primary);
+  line-height: 1.5;
+}
+
+/* The checkbox: appearance-none square, accent fill + drawn check when on. */
+.x-ackgate__box {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-4);
+  height: var(--space-4);
+  margin: 0;
+  margin-top: calc(var(--space-1) * 0.5);
+  border-radius: var(--radius-xs);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface-inset);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    border-color var(--duration-fast) var(--ease-hover);
+}
+
+.x-ackgate__label:hover .x-ackgate__box {
+  border-color: var(--c-border-interactive);
+}
+
+.x-ackgate__box:checked {
+  background: var(--c-accent-primary);
+  border-color: var(--c-accent-primary);
+}
+
+/* The check is drawn, not imaged — a rotated corner in on-accent ink, so it reads in
+   every theme without an asset. */
+.x-ackgate__box:checked::after {
+  content: "";
+  display: block;
+  width: 30%;
+  height: 55%;
+  margin-bottom: 12%;
+  border-right: calc(var(--border-width) * 2) solid var(--c-on-accent-primary);
+  border-bottom: calc(var(--border-width) * 2) solid var(--c-on-accent-primary);
+  transform: rotate(45deg);
+}
+
+.x-ackgate__hint {
+  margin: 0;
+  padding-left: calc(var(--space-4) + var(--space-2));
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-ackgate__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}

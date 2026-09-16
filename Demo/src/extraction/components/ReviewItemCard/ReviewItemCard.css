@@ -1,0 +1,68 @@
+/* ReviewItemCard — per-item review. Left edge + icon + words carry the verdict;
+   the tinted ground is only a reinforcement. */
+
+.x-review-item {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border);
+  background: var(--c-surface);
+}
+
+.x-review-item[data-verdict="correct"] {
+  background: color-mix(in srgb, var(--c-success) 8%, var(--c-surface));
+  border-color: color-mix(in srgb, var(--c-success) 30%, var(--c-border));
+}
+
+.x-review-item[data-verdict="incorrect"] {
+  background: color-mix(in srgb, var(--c-error) 8%, var(--c-surface));
+  border-color: color-mix(in srgb, var(--c-error) 30%, var(--c-border));
+}
+
+.x-review-item__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.x-review-item__verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--c-text-primary);
+}
+
+.x-review-item[data-verdict="correct"] .x-review-item__verdict {
+  color: var(--c-success);
+}
+
+.x-review-item[data-verdict="incorrect"] .x-review-item__verdict {
+  color: var(--c-error);
+}
+
+.x-review-item__credit {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-review-item__prompt {
+  margin: var(--space-2) 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--c-text-primary);
+}
+
+.x-review-item__remediation {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-muted);
+  background: var(--c-surface-inset);
+  padding: var(--space-2);
+  border-radius: var(--radius-xs);
+}
+
+.x-review-item__remediation strong {
+  color: var(--c-text-primary);
+}

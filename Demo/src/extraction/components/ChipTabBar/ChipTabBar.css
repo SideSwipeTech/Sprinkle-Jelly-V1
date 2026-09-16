@@ -1,0 +1,15 @@
+/* ChipTabBar — a chip row acting as a tablist. Chips paint the sibling x-chip
+   classes; this owns the row: wrap + an optional ruled edge (the course-hub variant
+   ran a border-bottom through inline styles). */
+
+.x-chiptabbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.x-chiptabbar--ruled {
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-width) solid var(--c-border);
+}

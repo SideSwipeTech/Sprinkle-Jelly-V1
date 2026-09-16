@@ -1,0 +1,47 @@
+/* ErasureFlow — was .erasure-review + .timeline-row (app.css:223-225).
+   Adopted already token-clean; only names changed. */
+
+.x-erasure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.x-erasure__lead {
+  margin: 0;
+  color: var(--c-text-muted);
+  max-width: var(--shell-prose-measure);
+}
+
+.x-erasure__review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+/* The received-event row — was .timeline-row. */
+.x-erasure__event {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+}
+
+.x-erasure__event-mark {
+  width: var(--space-2);
+  height: var(--space-2);
+  margin-top: var(--space-1);
+  flex: none;
+  border-radius: 50%;
+  background: var(--c-warning);
+  box-shadow: 0 0 0 var(--space-1) color-mix(in srgb, var(--c-warning) 13%, transparent);
+}
+
+.x-erasure__event-meta {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}

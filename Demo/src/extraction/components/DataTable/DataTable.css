@@ -1,0 +1,75 @@
+/* DataTable — was .admin-table (admin-shell.css:133-147) + b11-table-wrap.
+   The block/table split is what makes it self-scroll: the wrapper overflows,
+   thead and tbody stay real tables. */
+
+.x-data-table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.x-data-table table {
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  width: 100%;
+}
+
+.x-data-table__caption {
+  /* Visually quiet but announced — a bare table tells a reader nothing. */
+  text-align: left;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+  padding: 0 0 var(--space-2);
+}
+
+.x-data-table thead,
+.x-data-table tbody {
+  display: table;
+  width: 100%;
+  min-width: var(--x-table-min, 42.5rem);
+  table-layout: auto;
+}
+
+.x-data-table th,
+.x-data-table td {
+  padding: var(--space-3) var(--space-2);
+  border-bottom: var(--border-width) solid var(--c-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.x-data-table th {
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Selected/staged row — was `background: var(--c-surface-inset)` inline. */
+.x-data-table tr[data-on] td {
+  background: var(--c-surface-inset);
+}
+
+/* ── Cell helpers (the Economy row anatomy) ─────────────────────────────── */
+
+.x-data-table__code {
+  font-family: var(--font-mono);
+  color: var(--c-accent-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.x-data-table__sub {
+  display: block;
+  margin-top: 2px;
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+}
+
+/* The enforced/current value — was a `#2dd4bf` strong. A recorded fact is not a
+   verdict; it reads as plain strong type. */
+.x-data-table__value {
+  font-weight: var(--weight-bold);
+  color: var(--c-text-primary);
+  font-variant-numeric: var(--numerals);
+}

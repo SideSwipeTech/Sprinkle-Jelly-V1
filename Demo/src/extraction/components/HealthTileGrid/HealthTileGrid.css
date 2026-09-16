@@ -1,0 +1,50 @@
+/* HealthTileGrid — was .admin-health + data-verdict cells (admin-shell.css:117-131). */
+
+.x-health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.9rem, 1fr));
+  gap: var(--space-3);
+}
+
+.x-health-tile {
+  min-height: calc(var(--space-10) + var(--space-9)); /* was 116px — token steps */
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--c-surface-inset) 82%, transparent);
+}
+
+.x-health-tile[data-verdict="healthy"] {
+  border-color: color-mix(in srgb, var(--c-success) 50%, var(--c-border));
+}
+
+.x-health-tile[data-verdict="degraded"] {
+  border-color: color-mix(in srgb, var(--c-warning) 60%, var(--c-border));
+}
+
+/* Unknown is dashed, not painted "safe" — an unread signal is never healthy. */
+.x-health-tile[data-verdict="unknown"] {
+  border-style: dashed;
+}
+
+.x-health-tile__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--c-text-primary);
+}
+
+.x-health-tile[data-verdict="healthy"] .x-health-tile__head svg { color: var(--c-success); }
+.x-health-tile[data-verdict="degraded"] .x-health-tile__head svg { color: var(--c-warning); }
+.x-health-tile[data-verdict="unknown"] .x-health-tile__head svg { color: var(--c-text-faint); }
+
+.x-health-tile__reading {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+@media (max-width: 520px) {
+  .x-health-grid { grid-template-columns: 1fr; }
+}

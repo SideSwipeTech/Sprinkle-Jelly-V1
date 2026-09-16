@@ -1,0 +1,212 @@
+/* ActivityHeatmap.css — the accepted-solutions grid.
+   Extracted from src/components/ActivityHeatmap.tsx (~30 inline styles killed).
+
+   The ramp reads the identity's accent tokens — the same trio ChargeRing's gradient
+   stops read (accent-light blending up to accent-primary) — instead of the hardcoded
+   teal rgba(45,212,191,*) which happened to be Halo's accent-light. Hover glow uses
+   the identity's own --charge-edge-glow, so Meridian's cells honestly do not glow. */
+
+.x-heatmap {
+  /* Component tokens — cell metrics the space scale does not carry. */
+  --x-heatmap-cell: 10px;
+  --x-heatmap-gap: 3px;
+  --x-heatmap-readout-h: 22px;
+  --x-heatmap-weeks-h: 120px;
+  --x-heatmap-bar-max: 28px;
+  --x-heatmap-month-min: 80px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.x-heatmap__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.x-heatmap__grains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.x-heatmap__scope {
+  color: var(--c-text-faint);
+}
+
+/* ── Daily grain ── */
+
+.x-heatmap__daily {
+  overflow-x: auto;
+  padding-bottom: var(--space-1);
+}
+
+.x-heatmap__readout {
+  min-height: var(--x-heatmap-readout-h);
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+}
+.x-heatmap__readout strong {
+  color: var(--c-text-primary);
+}
+
+.x-heatmap__grid {
+  display: flex;
+  gap: var(--x-heatmap-gap);
+  align-items: flex-start;
+}
+
+.x-heatmap__weekdays {
+  display: flex;
+  flex-direction: column;
+  gap: var(--x-heatmap-gap);
+  margin-right: var(--space-1);
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+  user-select: none;
+}
+.x-heatmap__weekdays span {
+  height: var(--x-heatmap-cell);
+  line-height: var(--x-heatmap-cell);
+}
+
+.x-heatmap__week {
+  display: flex;
+  flex-direction: column;
+  gap: var(--x-heatmap-gap);
+}
+
+.x-heatmap__day {
+  width: var(--x-heatmap-cell);
+  height: var(--x-heatmap-cell);
+  border-radius: var(--radius-xs);
+  background: var(--c-surface-inset);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-hover);
+}
+.x-heatmap__day:hover {
+  transform: scale(1.3);
+  box-shadow: var(--charge-edge-glow) var(--c-accent-primary);
+}
+.x-heatmap__day--static {
+  cursor: default;
+}
+.x-heatmap__day--static:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* The ramp: accent-light at rising density, full accent-primary at the top step —
+   level 0 stays the inset track, never a coloured cell. */
+.x-heatmap__day[data-level="1"] {
+  background: color-mix(in srgb, var(--c-accent-light) 25%, transparent);
+}
+.x-heatmap__day[data-level="2"] {
+  background: color-mix(in srgb, var(--c-accent-light) 50%, transparent);
+}
+.x-heatmap__day[data-level="3"] {
+  background: color-mix(in srgb, var(--c-accent-light) 75%, transparent);
+}
+.x-heatmap__day[data-level="4"] {
+  background: var(--c-accent-primary);
+}
+
+.x-heatmap__legend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+.x-heatmap__ramp {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* ── Weekly grain ── */
+
+.x-heatmap__weekly {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.x-heatmap__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  height: var(--x-heatmap-weeks-h);
+  padding: var(--space-3) 0 var(--space-1);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+.x-heatmap__bar-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.x-heatmap__bar-count {
+  font-size: var(--text-2xs);
+  color: var(--c-text-primary);
+  font-weight: var(--weight-semibold);
+  margin-bottom: var(--space-1);
+}
+.x-heatmap__bar {
+  width: 100%;
+  max-width: var(--x-heatmap-bar-max);
+  height: var(--x-h);
+  background: var(--charge-gradient);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+.x-heatmap__bar-label {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+  margin-top: var(--space-1);
+}
+.x-heatmap__note {
+  margin: 0;
+  text-align: right;
+  color: var(--c-text-faint);
+  font-size: var(--text-sm);
+}
+
+/* ── Monthly grain ── */
+
+.x-heatmap__months {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--x-heatmap-month-min), 1fr));
+  gap: var(--space-2);
+}
+.x-heatmap__month {
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+}
+.x-heatmap__month-name {
+  color: var(--c-text-faint);
+}
+.x-heatmap__month-count {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--c-accent-primary);
+  margin-top: var(--space-0);
+}
+.x-heatmap__month-unit {
+  font-size: var(--text-2xs);
+  color: var(--c-text-muted);
+}

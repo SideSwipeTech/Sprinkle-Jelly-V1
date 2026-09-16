@@ -1,0 +1,243 @@
+/* AppFrame.css — the frame grid and the sticky header.
+   Extracted from src/nav/shell.css:4-143 + the production-refinement block.
+
+   Every value is a token. The handful of metrics the package scale does not carry are
+   declared ONCE, as component tokens, on .x-app-frame — never restated below.
+   Media-query thresholds restate the band edges (custom properties cannot evaluate
+   inside @media); each one names the band token it mirrors. */
+
+.x-app-frame {
+  /* Component tokens — off-scale metrics, stated once here. Candidates for the
+     generated --shell-* family (see README). */
+  --x-hit-size: 34px; /* menu button square — below the 36px nav item, above 32px avatar */
+  --x-kbd-block: 1px;
+  --x-kbd-inline: 5px;
+  --x-pill-gap: 6px;
+  --x-search-min: 200px;
+  --x-search-max: 360px;
+  --x-header-bg-mix: 88%;
+
+  display: grid;
+  min-height: 100dvh;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header"
+    "nav    main";
+}
+
+.x-app-frame[data-model="command"],
+.x-app-frame[data-model="dock"],
+.x-app-frame[data-model="drawer"] {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "nav"
+    "main";
+}
+
+.x-app-frame[data-model="dual"] {
+  grid-template-columns: auto auto 1fr;
+  grid-template-areas:
+    "header header header"
+    "spine  local  main";
+}
+
+/* ── Skip link ── */
+
+.x-skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: calc(var(--space-3) * -10);
+  z-index: var(--z-modal);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+  font-weight: var(--weight-semibold);
+  transition: top var(--duration-fast) var(--ease-enter);
+}
+.x-skip-link:focus {
+  top: var(--space-3);
+}
+
+/* ── Header ── */
+
+.x-shell-header {
+  grid-area: header;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--shell-header-height);
+  padding-inline: clamp(var(--space-3), 2vw, var(--space-6));
+  border-bottom: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-bg) var(--x-header-bg-mix), transparent);
+  backdrop-filter: blur(var(--backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--backdrop-blur));
+}
+
+/* Meridian removes the blur entirely — its surface treatment is flat, so the header
+   reads as a solid bar rather than frosted glass. This is construction, not colour. */
+[data-theme="meridian"] .x-shell-header {
+  background: var(--c-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.x-shell-header__menu {
+  display: grid;
+  place-items: center;
+  width: var(--x-hit-size);
+  height: var(--x-hit-size);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border-strong);
+  color: var(--c-text-muted);
+}
+.x-shell-header__menu:hover {
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+}
+
+.x-shell-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.x-shell-header__mark {
+  color: var(--c-accent-primary);
+  display: grid;
+  place-items: center;
+}
+.x-shell-header__wordmark {
+  font-size: var(--text-base);
+  white-space: nowrap;
+}
+
+/* ── Search trigger ── */
+
+.x-search-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  min-width: var(--x-search-min);
+  width: min(var(--x-search-max), 34vw);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--c-surface);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+}
+.x-search-trigger:hover {
+  border-color: var(--c-accent-primary);
+  color: var(--c-text-muted);
+}
+.x-search-trigger__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.x-kbd {
+  margin-left: auto;
+  padding: var(--x-kbd-block) var(--x-kbd-inline);
+  border-radius: var(--radius-xs);
+  border: var(--border-width) solid var(--c-border-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-shell-header__end {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.x-header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--x-pill-gap);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--c-border);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+  white-space: nowrap;
+}
+
+.x-shell-header :is(.x-icon-btn, .x-header-pill) .icon,
+.x-shell-header__mark .icon {
+  display: block;
+}
+
+/* ── Main ── */
+
+.x-app-frame__main {
+  grid-area: main;
+  min-width: 0;
+  padding: clamp(var(--space-6), 3vw, var(--space-8)) var(--band-standard-gutter) var(--space-12);
+}
+
+@media (min-width: 1280px) {
+  /* --band-wide-min */
+  .x-app-frame__main {
+    padding-inline: var(--band-wide-gutter);
+  }
+}
+
+.x-app-frame__notices:empty {
+  display: none;
+}
+
+/* ── Below Standard (--band-tablet-narrow-max: 899px) — the drawer-era header:
+   the pill yields, gaps tighten. The source used an invented 820px breakpoint;
+   the band edge is the sanctioned place to make this trade. */
+@media (max-width: 899px) {
+  .x-shell-header__end {
+    gap: var(--space-1);
+  }
+  .x-shell-header .x-header-pill {
+    display: none;
+  }
+  .x-search-trigger {
+    margin-left: var(--space-2);
+  }
+}
+
+/* ── Compact band (--band-compact-max: 599px) ── */
+@media (max-width: 599px) {
+  .x-app-frame__main {
+    padding-inline: var(--band-compact-gutter);
+  }
+  .x-search-trigger,
+  .x-shell-header__wordmark {
+    display: none;
+  }
+}
+
+/* ── Demo stage — the sink bounds the 100dvh frame grid to a fixed height so a
+   state cell shows the frame's real proportions instead of a viewport-tall box.
+   The frame fills the stage; its own min-height is the viewport's business. ── */
+
+.x-appframe-stage {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 30rem;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+.x-appframe-stage > .x-app-frame {
+  height: 100%;
+  min-height: 0;
+}

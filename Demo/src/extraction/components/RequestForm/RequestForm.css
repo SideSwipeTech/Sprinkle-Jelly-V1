@@ -1,0 +1,40 @@
+/* RequestForm — was .request-form (app.css:227-234) + .form-message feedback. */
+
+.x-request-form {
+  display: grid;
+  /* The area column flexes between two rem guards — the fixed 210px it replaces
+     had no token step. */
+  grid-template-columns: minmax(0, 1fr) minmax(10rem, 13rem);
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.x-request-form__span {
+  grid-column: 1 / -1;
+}
+
+.x-request-form textarea {
+  min-height: var(--space-12); /* was 92px */
+  resize: vertical;
+}
+
+.x-request-form__submit {
+  align-self: end;
+  justify-self: start;
+}
+
+.x-request-form__feedback {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--c-success) 10%, var(--c-surface-inset));
+  border: var(--border-width) solid color-mix(in srgb, var(--c-success) 35%, transparent);
+  color: var(--c-success);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 760px) {
+  .x-request-form { grid-template-columns: 1fr; }
+  .x-request-form__span { grid-column: auto; }
+}

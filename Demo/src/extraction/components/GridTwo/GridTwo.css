@@ -1,0 +1,28 @@
+/* GridTwo — the fixed-ratio page splits. Canonicalises `.grid-2`, `.grid-3`
+   (app.css:35-51), `.split` and `.split--editor` (surfaces.css:37-54).
+
+   Breakpoints restate the band edges — custom properties cannot evaluate
+   inside @media, so each literal names the band token it mirrors. The demo's
+   editor split used an invented 1100px threshold; it folds to standard. */
+
+.x-grid-two,
+.x-grid-three {
+  display: grid;
+  gap: var(--stack-gap);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+/* Standard band and up (--band-standard-min: 900px). */
+@media (min-width: 900px) {
+  .x-grid-two[data-ratio="lead"]     { grid-template-columns: 1.2fr 0.8fr; }
+  .x-grid-two[data-ratio="balanced"] { grid-template-columns: 1.15fr 0.85fr; }
+  .x-grid-two[data-ratio="editor"]   { grid-template-columns: 0.42fr 0.58fr; }
+  .x-grid-three                      { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* The editor split keeps its viewport floor — was 52vh, stated in dvh so it
+   survives mobile chrome. */
+.x-grid-two[data-ratio="editor"] {
+  min-height: 52dvh;
+}

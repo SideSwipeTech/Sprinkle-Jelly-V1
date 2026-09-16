@@ -1,0 +1,193 @@
+/* ── Demo banner and landing styles ─────────────────────────────────────── */
+
+.demo-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--c-accent-primary) 22%, var(--c-surface)),
+    color-mix(in srgb, var(--c-accent-secondary) 14%, var(--c-surface))
+  );
+  border-bottom: var(--border-width) solid var(--c-border);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.demo-banner__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  flex-wrap: wrap;
+}
+
+.demo-banner__tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-surface);
+  background: var(--c-accent-primary);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.demo-banner__text {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--c-text-primary);
+  line-height: 1.5;
+}
+
+.demo-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.demo-banner__close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--duration-fast) var(--ease-enter);
+}
+
+.demo-banner__close:hover {
+  color: var(--c-text-primary);
+  background: var(--c-surface-elevated);
+}
+
+.demo-banner--minimal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 4px var(--space-4);
+  background: var(--c-surface);
+  border-bottom: var(--border-width) solid var(--c-border);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.demo-banner--minimal .demo-banner__tag {
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+.demo-banner__reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-family: var(--font-sans);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  cursor: pointer;
+}
+
+.demo-banner__reset:hover {
+  color: var(--c-text-primary);
+  background: var(--c-surface-elevated);
+  border-color: var(--c-border);
+}
+
+.btn--sm {
+  padding: 4px 10px;
+  font-size: var(--text-xs);
+  gap: 5px;
+}
+
+.btn--sm .icon {
+  display: grid;
+  place-items: center;
+}
+
+/* Landing page */
+
+.demo-landing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-4);
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  justify-content: center;
+}
+
+.demo-landing__hero {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.demo-landing__hero .display {
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  line-height: 1.1;
+}
+
+.demo-landing__hero .page__lead {
+  max-width: 64ch;
+  color: var(--c-text-muted);
+}
+
+.demo-landing__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+.demo-landing__grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.demo-landing__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  align-items: flex-start;
+}
+
+.demo-landing__card h3 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  margin: 0;
+}
+
+.demo-landing__card .icon {
+  color: var(--c-accent-primary);
+}
+
+.demo-landing__stats {
+  text-align: center;
+  color: var(--c-text-faint);
+}
+
+@media (max-width: 720px) {
+  .demo-landing__hero .display { font-size: 2.2rem; }
+  .demo-landing__actions { flex-direction: column; align-items: stretch; }
+  .demo-landing__actions .btn { justify-content: center; }
+  .demo-banner__content { flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,1189 @@
+/* GENERATED FILE — DO NOT EDIT BY HAND.
+   Source of truth: package/values.json
+   Regenerate:      pnpm design:generate      Verify no drift: pnpm design:check
+   Emitted by:      package/generate.mjs -> src/tokens/subthemes.css */
+
+
+/* ── The identity axis ─────────────────────────────────────────────────────
+   Four subthemes. Each owns geometry, typography, density, texture and its own
+   MOTION LANGUAGE — which is what makes switching one a makeover rather than a
+   recolour. The theme axis (light | dark | follow-system, closed per PRF-R6)
+   selects a palette and nothing else. follow-system emits no values: it resolves
+   to light or dark before first paint, so no default ever flashes. */
+
+/* ══ Halo ══ v3-aurora carried forward: luminous depth, calm, spacious. The identity a nervous learner would choose. */
+:is([data-subtheme="halo"], html[data-theme="halo"]) {
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 30px;
+  --radius-2xl: 36px;
+  --radius-pill: 9999px;
+  --border-width: 1px;
+  --chamfer: 0px;
+  --card-construction: plane;
+
+  --font-display: "Bricolage Grotesque Variable", "Segoe UI Variable Display", system-ui, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 600;
+  --heading-tracking: -0.018em;
+  --body-size: 16px;
+  --body-line-height: 1.7;
+  --micro-case: none;
+  --numerals: tabular-nums;
+
+  --density-scale: 1.15;
+  --card-padding: 24px;
+  --row-height: 52px;
+  --stack-gap: 20px;
+
+  --surface-treatment: frosted;
+  --backdrop-blur: 24px;
+  --backdrop-saturate: 1.4;
+  --elevation-model: soft-shadow;
+  --ambient: aurora-mesh;
+  --ambient-opacity: 0.55;
+
+  --motion-register: spring;
+  --duration-fast: 180ms;
+  --duration-normal: 300ms;
+  --duration-slow: 480ms;
+  --duration-route: 520ms;
+  --ease-enter: var(--ease-settle);
+  --ease-exit: var(--ease-out);
+  --ease-hover: var(--ease-premium);
+  --ease-route: var(--ease-premium);
+  --motion-entrance: rise-settle;
+  --motion-hover: lift-glow;
+  --motion-press: compress;
+  --motion-route: morph;
+  --motion-idle: breathe;
+  --motion-charge-fill: sweep-bloom;
+
+  --charge-track-opacity: 0.14;
+  --charge-edge-glow: 0 0 14px;
+  --charge-edge-behaviour: breathe;
+  --charge-stop-1: 0%;
+  --charge-stop-2: 68%;
+  --charge-stop-3: 100%;
+}
+
+:is([data-subtheme="halo"][data-theme="dark"], html[data-theme="halo"][data-scheme="dark"]) {
+  color-scheme: dark;
+  --c-bg: #080B16;
+  --c-bg-rgb: 8, 11, 22;
+  --c-surface: #11162B;
+  --c-surface-rgb: 17, 22, 43;
+  --c-surface-elevated: #181F3D;
+  --c-surface-elevated-rgb: 24, 31, 61;
+  --c-surface-inset: #05070F;
+  --c-surface-inset-rgb: 5, 7, 15;
+  --c-text-primary: #EEF0FA;
+  --c-text-primary-rgb: 238, 240, 250;
+  --c-text-muted: #A3ACCE;
+  --c-text-muted-rgb: 163, 172, 206;
+  --c-text-faint: #6E779E;
+  --c-text-faint-rgb: 110, 119, 158;
+  --c-border: #222B52;
+  --c-border-rgb: 34, 43, 82;
+  --c-border-strong: #36437E;
+  --c-border-strong-rgb: 54, 67, 126;
+  --c-shadow: #020308;
+  --c-shadow-rgb: 2, 3, 8;
+  --c-accent-primary: #6366F1;
+  --c-accent-primary-rgb: 99, 102, 241;
+  --c-accent-secondary: #A855F7;
+  --c-accent-secondary-rgb: 168, 85, 247;
+  --c-accent-light: #2DD4BF;
+  --c-accent-light-rgb: 45, 212, 191;
+  --c-success: #2DD4BF;
+  --c-success-rgb: 45, 212, 191;
+  --c-warning: #FBBF24;
+  --c-warning-rgb: 251, 191, 36;
+  --c-error: #FB7185;
+  --c-error-rgb: 251, 113, 133;
+  --c-info: #38BDF8;
+  --c-info-rgb: 56, 189, 248;
+  --c-on-accent-primary: #000000;
+  --c-on-accent-secondary: #000000;
+  --c-on-success: #000000;
+  --c-on-warning: #000000;
+  --c-on-error: #000000;
+  --c-on-info: #000000;
+  --c-border-interactive: #6E779E;
+  --c-focus-ring: #6366F1;
+
+  --charge-gradient: linear-gradient(90deg, #6366F1 var(--charge-stop-1), #A855F7 var(--charge-stop-2), #2DD4BF var(--charge-stop-3));
+}
+
+:is([data-subtheme="halo"][data-theme="light"], html[data-theme="halo"][data-scheme="light"]) {
+  color-scheme: light;
+  --c-bg: #F4F6FB;
+  --c-bg-rgb: 244, 246, 251;
+  --c-surface: #FFFFFF;
+  --c-surface-rgb: 255, 255, 255;
+  --c-surface-elevated: #FFFFFF;
+  --c-surface-elevated-rgb: 255, 255, 255;
+  --c-surface-inset: #EEF2FA;
+  --c-surface-inset-rgb: 238, 242, 250;
+  --c-text-primary: #171A2E;
+  --c-text-primary-rgb: 23, 26, 46;
+  --c-text-muted: #545C7E;
+  --c-text-muted-rgb: 84, 92, 126;
+  --c-text-faint: #7A84A7;
+  --c-text-faint-rgb: 122, 132, 167;
+  --c-border: #DBE1F2;
+  --c-border-rgb: 219, 225, 242;
+  --c-border-strong: #BCC7E6;
+  --c-border-strong-rgb: 188, 199, 230;
+  --c-shadow: #1E233D;
+  --c-shadow-rgb: 30, 35, 61;
+  --c-accent-primary: #4F46E5;
+  --c-accent-primary-rgb: 79, 70, 229;
+  --c-accent-secondary: #9333EA;
+  --c-accent-secondary-rgb: 147, 51, 234;
+  --c-accent-light: #0D9488;
+  --c-accent-light-rgb: 13, 148, 136;
+  --c-success: #01857A;
+  --c-success-rgb: 1, 133, 122;
+  --c-warning: #B45309;
+  --c-warning-rgb: 180, 83, 9;
+  --c-error: #E11D48;
+  --c-error-rgb: 225, 29, 72;
+  --c-info: #007DBC;
+  --c-info-rgb: 0, 125, 188;
+  --c-on-accent-primary: #FFFFFF;
+  --c-on-accent-secondary: #FFFFFF;
+  --c-on-success: #000000;
+  --c-on-warning: #FFFFFF;
+  --c-on-error: #FFFFFF;
+  --c-on-info: #000000;
+  --c-border-interactive: #7A84A7;
+  --c-focus-ring: #4F46E5;
+
+  --charge-gradient: linear-gradient(90deg, #4F46E5 var(--charge-stop-1), #9333EA var(--charge-stop-2), #0D9488 var(--charge-stop-3));
+}
+
+/* ══ Voyage ══ v5-kinetic carried forward: spatial, cinematic, a place you move through. Built to sell the annual recap. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) {
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-pill: 9999px;
+  --border-width: 1px;
+  --chamfer: 0px;
+  --card-construction: layered;
+
+  --font-display: "Archivo Variable", "Segoe UI Variable Display", system-ui, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 800;
+  --heading-tracking: -0.038em;
+  --body-size: 16px;
+  --body-line-height: 1.6;
+  --micro-case: uppercase;
+  --numerals: tabular-nums;
+
+  --density-scale: 1;
+  --card-padding: 20px;
+  --row-height: 48px;
+  --stack-gap: 24px;
+
+  --surface-treatment: layered;
+  --backdrop-blur: 8px;
+  --backdrop-saturate: 1.1;
+  --elevation-model: depth-scale;
+  --ambient: duotone-field;
+  --ambient-opacity: 0.7;
+
+  --motion-register: cinematic;
+  --duration-fast: 200ms;
+  --duration-normal: 380ms;
+  --duration-slow: 680ms;
+  --duration-route: 700ms;
+  --ease-enter: var(--ease-cinematic);
+  --ease-exit: var(--ease-in);
+  --ease-hover: var(--ease-cinematic);
+  --ease-route: var(--ease-cinematic);
+  --motion-entrance: depth-arrive;
+  --motion-hover: magnetic;
+  --motion-press: push-back;
+  --motion-route: travel;
+  --motion-idle: drift;
+  --motion-charge-fill: travelling-head;
+
+  --charge-track-opacity: 0.10;
+  --charge-edge-glow: 0 0 20px;
+  --charge-edge-behaviour: trail;
+  --charge-stop-1: 0%;
+  --charge-stop-2: 55%;
+  --charge-stop-3: 100%;
+}
+
+:is([data-subtheme="voyage"][data-theme="dark"], html[data-theme="voyage"][data-scheme="dark"]) {
+  color-scheme: dark;
+  --c-bg: #07070B;
+  --c-bg-rgb: 7, 7, 11;
+  --c-surface: #121218;
+  --c-surface-rgb: 18, 18, 24;
+  --c-surface-elevated: #1B1B24;
+  --c-surface-elevated-rgb: 27, 27, 36;
+  --c-surface-inset: #000000;
+  --c-surface-inset-rgb: 0, 0, 0;
+  --c-text-primary: #F5F5F7;
+  --c-text-primary-rgb: 245, 245, 247;
+  --c-text-muted: #A5A5B4;
+  --c-text-muted-rgb: 165, 165, 180;
+  --c-text-faint: #6E6E80;
+  --c-text-faint-rgb: 110, 110, 128;
+  --c-border: #26262F;
+  --c-border-rgb: 38, 38, 47;
+  --c-border-strong: #3A3A47;
+  --c-border-strong-rgb: 58, 58, 71;
+  --c-shadow: #000000;
+  --c-shadow-rgb: 0, 0, 0;
+  --c-accent-primary: #8B5CF6;
+  --c-accent-primary-rgb: 139, 92, 246;
+  --c-accent-secondary: #E0399E;
+  --c-accent-secondary-rgb: 224, 57, 158;
+  --c-accent-light: #F0A0D0;
+  --c-accent-light-rgb: 240, 160, 208;
+  --c-success: #2FD4A0;
+  --c-success-rgb: 47, 212, 160;
+  --c-warning: #FFB800;
+  --c-warning-rgb: 255, 184, 0;
+  --c-error: #FF5C5C;
+  --c-error-rgb: 255, 92, 92;
+  --c-info: #4AA8FF;
+  --c-info-rgb: 74, 168, 255;
+  --c-on-accent-primary: #000000;
+  --c-on-accent-secondary: #000000;
+  --c-on-success: #000000;
+  --c-on-warning: #000000;
+  --c-on-error: #000000;
+  --c-on-info: #000000;
+  --c-border-interactive: #6E6E80;
+  --c-focus-ring: #8B5CF6;
+
+  --charge-gradient: linear-gradient(90deg, var(--c-accent-primary) var(--charge-stop-1), var(--c-accent-secondary) var(--charge-stop-2), var(--c-accent-light) var(--charge-stop-3));
+}
+
+:is([data-subtheme="voyage"][data-theme="light"], html[data-theme="voyage"][data-scheme="light"]) {
+  color-scheme: light;
+  --c-bg: #FBF9F5;
+  --c-bg-rgb: 251, 249, 245;
+  --c-surface: #FFFFFF;
+  --c-surface-rgb: 255, 255, 255;
+  --c-surface-elevated: #FFFFFF;
+  --c-surface-elevated-rgb: 255, 255, 255;
+  --c-surface-inset: #F0EDE6;
+  --c-surface-inset-rgb: 240, 237, 230;
+  --c-text-primary: #111014;
+  --c-text-primary-rgb: 17, 16, 20;
+  --c-text-muted: #54525E;
+  --c-text-muted-rgb: 84, 82, 94;
+  --c-text-faint: #7A7885;
+  --c-text-faint-rgb: 122, 120, 133;
+  --c-border: #E4E0D8;
+  --c-border-rgb: 228, 224, 216;
+  --c-border-strong: #CBC6BA;
+  --c-border-strong-rgb: 203, 198, 186;
+  --c-shadow: #241F1A;
+  --c-shadow-rgb: 36, 31, 26;
+  --c-accent-primary: #6D28D9;
+  --c-accent-primary-rgb: 109, 40, 217;
+  --c-accent-secondary: #B21E7B;
+  --c-accent-secondary-rgb: 178, 30, 123;
+  --c-accent-light: #8B4FBF;
+  --c-accent-light-rgb: 139, 79, 191;
+  --c-success: #0B7A5C;
+  --c-success-rgb: 11, 122, 92;
+  --c-warning: #8A5A00;
+  --c-warning-rgb: 138, 90, 0;
+  --c-error: #C43333;
+  --c-error-rgb: 196, 51, 51;
+  --c-info: #1A6FCC;
+  --c-info-rgb: 26, 111, 204;
+  --c-on-accent-primary: #FFFFFF;
+  --c-on-accent-secondary: #FFFFFF;
+  --c-on-success: #FFFFFF;
+  --c-on-warning: #FFFFFF;
+  --c-on-error: #FFFFFF;
+  --c-on-info: #FFFFFF;
+  --c-border-interactive: #7A7885;
+  --c-focus-ring: #6D28D9;
+
+  --charge-gradient: linear-gradient(90deg, var(--c-accent-primary) var(--charge-stop-1), var(--c-accent-secondary) var(--charge-stop-2), var(--c-accent-light) var(--charge-stop-3));
+}
+
+/* ══ Forge ══ The previous platform's layout thinking made first-class: dense, engineered, drafted. The charge language at full strength. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) {
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-pill: 9999px;
+  --border-width: 1px;
+  --chamfer: 18px;
+  --card-construction: chamfered-plate;
+
+  --font-display: "Sora Variable", Sora, system-ui, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  --display-weight: 700;
+  --heading-tracking: -0.022em;
+  --body-size: 16px;
+  --body-line-height: 1.55;
+  --micro-case: uppercase;
+  --numerals: tabular-nums slashed-zero;
+
+  --density-scale: 0.85;
+  --card-padding: 16px;
+  --row-height: 40px;
+  --stack-gap: 16px;
+
+  --surface-treatment: solid;
+  --backdrop-blur: 0px;
+  --backdrop-saturate: 1;
+  --elevation-model: hairline-shadow;
+  --ambient: grid-lattice;
+  --ambient-opacity: 0.35;
+
+  --motion-register: mechanical;
+  --duration-fast: 120ms;
+  --duration-normal: 180ms;
+  --duration-slow: 240ms;
+  --duration-route: 260ms;
+  --ease-enter: var(--ease-out);
+  --ease-exit: var(--ease-standard);
+  --ease-hover: var(--ease-standard);
+  --ease-route: var(--ease-standard);
+  --motion-entrance: power-on;
+  --motion-hover: seam-light;
+  --motion-press: seat;
+  --motion-route: cut;
+  --motion-idle: none;
+  --motion-charge-fill: draw;
+
+  --charge-track-opacity: 0.18;
+  --charge-edge-glow: 0 0 8px;
+  --charge-edge-behaviour: pulse;
+  --charge-stop-1: 0%;
+  --charge-stop-2: 72%;
+  --charge-stop-3: 100%;
+}
+
+:is([data-subtheme="forge"][data-theme="dark"], html[data-theme="forge"][data-scheme="dark"]) {
+  color-scheme: dark;
+  --c-bg: #0B0F19;
+  --c-bg-rgb: 11, 15, 25;
+  --c-surface: #111827;
+  --c-surface-rgb: 17, 24, 39;
+  --c-surface-elevated: #172033;
+  --c-surface-elevated-rgb: 23, 32, 51;
+  --c-surface-inset: #080B14;
+  --c-surface-inset-rgb: 8, 11, 20;
+  --c-text-primary: #F9FAFB;
+  --c-text-primary-rgb: 249, 250, 251;
+  --c-text-muted: #AAB6C6;
+  --c-text-muted-rgb: 170, 182, 198;
+  --c-text-faint: #677793;
+  --c-text-faint-rgb: 103, 119, 147;
+  --c-border: #243044;
+  --c-border-rgb: 36, 48, 68;
+  --c-border-strong: #33415B;
+  --c-border-strong-rgb: 51, 65, 91;
+  --c-shadow: #03060C;
+  --c-shadow-rgb: 3, 6, 12;
+  --c-accent-primary: #2B8FE8;
+  --c-accent-primary-rgb: 43, 143, 232;
+  --c-accent-secondary: #7B7DF5;
+  --c-accent-secondary-rgb: 123, 125, 245;
+  --c-accent-light: #6FC0FF;
+  --c-accent-light-rgb: 111, 192, 255;
+  --c-success: #2FBF6B;
+  --c-success-rgb: 47, 191, 107;
+  --c-warning: #E09B12;
+  --c-warning-rgb: 224, 155, 18;
+  --c-error: #EE6065;
+  --c-error-rgb: 238, 96, 101;
+  --c-info: #3B82F6;
+  --c-info-rgb: 59, 130, 246;
+  --c-on-accent-primary: #000000;
+  --c-on-accent-secondary: #000000;
+  --c-on-success: #000000;
+  --c-on-warning: #000000;
+  --c-on-error: #000000;
+  --c-on-info: #000000;
+  --c-border-interactive: #677793;
+  --c-focus-ring: #2B8FE8;
+
+  --charge-gradient: linear-gradient(90deg, var(--c-accent-primary) var(--charge-stop-1), var(--c-accent-secondary) var(--charge-stop-2), var(--c-accent-light) var(--charge-stop-3));
+}
+
+:is([data-subtheme="forge"][data-theme="light"], html[data-theme="forge"][data-scheme="light"]) {
+  color-scheme: light;
+  --c-bg: #F1F4F8;
+  --c-bg-rgb: 241, 244, 248;
+  --c-surface: #FFFFFF;
+  --c-surface-rgb: 255, 255, 255;
+  --c-surface-elevated: #FFFFFF;
+  --c-surface-elevated-rgb: 255, 255, 255;
+  --c-surface-inset: #E4E9F0;
+  --c-surface-inset-rgb: 228, 233, 240;
+  --c-text-primary: #0F1419;
+  --c-text-primary-rgb: 15, 20, 25;
+  --c-text-muted: #4B5A6B;
+  --c-text-muted-rgb: 75, 90, 107;
+  --c-text-faint: #75849A;
+  --c-text-faint-rgb: 117, 132, 154;
+  --c-border: #D8DFE8;
+  --c-border-rgb: 216, 223, 232;
+  --c-border-strong: #B9C3D1;
+  --c-border-strong-rgb: 185, 195, 209;
+  --c-shadow: #16202C;
+  --c-shadow-rgb: 22, 32, 44;
+  --c-accent-primary: #0F62B8;
+  --c-accent-primary-rgb: 15, 98, 184;
+  --c-accent-secondary: #4B4DD0;
+  --c-accent-secondary-rgb: 75, 77, 208;
+  --c-accent-light: #1C7FD6;
+  --c-accent-light-rgb: 28, 127, 214;
+  --c-success: #0A7A44;
+  --c-success-rgb: 10, 122, 68;
+  --c-warning: #8A5A00;
+  --c-warning-rgb: 138, 90, 0;
+  --c-error: #BC2F34;
+  --c-error-rgb: 188, 47, 52;
+  --c-info: #0F62B8;
+  --c-info-rgb: 15, 98, 184;
+  --c-on-accent-primary: #FFFFFF;
+  --c-on-accent-secondary: #FFFFFF;
+  --c-on-success: #FFFFFF;
+  --c-on-warning: #FFFFFF;
+  --c-on-error: #FFFFFF;
+  --c-on-info: #FFFFFF;
+  --c-border-interactive: #75849A;
+  --c-focus-ring: #0F62B8;
+
+  --charge-gradient: linear-gradient(90deg, var(--c-accent-primary) var(--charge-stop-1), var(--c-accent-secondary) var(--charge-stop-2), var(--c-accent-light) var(--charge-stop-3));
+}
+
+/* ══ Meridian ══ Flat, precise, low-stimulus. No blur, no glow, no ambient field. The honest home for reduced motion and for a sealed sitting, where ambience is wrong. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) {
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-2xl: 8px;
+  --radius-pill: 9999px;
+  --border-width: 1px;
+  --chamfer: 0px;
+  --card-construction: ruled;
+
+  --font-display: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  --display-weight: 700;
+  --heading-tracking: -0.012em;
+  --body-size: 16px;
+  --body-line-height: 1.65;
+  --micro-case: none;
+  --numerals: tabular-nums;
+
+  --density-scale: 1;
+  --card-padding: 20px;
+  --row-height: 44px;
+  --stack-gap: 18px;
+
+  --surface-treatment: flat;
+  --backdrop-blur: 0px;
+  --backdrop-saturate: 1;
+  --elevation-model: border-only;
+  --ambient: none;
+  --ambient-opacity: 0;
+
+  --motion-register: functional;
+  --duration-fast: 90ms;
+  --duration-normal: 140ms;
+  --duration-slow: 180ms;
+  --duration-route: 160ms;
+  --ease-enter: var(--ease-out);
+  --ease-exit: var(--ease-out);
+  --ease-hover: var(--ease-linear);
+  --ease-route: var(--ease-linear);
+  --motion-entrance: fade;
+  --motion-hover: border-shift;
+  --motion-press: none;
+  --motion-route: fade;
+  --motion-idle: none;
+  --motion-charge-fill: instant;
+
+  --charge-track-opacity: 0.22;
+  --charge-edge-glow: 0 0 0;
+  --charge-edge-behaviour: none;
+  --charge-stop-1: 0%;
+  --charge-stop-2: 50%;
+  --charge-stop-3: 100%;
+}
+
+:is([data-subtheme="meridian"][data-theme="dark"], html[data-theme="meridian"][data-scheme="dark"]) {
+  color-scheme: dark;
+  --c-bg: #101214;
+  --c-bg-rgb: 16, 18, 20;
+  --c-surface: #191C1F;
+  --c-surface-rgb: 25, 28, 31;
+  --c-surface-elevated: #212529;
+  --c-surface-elevated-rgb: 33, 37, 41;
+  --c-surface-inset: #0A0C0D;
+  --c-surface-inset-rgb: 10, 12, 13;
+  --c-text-primary: #F7F8F8;
+  --c-text-primary-rgb: 247, 248, 248;
+  --c-text-muted: #B4BABF;
+  --c-text-muted-rgb: 180, 186, 191;
+  --c-text-faint: #868E95;
+  --c-text-faint-rgb: 134, 142, 149;
+  --c-border: #2E3338;
+  --c-border-rgb: 46, 51, 56;
+  --c-border-strong: #767E85;
+  --c-border-strong-rgb: 118, 126, 133;
+  --c-shadow: #000000;
+  --c-shadow-rgb: 0, 0, 0;
+  --c-accent-primary: #3D8BD4;
+  --c-accent-primary-rgb: 61, 139, 212;
+  --c-accent-secondary: #5E8AA8;
+  --c-accent-secondary-rgb: 94, 138, 168;
+  --c-accent-light: #7FB4E0;
+  --c-accent-light-rgb: 127, 180, 224;
+  --c-success: #3FA96B;
+  --c-success-rgb: 63, 169, 107;
+  --c-warning: #C99000;
+  --c-warning-rgb: 201, 144, 0;
+  --c-error: #E7716D;
+  --c-error-rgb: 231, 113, 109;
+  --c-info: #3D8BD4;
+  --c-info-rgb: 61, 139, 212;
+  --c-on-accent-primary: #000000;
+  --c-on-accent-secondary: #000000;
+  --c-on-success: #000000;
+  --c-on-warning: #000000;
+  --c-on-error: #000000;
+  --c-on-info: #000000;
+  --c-border-interactive: #868E95;
+  --c-focus-ring: #3D8BD4;
+
+  --charge-gradient: linear-gradient(90deg, var(--c-accent-primary) var(--charge-stop-1), var(--c-accent-secondary) var(--charge-stop-2), var(--c-accent-light) var(--charge-stop-3));
+}
+
+:is([data-subtheme="meridian"][data-theme="light"], html[data-theme="meridian"][data-scheme="light"]) {
+  color-scheme: light;
+  --c-bg: #FAFAFA;
+  --c-bg-rgb: 250, 250, 250;
+  --c-surface: #FFFFFF;
+  --c-surface-rgb: 255, 255, 255;
+  --c-surface-elevated: #FFFFFF;
+  --c-surface-elevated-rgb: 255, 255, 255;
+  --c-surface-inset: #F0F1F2;
+  --c-surface-inset-rgb: 240, 241, 242;
+  --c-text-primary: #121416;
+  --c-text-primary-rgb: 18, 20, 22;
+  --c-text-muted: #4A5157;
+  --c-text-muted-rgb: 74, 81, 87;
+  --c-text-faint: #6E767D;
+  --c-text-faint-rgb: 110, 118, 125;
+  --c-border: #DCDFE2;
+  --c-border-rgb: 220, 223, 226;
+  --c-border-strong: #8B9298;
+  --c-border-strong-rgb: 139, 146, 152;
+  --c-shadow: #121416;
+  --c-shadow-rgb: 18, 20, 22;
+  --c-accent-primary: #15578F;
+  --c-accent-primary-rgb: 21, 87, 143;
+  --c-accent-secondary: #3A6480;
+  --c-accent-secondary-rgb: 58, 100, 128;
+  --c-accent-light: #1B6BA8;
+  --c-accent-light-rgb: 27, 107, 168;
+  --c-success: #0B6B3C;
+  --c-success-rgb: 11, 107, 60;
+  --c-warning: #7A5200;
+  --c-warning-rgb: 122, 82, 0;
+  --c-error: #B02A26;
+  --c-error-rgb: 176, 42, 38;
+  --c-info: #15578F;
+  --c-info-rgb: 21, 87, 143;
+  --c-on-accent-primary: #FFFFFF;
+  --c-on-accent-secondary: #FFFFFF;
+  --c-on-success: #FFFFFF;
+  --c-on-warning: #FFFFFF;
+  --c-on-error: #FFFFFF;
+  --c-on-info: #FFFFFF;
+  --c-border-interactive: #6E767D;
+  --c-focus-ring: #15578F;
+
+  --charge-gradient: linear-gradient(90deg, var(--c-accent-primary) var(--charge-stop-1), var(--c-accent-secondary) var(--charge-stop-2), var(--c-accent-light) var(--charge-stop-3));
+}
+
+/* ══ The accent axis ══ Five named tints per identity and per scheme — sixty
+   values, each gated at generate time (3:1 as a focus ring on both the surface
+   and the background, 4.5:1 for its label). Ruled 2026-08-23 (O-A; pack O).
+
+   A tint tints ONLY the primary stop for the four package identities, so their
+   accentSecondary and accentLight — Halo's aurora, Voyage's duotone — stay the
+   identity's own. Atlas and Atelier carry a full ramp because for them the ramp
+   IS the identity language.
+
+   The on-colour is stated per cell and gated per cell: tinting the fill without
+   re-deriving the ink is how a readable button becomes an unreadable one.
+
+   For the two `kind: family` identities the family-native --accent-* names are
+   pointed at the --c-* values rather than restated, so the two names can never
+   disagree and the package stays the single source (owner review: OR-O15). */
+
+html[data-theme="halo"][data-scheme="light"][data-accent="ember"] {
+  --c-accent-primary: #714c93;
+  --c-accent-primary-rgb: 113, 76, 147;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #714c93;
+}
+html[data-theme="halo"][data-scheme="light"][data-accent="jade"] {
+  --c-accent-primary: #405da1;
+  --c-accent-primary-rgb: 64, 93, 161;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #405da1;
+}
+html[data-theme="halo"][data-scheme="light"][data-accent="orchid"] {
+  --c-accent-primary: #6841c1;
+  --c-accent-primary-rgb: 104, 65, 193;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #6841c1;
+}
+html[data-theme="halo"][data-scheme="light"][data-accent="glacier"] {
+  --c-accent-primary: #3e5ab8;
+  --c-accent-primary-rgb: 62, 90, 184;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #3e5ab8;
+}
+html[data-theme="halo"][data-scheme="light"][data-accent="azure"] {
+  --c-accent-primary: #3a5ace;
+  --c-accent-primary-rgb: 58, 90, 206;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #3a5ace;
+}
+html[data-theme="halo"][data-scheme="dark"][data-accent="ember"] {
+  --c-accent-primary: #906bb0;
+  --c-accent-primary-rgb: 144, 107, 176;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #906bb0;
+}
+html[data-theme="halo"][data-scheme="dark"][data-accent="jade"] {
+  --c-accent-primary: #5f7dbe;
+  --c-accent-primary-rgb: 95, 125, 190;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #5f7dbe;
+}
+html[data-theme="halo"][data-scheme="dark"][data-accent="orchid"] {
+  --c-accent-primary: #8761de;
+  --c-accent-primary-rgb: 135, 97, 222;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #8761de;
+}
+html[data-theme="halo"][data-scheme="dark"][data-accent="glacier"] {
+  --c-accent-primary: #5d7ad5;
+  --c-accent-primary-rgb: 93, 122, 213;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #5d7ad5;
+}
+html[data-theme="halo"][data-scheme="dark"][data-accent="azure"] {
+  --c-accent-primary: #597aeb;
+  --c-accent-primary-rgb: 89, 122, 235;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #597aeb;
+}
+html[data-theme="voyage"][data-scheme="light"][data-accent="ember"] {
+  --c-accent-primary: #852fa0;
+  --c-accent-primary-rgb: 133, 47, 160;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #852fa0;
+}
+html[data-theme="voyage"][data-scheme="light"][data-accent="jade"] {
+  --c-accent-primary: #5441ad;
+  --c-accent-primary-rgb: 84, 65, 173;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #5441ad;
+}
+html[data-theme="voyage"][data-scheme="light"][data-accent="orchid"] {
+  --c-accent-primary: #7c25cd;
+  --c-accent-primary-rgb: 124, 37, 205;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #7c25cd;
+}
+html[data-theme="voyage"][data-scheme="light"][data-accent="glacier"] {
+  --c-accent-primary: #523dc5;
+  --c-accent-primary-rgb: 82, 61, 197;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #523dc5;
+}
+html[data-theme="voyage"][data-scheme="light"][data-accent="azure"] {
+  --c-accent-primary: #4e3dda;
+  --c-accent-primary-rgb: 78, 61, 218;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #4e3dda;
+}
+html[data-theme="voyage"][data-scheme="dark"][data-accent="ember"] {
+  --c-accent-primary: #9a54b4;
+  --c-accent-primary-rgb: 154, 84, 180;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #9a54b4;
+}
+html[data-theme="voyage"][data-scheme="dark"][data-accent="jade"] {
+  --c-accent-primary: #6a66c2;
+  --c-accent-primary-rgb: 106, 102, 194;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #6a66c2;
+}
+html[data-theme="voyage"][data-scheme="dark"][data-accent="orchid"] {
+  --c-accent-primary: #914ae2;
+  --c-accent-primary-rgb: 145, 74, 226;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #914ae2;
+}
+html[data-theme="voyage"][data-scheme="dark"][data-accent="glacier"] {
+  --c-accent-primary: #6863d9;
+  --c-accent-primary-rgb: 104, 99, 217;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #6863d9;
+}
+html[data-theme="voyage"][data-scheme="dark"][data-accent="azure"] {
+  --c-accent-primary: #6463ef;
+  --c-accent-primary-rgb: 100, 99, 239;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #6463ef;
+}
+html[data-theme="forge"][data-scheme="light"][data-accent="ember"] {
+  --c-accent-primary: #415988;
+  --c-accent-primary-rgb: 65, 89, 136;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #415988;
+}
+html[data-theme="forge"][data-scheme="light"][data-accent="jade"] {
+  --c-accent-primary: #116a96;
+  --c-accent-primary-rgb: 17, 106, 150;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #116a96;
+}
+html[data-theme="forge"][data-scheme="light"][data-accent="orchid"] {
+  --c-accent-primary: #384eb5;
+  --c-accent-primary-rgb: 56, 78, 181;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #384eb5;
+}
+html[data-theme="forge"][data-scheme="light"][data-accent="glacier"] {
+  --c-accent-primary: #0f67ad;
+  --c-accent-primary-rgb: 15, 103, 173;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0f67ad;
+}
+html[data-theme="forge"][data-scheme="light"][data-accent="azure"] {
+  --c-accent-primary: #0b67c2;
+  --c-accent-primary-rgb: 11, 103, 194;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0b67c2;
+}
+html[data-theme="forge"][data-scheme="dark"][data-accent="ember"] {
+  --c-accent-primary: #5579aa;
+  --c-accent-primary-rgb: 85, 121, 170;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #5579aa;
+}
+html[data-theme="forge"][data-scheme="dark"][data-accent="jade"] {
+  --c-accent-primary: #258bb8;
+  --c-accent-primary-rgb: 37, 139, 184;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #258bb8;
+}
+html[data-theme="forge"][data-scheme="dark"][data-accent="orchid"] {
+  --c-accent-primary: #4c6fd8;
+  --c-accent-primary-rgb: 76, 111, 216;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #4c6fd8;
+}
+html[data-theme="forge"][data-scheme="dark"][data-accent="glacier"] {
+  --c-accent-primary: #2387cf;
+  --c-accent-primary-rgb: 35, 135, 207;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #2387cf;
+}
+html[data-theme="forge"][data-scheme="dark"][data-accent="azure"] {
+  --c-accent-primary: #1f87e5;
+  --c-accent-primary-rgb: 31, 135, 229;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #1f87e5;
+}
+html[data-theme="meridian"][data-scheme="light"][data-accent="ember"] {
+  --c-accent-primary: #45516a;
+  --c-accent-primary-rgb: 69, 81, 106;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #45516a;
+}
+html[data-theme="meridian"][data-scheme="light"][data-accent="jade"] {
+  --c-accent-primary: #156278;
+  --c-accent-primary-rgb: 21, 98, 120;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #156278;
+}
+html[data-theme="meridian"][data-scheme="light"][data-accent="orchid"] {
+  --c-accent-primary: #3c4698;
+  --c-accent-primary-rgb: 60, 70, 152;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #3c4698;
+}
+html[data-theme="meridian"][data-scheme="light"][data-accent="glacier"] {
+  --c-accent-primary: #135f8f;
+  --c-accent-primary-rgb: 19, 95, 143;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #135f8f;
+}
+html[data-theme="meridian"][data-scheme="light"][data-accent="azure"] {
+  --c-accent-primary: #0f5fa5;
+  --c-accent-primary-rgb: 15, 95, 165;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0f5fa5;
+}
+html[data-theme="meridian"][data-scheme="dark"][data-accent="ember"] {
+  --c-accent-primary: #62769c;
+  --c-accent-primary-rgb: 98, 118, 156;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #62769c;
+}
+html[data-theme="meridian"][data-scheme="dark"][data-accent="jade"] {
+  --c-accent-primary: #3288aa;
+  --c-accent-primary-rgb: 50, 136, 170;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #3288aa;
+}
+html[data-theme="meridian"][data-scheme="dark"][data-accent="orchid"] {
+  --c-accent-primary: #596cca;
+  --c-accent-primary-rgb: 89, 108, 202;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #596cca;
+}
+html[data-theme="meridian"][data-scheme="dark"][data-accent="glacier"] {
+  --c-accent-primary: #3085c1;
+  --c-accent-primary-rgb: 48, 133, 193;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #3085c1;
+}
+html[data-theme="meridian"][data-scheme="dark"][data-accent="azure"] {
+  --c-accent-primary: #2c85d7;
+  --c-accent-primary-rgb: 44, 133, 215;
+  --c-on-accent-primary: #000000;
+  --c-focus-ring: #2c85d7;
+}
+html[data-theme="atlas"][data-scheme="light"][data-accent="ember"] {
+  --c-accent-primary: #c2410c;
+  --c-accent-primary-rgb: 194, 65, 12;
+  --c-accent-secondary: #ea580c;
+  --c-accent-secondary-rgb: 234, 88, 12;
+  --c-accent-light: #fb923c;
+  --c-accent-light-rgb: 251, 146, 60;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #c2410c;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="light"][data-accent="jade"] {
+  --c-accent-primary: #15803d;
+  --c-accent-primary-rgb: 21, 128, 61;
+  --c-accent-secondary: #0f766e;
+  --c-accent-secondary-rgb: 15, 118, 110;
+  --c-accent-light: #4ade80;
+  --c-accent-light-rgb: 74, 222, 128;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #15803d;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="light"][data-accent="orchid"] {
+  --c-accent-primary: #a21caf;
+  --c-accent-primary-rgb: 162, 28, 175;
+  --c-accent-secondary: #9d174d;
+  --c-accent-secondary-rgb: 157, 23, 77;
+  --c-accent-light: #e879f9;
+  --c-accent-light-rgb: 232, 121, 249;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #a21caf;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="light"][data-accent="glacier"] {
+  --c-accent-primary: #0e7490;
+  --c-accent-primary-rgb: 14, 116, 144;
+  --c-accent-secondary: #0369a1;
+  --c-accent-secondary-rgb: 3, 105, 161;
+  --c-accent-light: #22d3ee;
+  --c-accent-light-rgb: 34, 211, 238;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0e7490;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="light"][data-accent="azure"] {
+  --c-accent-primary: #0074dd;
+  --c-accent-primary-rgb: 0, 116, 221;
+  --c-accent-secondary: #4f46e5;
+  --c-accent-secondary-rgb: 79, 70, 229;
+  --c-accent-light: #4da3f2;
+  --c-accent-light-rgb: 77, 163, 242;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0074dd;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="dark"][data-accent="ember"] {
+  --c-accent-primary: #c2410c;
+  --c-accent-primary-rgb: 194, 65, 12;
+  --c-accent-secondary: #ea580c;
+  --c-accent-secondary-rgb: 234, 88, 12;
+  --c-accent-light: #fb923c;
+  --c-accent-light-rgb: 251, 146, 60;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #c2410c;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="dark"][data-accent="jade"] {
+  --c-accent-primary: #15803d;
+  --c-accent-primary-rgb: 21, 128, 61;
+  --c-accent-secondary: #0f766e;
+  --c-accent-secondary-rgb: 15, 118, 110;
+  --c-accent-light: #4ade80;
+  --c-accent-light-rgb: 74, 222, 128;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #15803d;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="dark"][data-accent="orchid"] {
+  --c-accent-primary: #a824b5;
+  --c-accent-primary-rgb: 168, 36, 181;
+  --c-accent-secondary: #9d174d;
+  --c-accent-secondary-rgb: 157, 23, 77;
+  --c-accent-light: #e879f9;
+  --c-accent-light-rgb: 232, 121, 249;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #a824b5;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="dark"][data-accent="glacier"] {
+  --c-accent-primary: #0e7490;
+  --c-accent-primary-rgb: 14, 116, 144;
+  --c-accent-secondary: #0369a1;
+  --c-accent-secondary-rgb: 3, 105, 161;
+  --c-accent-light: #22d3ee;
+  --c-accent-light-rgb: 34, 211, 238;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0e7490;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atlas"][data-scheme="dark"][data-accent="azure"] {
+  --c-accent-primary: #0074dd;
+  --c-accent-primary-rgb: 0, 116, 221;
+  --c-accent-secondary: #4f46e5;
+  --c-accent-secondary-rgb: 79, 70, 229;
+  --c-accent-light: #4da3f2;
+  --c-accent-light-rgb: 77, 163, 242;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0074dd;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="light"][data-accent="ember"] {
+  --c-accent-primary: #b42318;
+  --c-accent-primary-rgb: 180, 35, 24;
+  --c-accent-secondary: #c01048;
+  --c-accent-secondary-rgb: 192, 16, 72;
+  --c-accent-light: #f97066;
+  --c-accent-light-rgb: 249, 112, 102;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #b42318;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="light"][data-accent="jade"] {
+  --c-accent-primary: #15803d;
+  --c-accent-primary-rgb: 21, 128, 61;
+  --c-accent-secondary: #166534;
+  --c-accent-secondary-rgb: 22, 101, 52;
+  --c-accent-light: #86efac;
+  --c-accent-light-rgb: 134, 239, 172;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #15803d;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="light"][data-accent="orchid"] {
+  --c-accent-primary: #9333ea;
+  --c-accent-primary-rgb: 147, 51, 234;
+  --c-accent-secondary: #c026d3;
+  --c-accent-secondary-rgb: 192, 38, 211;
+  --c-accent-light: #e879f9;
+  --c-accent-light-rgb: 232, 121, 249;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #9333ea;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="light"][data-accent="glacier"] {
+  --c-accent-primary: #0f766e;
+  --c-accent-primary-rgb: 15, 118, 110;
+  --c-accent-secondary: #155e75;
+  --c-accent-secondary-rgb: 21, 94, 117;
+  --c-accent-light: #5eead4;
+  --c-accent-light-rgb: 94, 234, 212;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0f766e;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="light"][data-accent="azure"] {
+  --c-accent-primary: #1d4ed8;
+  --c-accent-primary-rgb: 29, 78, 216;
+  --c-accent-secondary: #4338ca;
+  --c-accent-secondary-rgb: 67, 56, 202;
+  --c-accent-light: #93c5fd;
+  --c-accent-light-rgb: 147, 197, 253;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #1d4ed8;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="dark"][data-accent="ember"] {
+  --c-accent-primary: #bd2e21;
+  --c-accent-primary-rgb: 189, 46, 33;
+  --c-accent-secondary: #c01048;
+  --c-accent-secondary-rgb: 192, 16, 72;
+  --c-accent-light: #f97066;
+  --c-accent-light-rgb: 249, 112, 102;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #bd2e21;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="dark"][data-accent="jade"] {
+  --c-accent-primary: #15803d;
+  --c-accent-primary-rgb: 21, 128, 61;
+  --c-accent-secondary: #166534;
+  --c-accent-secondary-rgb: 22, 101, 52;
+  --c-accent-light: #86efac;
+  --c-accent-light-rgb: 134, 239, 172;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #15803d;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="dark"][data-accent="orchid"] {
+  --c-accent-primary: #9333ea;
+  --c-accent-primary-rgb: 147, 51, 234;
+  --c-accent-secondary: #c026d3;
+  --c-accent-secondary-rgb: 192, 38, 211;
+  --c-accent-light: #e879f9;
+  --c-accent-light-rgb: 232, 121, 249;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #9333ea;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="dark"][data-accent="glacier"] {
+  --c-accent-primary: #0f766e;
+  --c-accent-primary-rgb: 15, 118, 110;
+  --c-accent-secondary: #155e75;
+  --c-accent-secondary-rgb: 21, 94, 117;
+  --c-accent-light: #5eead4;
+  --c-accent-light-rgb: 94, 234, 212;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #0f766e;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}
+html[data-theme="atelier"][data-scheme="dark"][data-accent="azure"] {
+  --c-accent-primary: #2558e2;
+  --c-accent-primary-rgb: 37, 88, 226;
+  --c-accent-secondary: #4338ca;
+  --c-accent-secondary-rgb: 67, 56, 202;
+  --c-accent-light: #93c5fd;
+  --c-accent-light-rgb: 147, 197, 253;
+  --c-on-accent-primary: #ffffff;
+  --c-focus-ring: #2558e2;
+  --accent-primary: var(--c-accent-primary);
+  --accent-primary-rgb: var(--c-accent-primary-rgb);
+  --accent-secondary: var(--c-accent-secondary);
+  --accent-secondary-rgb: var(--c-accent-secondary-rgb);
+  --accent-light: var(--c-accent-light);
+}

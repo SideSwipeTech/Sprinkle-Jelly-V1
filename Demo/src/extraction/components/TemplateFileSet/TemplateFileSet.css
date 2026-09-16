@@ -1,0 +1,220 @@
+/* TemplateFileSet — the workspace-variant file-set surface. One bordered
+   instrument: file rail | tab strip / path row / editor / output dock, with an
+   optional checklist strip on the right (the learner checklist a template
+   carries). Regions join by hairline dividers and lose their own chrome —
+   the same fusion rule the Workbench applies to the suite panels, restated for
+   this arrangement's own classes (and the legacy kit classes, so mixed pages
+   fuse the same way). */
+
+.x-template-files {
+  display: grid;
+  /* The rail takes the named local-pane width; the editor column flexes. */
+  grid-template-columns: var(--shell-nav-dual-local-width) minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "rail tabs"
+    "rail path"
+    "rail editor"
+    "rail output";
+  /* Sixteen row-heights as the floor — scales with the identity's density. */
+  min-height: calc(var(--row-height) * 16);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--c-surface);
+  /* The split responds to the surface's own width, not the viewport. */
+  container-type: inline-size;
+}
+
+/* The checklist strip opens a third column beside the editor stack. */
+.x-template-files[data-side="checklist"] {
+  grid-template-columns: var(--shell-nav-dual-local-width) minmax(0, 1fr) var(--shell-nav-dual-local-width);
+  grid-template-areas:
+    "rail tabs side"
+    "rail path side"
+    "rail editor side"
+    "rail output side";
+}
+
+.x-template-files__rail {
+  grid-area: rail;
+  min-height: 0;
+  border-right: var(--border-width) solid var(--c-border);
+}
+
+.x-template-files__tabs {
+  grid-area: tabs;
+  min-width: 0;
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+/* The path row — the open file's address and its per-file actions, sitting
+   between the tab strip and the editor well as one continuous column. */
+.x-template-files__path {
+  grid-area: path;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-1) var(--space-3);
+  border-bottom: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-surface-inset) 40%, var(--c-surface));
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--c-text-muted);
+}
+
+.x-template-files__path-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.x-template-files__path-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: none;
+}
+
+.x-template-files__editor {
+  grid-area: editor;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  /* The well you type into — inset behind whatever editor mounts. */
+  background: var(--editor-bg, var(--c-surface-inset));
+}
+
+.x-template-files__editor > .x-editor,
+.x-template-files__editor > .pro-editor {
+  flex: 1;
+}
+
+/* The honest "no file open" block centres in the well. */
+.x-template-files__editor > .state-block {
+  margin: auto;
+}
+
+.x-template-files__output {
+  grid-area: output;
+  /* Four row-heights: the dock scales with the identity's density. */
+  height: calc(var(--row-height) * 4);
+  display: flex;
+  flex-direction: column;
+  border-top: var(--border-width) solid var(--c-border);
+  background: var(--c-surface);
+}
+
+.x-template-files__side {
+  grid-area: side;
+  min-height: 0;
+  padding: var(--space-3);
+  border-left: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-surface-inset) 40%, var(--c-surface));
+  overflow-y: auto;
+}
+
+.x-template-files__side-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-2xs);
+  text-transform: var(--micro-case, uppercase);
+  letter-spacing: var(--tracking-micro, normal);
+  color: var(--c-text-faint);
+}
+
+.x-template-files__tasks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.x-template-files__task {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+}
+
+.x-template-files__task-box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-3);
+  height: var(--space-3);
+  margin-top: var(--space-0);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-xs);
+  color: var(--c-success);
+}
+
+/* Panel fusion — inside the set the suite panels lose their own frame and
+   join by dividers. */
+.x-template-files .x-file-explorer,
+.x-template-files .file-explorer {
+  border: none;
+  border-radius: 0;
+  height: 100%;
+}
+
+.x-template-files .x-editor,
+.x-template-files .pro-editor {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 0;
+}
+
+.x-template-files .x-terminal,
+.x-template-files .pro-terminal {
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  height: 100%;
+  background: var(--terminal-bg, var(--c-surface));
+}
+
+.x-template-files .x-editor-tabs,
+.x-template-files .editor-tabs {
+  border: none;
+  border-radius: 0;
+}
+
+/* Narrow set: the rail stacks above the column and clips to four rows, the
+   checklist drops beneath. */
+@container (max-width: 45rem) {
+  .x-template-files,
+  .x-template-files[data-side="checklist"] {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "rail"
+      "tabs"
+      "path"
+      "editor"
+      "output"
+      "side";
+  }
+
+  .x-template-files__rail {
+    border-right: none;
+    border-bottom: var(--border-width) solid var(--c-border);
+  }
+
+  .x-template-files .x-file-explorer,
+  .x-template-files .file-explorer {
+    max-height: calc(var(--row-height) * 4);
+    overflow-y: auto;
+  }
+
+  .x-template-files__side {
+    border-left: none;
+    border-top: var(--border-width) solid var(--c-border);
+    max-height: calc(var(--row-height) * 4);
+  }
+}

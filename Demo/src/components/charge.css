@@ -1,0 +1,213 @@
+/* charge.css — one progress language, four fill behaviours.
+   The component decides WHAT is true; the identity decides HOW it fills. */
+
+.charge {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.charge__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.charge__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.charge__value {
+  font-size: var(--text-sm);
+  color: var(--c-text-primary);
+  flex: none;
+}
+
+.charge__track {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: color-mix(
+    in srgb,
+    var(--c-text-primary) calc(var(--charge-track-opacity) * 100%),
+    transparent
+  );
+}
+
+.charge__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--radius-pill);
+  background: var(--charge-gradient);
+  transition: width var(--duration-slow) var(--ease-enter);
+}
+
+.charge__edge {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 3px;
+  height: 100%;
+  transform: translateY(-50%);
+  border-radius: var(--radius-pill);
+  background: var(--c-accent-light);
+  box-shadow: var(--charge-edge-glow) var(--c-accent-light);
+}
+
+/* Unavailable: a hatched track, never an empty one. The pattern is the non-colour tell. */
+.charge__hatch {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-pill);
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--c-text-faint) 45%, transparent) 0 2px,
+    transparent 2px 6px
+  );
+}
+
+.charge__note {
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.charge[data-unavailable] .charge__value {
+  color: var(--c-text-faint);
+}
+
+/* ── Identity fill behaviours ─────────────────────────────────────────────── */
+
+/* Halo — sweep, then bloom. The boundary breathes at rest, so a full bar still feels
+   powered rather than parked. */
+:is([data-subtheme="halo"], html[data-theme="halo"]) .charge__edge {
+  width: 5px;
+  filter: blur(0.5px);
+  animation: charge-bloom 3.4s var(--ease-hover) infinite;
+}
+
+@keyframes charge-bloom {
+  0%, 100% { opacity: 0.75; box-shadow: var(--charge-edge-glow) var(--c-accent-light); }
+  50%      { opacity: 1; box-shadow: 0 0 22px var(--c-accent-light); }
+}
+
+/* Voyage — a travelling head that runs ahead of the fill and trails behind it. */
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .charge__fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--c-accent-light) 55%, transparent) 50%,
+    transparent 100%
+  );
+  animation: charge-travel 2.6s var(--ease-cinematic) infinite;
+}
+
+@keyframes charge-travel {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .charge__edge {
+  width: 2px;
+  box-shadow: 0 0 20px var(--c-accent-light), 0 0 40px var(--c-accent-primary);
+}
+
+/* Forge — the fill draws, and the edge pulses once per cycle like a routed trace
+   reaching its terminus. Square edge: this identity has no soft terminals. */
+:is([data-subtheme="forge"], html[data-theme="forge"]) .charge__track,
+:is([data-subtheme="forge"], html[data-theme="forge"]) .charge__fill {
+  border-radius: var(--radius-xs);
+}
+
+:is([data-subtheme="forge"], html[data-theme="forge"]) .charge__edge {
+  width: 2px;
+  border-radius: 0;
+  animation: charge-pulse 2.2s steps(1, end) infinite;
+}
+
+@keyframes charge-pulse {
+  0%, 60%  { opacity: 1; }
+  61%, 78% { opacity: 0.35; }
+  79%      { opacity: 1; }
+}
+
+/* Meridian — no fill animation, no glow, no edge. The number does the talking, and the
+   track is squared so the shape itself is legible without relying on the gradient. */
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .charge__track,
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .charge__fill {
+  border-radius: var(--radius-xs);
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .charge__fill {
+  transition: none;
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .charge__edge {
+  display: none;
+}
+
+/* ── Ring ─────────────────────────────────────────────────────────────────── */
+
+.charge-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.charge-ring svg {
+  position: absolute;
+  inset: 0;
+}
+
+.charge-ring__arc {
+  transition: stroke-dasharray var(--duration-slow) var(--ease-enter);
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .charge-ring__arc {
+  transition: none;
+}
+
+.charge-ring__head {
+  filter: drop-shadow(0 0 4px var(--c-accent-light));
+}
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .charge-ring__head {
+  animation: ring-breathe 3.4s var(--ease-hover) infinite;
+}
+
+@keyframes ring-breathe {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
+
+:is([data-subtheme="meridian"], html[data-theme="meridian"]) .charge-ring__head {
+  display: none;
+}
+
+.charge-ring__centre {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.charge-ring__value {
+  font-size: var(--text-2xl);
+  color: var(--c-text-primary);
+}
+
+.charge-ring[data-unavailable] .charge-ring__value {
+  color: var(--c-text-faint);
+}

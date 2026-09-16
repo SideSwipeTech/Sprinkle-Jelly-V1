@@ -1,0 +1,190 @@
+/* icon.css — treatments and the six animations.
+   Every animation runs on the charge group while the structure holds still. That contrast
+   is the point: the drawing is stable, the energy in it is not. */
+
+.icon {
+  display: block;
+  flex: none;
+  overflow: visible;
+}
+
+.icon-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.icon__structure,
+.icon__charge {
+  fill: none;
+}
+
+.icon__charge :is(circle, ellipse, path)[stroke="none"] {
+  fill: url(#wz-charge);
+  stroke: none;
+}
+
+/* Default is Keyline: drafted butt/miter. Halo, Platform, and Atelier switch to
+   rounded premium via data-icon-style on <html>. Caps live in CSS so a family
+   change restyles every glyph without a React re-render. */
+.icon__structure {
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 2;
+}
+
+html[data-icon-style="rounded"] .icon__structure {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+html[data-icon-style="rounded"] .icon__plate {
+  rx: 8px;
+}
+
+/* ── Treatments ─────────────────────────────────────────────────────────── */
+
+/* Duotone — structure recedes so the charge reads first. For dense surfaces. */
+.icon--duotone .icon__structure { opacity: 0.55; }
+
+/* Etched — the mark reads as cut into the surface. Two ghost passes, one above and one
+   below, using the identity's own text colour rather than a literal black/white. */
+.icon--etched .icon__structure {
+  filter:
+    drop-shadow(0 -0.7px 0 color-mix(in srgb, var(--c-surface-inset) 85%, transparent))
+    drop-shadow(0 0.7px 0 color-mix(in srgb, var(--c-text-primary) 13%, transparent));
+}
+
+/* Plate — containment. One rounded rect behind the glyph, for card headers and tiles. */
+.icon__plate {
+  fill: color-mix(in srgb, var(--c-accent-primary) 12%, transparent);
+  stroke: color-mix(in srgb, var(--c-accent-primary) 26%, transparent);
+  stroke-width: 1;
+}
+
+/* Mono — single-colour contexts. BOTH layers still render: dropping the charge would
+   collapse six glyphs into a plain circle. */
+.icon--mono .icon__charge { stroke: currentColor; opacity: 0.62; }
+
+/* ── The six animations ─────────────────────────────────────────────────── */
+
+.icon--draw .icon__charge,
+.icon--trace .icon__charge,
+.icon--flow .icon__charge,
+.icon--orbit .icon__charge,
+.icon--settle .icon__charge {
+  /* A generous dash length covers the longest charge path in the set; the exact length
+     does not matter as long as it exceeds the path, because we animate the offset. */
+  stroke-dasharray: 64;
+}
+
+/* Charge draw — fires once on mount or route change. */
+.icon--draw .icon__charge {
+  animation: icon-draw 620ms var(--ease-enter) both;
+}
+
+@keyframes icon-draw {
+  from { stroke-dashoffset: 64; opacity: 0; }
+  to   { stroke-dashoffset: 0; opacity: 1; }
+}
+
+/* Trace — structure draws first, then the charge follows it in. Empty states, first paint. */
+.icon--trace .icon__structure {
+  stroke-dasharray: 120;
+  animation: icon-trace-structure 780ms var(--ease-enter) both;
+}
+
+.icon--trace .icon__charge {
+  animation: icon-draw 520ms var(--ease-enter) 420ms both;
+}
+
+@keyframes icon-trace-structure {
+  from { stroke-dashoffset: 120; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* Flow — loops. Running jobs, live sessions. The dash travels continuously, so the glyph
+   reads as carrying something rather than as waiting. */
+.icon--flow .icon__charge {
+  stroke-dasharray: 8 6;
+  animation: icon-flow 1.4s var(--ease-linear) infinite;
+}
+
+@keyframes icon-flow {
+  from { stroke-dashoffset: 28; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* Pulse — fires once. Notification arrival, XP gained. */
+.icon--pulse .icon__charge {
+  animation: icon-pulse 720ms var(--ease-enter) both;
+  transform-origin: center;
+}
+
+@keyframes icon-pulse {
+  0%   { opacity: 0.35; transform: scale(0.86); }
+  55%  { opacity: 1; transform: scale(1.14); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Orbit — loops. Loaders and indeterminate work. The charge rotates around the structure,
+   which stays put — an honest "something is happening" that never implies progress. */
+.icon--orbit .icon__charge {
+  animation: icon-orbit 1.5s var(--ease-linear) infinite;
+  transform-origin: 12px 12px;
+}
+
+@keyframes icon-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Settle — fires once. Confirmations. Overshoots slightly and comes to rest. */
+.icon--settle .icon__charge {
+  animation: icon-settle 540ms var(--ease-settle) both;
+  transform-origin: center;
+}
+
+@keyframes icon-settle {
+  0%   { opacity: 0; transform: translateY(-3px) scale(0.94); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────
+   The looping animations are the ones that matter here: `flow` and `orbit` say "live" and
+   "working". Stopping them dead would remove the meaning, so under reduction they hold at
+   a fully-drawn resting state and the surrounding component carries the fact in words —
+   never a spinner that silently stops spinning. */
+@media (prefers-reduced-motion: reduce) {
+  .icon__charge,
+  .icon__structure {
+    animation: none !important;
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+[data-reduced-motion="true"] .icon__charge,
+[data-reduced-motion="true"] .icon__structure {
+  animation: none !important;
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ── Identity nudges ─────────────────────────────────────────────────────
+   Meridian spends its budget on stillness, so looping icon motion is suppressed there
+   even when a caller asks for it. The caller does not need to know which identity is
+   active — that is the whole point of putting it here. */
+html[data-theme="meridian"] .icon--flow .icon__charge,
+html[data-theme="meridian"] .icon--orbit .icon__charge {
+  animation: none;
+  stroke-dasharray: none;
+}
+
+html[data-theme="forge"] .icon__charge { stroke-linecap: square; }

@@ -1,0 +1,83 @@
+/* HintLadder — progressive rung reveal. The rung tint is the identity's accent
+   at low mix (was rgba(99,102,241,.08)/.25 literals — indigo hardcoded). */
+
+.x-hint-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.x-hint-ladder__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.x-hint-ladder__label {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-bold);
+  text-transform: var(--micro-case);
+  letter-spacing: var(--tracking-micro, normal);
+  color: var(--c-accent-primary);
+}
+
+.x-hint-ladder__reveal {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: calc(var(--space-1) / 2) var(--space-2);
+  font-size: var(--text-2xs);
+  font-family: inherit;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-xs);
+  color: var(--c-accent-primary);
+  cursor: pointer;
+}
+
+.x-hint-ladder__reveal:hover {
+  text-decoration: underline;
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, transparent);
+}
+
+.x-hint-ladder__reveal:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+.x-hint-ladder__rungs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.x-hint-ladder__note {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+}
+
+.x-hint-ladder__rung {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--c-accent-primary) 8%, transparent);
+  border: var(--border-width) solid color-mix(in srgb, var(--c-accent-primary) 25%, transparent);
+  font-size: var(--text-xs);
+}
+
+.x-hint-ladder__rung-title {
+  color: var(--c-accent-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.x-hint-ladder__rung-body {
+  margin: var(--space-1) 0 0;
+  color: var(--c-text-primary);
+  white-space: pre-wrap;
+  line-height: var(--body-line-height);
+}

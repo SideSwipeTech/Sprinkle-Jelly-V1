@@ -1,0 +1,287 @@
+/* QuestionEditor — the studio's question form. All spacing/radius/type read
+   tokens; invalid state rides data-invalid and is never colour alone (each
+   invalid region also carries a named error line). */
+
+.x-question-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.x-question-editor__label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--c-text-primary);
+}
+
+.x-question-editor__hint {
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-question-editor__kind {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.x-question-editor__kind-pick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.x-question-editor__kind-chip {
+  align-self: flex-start;
+}
+
+.x-question-editor__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: var(--space-4);
+}
+
+.x-question-editor__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.x-question-editor__field :is(input, textarea, select) {
+  min-height: var(--space-8);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font: inherit;
+  transition: border-color var(--duration-fast) var(--ease-hover);
+}
+
+.x-question-editor__field textarea {
+  min-height: var(--space-11);
+  padding: var(--space-2) var(--space-3);
+  resize: vertical;
+}
+
+.x-question-editor__field :is(input, textarea, select):focus-visible {
+  border-color: var(--c-border-interactive);
+  outline: none;
+}
+
+.x-question-editor__field[data-invalid] :is(input, textarea, select) {
+  border-color: var(--c-error);
+}
+
+.x-question-editor__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+}
+
+.x-question-editor__options[data-invalid] {
+  border-color: var(--c-error);
+}
+
+.x-question-editor__option {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.x-question-editor__option input[type="radio"],
+.x-question-editor__option input[type="checkbox"],
+.x-question-editor__case input[type="checkbox"] {
+  accent-color: var(--c-accent-primary);
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.x-question-editor__option-text {
+  min-height: var(--space-8);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font: inherit;
+}
+
+.x-question-editor__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-6);
+  height: var(--space-6);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-faint);
+  cursor: pointer;
+}
+
+.x-question-editor__remove:hover {
+  color: var(--c-error);
+  background: color-mix(in srgb, var(--c-error) 12%, transparent);
+}
+
+.x-question-editor__key,
+.x-question-editor__cases {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: var(--border-width) dashed var(--c-border-strong);
+  border-radius: var(--radius-md);
+}
+
+.x-question-editor__key[data-invalid],
+.x-question-editor__cases[data-invalid] {
+  border-color: var(--c-error);
+  border-style: solid;
+}
+
+.x-question-editor__key-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--c-text-muted);
+}
+
+.x-question-editor__key-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: var(--space-3);
+}
+
+.x-question-editor__tf {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.x-question-editor__mismatch {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--c-error) 10%, transparent);
+  color: var(--c-error);
+  font-size: var(--text-sm);
+}
+
+.x-question-editor__case {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+}
+
+.x-question-editor__case[data-hidden] {
+  outline: var(--border-width) dashed var(--c-border-strong);
+}
+
+.x-question-editor__case-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.x-question-editor__case-vis {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-muted);
+}
+
+.x-question-editor__case-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: var(--space-2);
+}
+
+.x-question-editor__case-grid :is(input, select) {
+  min-height: var(--space-8);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.x-question-editor__error {
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-error);
+}
+
+.x-question-editor__errors {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--c-error);
+  background: color-mix(in srgb, var(--c-error) 8%, transparent);
+  color: var(--c-text-primary);
+  font-size: var(--text-sm);
+}
+
+.x-question-editor__errors ul {
+  margin: var(--space-1) 0 0;
+  padding-left: var(--space-4);
+}
+
+.x-question-editor__save {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.x-question-editor__save-note {
+  font-size: var(--text-xs);
+  color: var(--c-error);
+}
+
+/* Locked — the published read: one disabled fieldset carries the freeze; the
+   frozen note names the state in words, not just greyed controls. */
+
+.x-question-editor__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+}
+
+.x-question-editor__fieldset:disabled :is(input, textarea, select, button) {
+  cursor: default;
+}
+
+.x-question-editor__frozen {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border);
+  background: var(--c-surface-inset);
+  color: var(--c-text-muted);
+  font-size: var(--text-xs);
+}

@@ -1,0 +1,105 @@
+/* StateBlock — adopted verbatim from card.css:53-146, renamed into the x- space.
+   Per-state tone: the icon and the border pattern are the non-colour carriers,
+   so a viewer who cannot distinguish these hues still gets the full distinction. */
+
+.x-state-block {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: var(--border-width) dashed var(--c-border-strong);
+  background: color-mix(in srgb, var(--c-surface-inset) 45%, transparent);
+}
+
+.x-state-block--compact {
+  padding: var(--space-2) var(--space-3);
+  gap: var(--space-2);
+}
+
+.x-state-block__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--c-text-muted);
+}
+
+.x-state-block__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.x-state-block__message {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}
+
+.x-state-block__meta {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.x-state-block__action {
+  flex: none;
+}
+
+/* ── The seven keys ─────────────────────────────────────────────────────────
+   Each is a tone AND a construction — the construction is the tell. */
+
+/* data — nominal. Solid neutral frame, check mark. */
+.x-state-block[data-state="data"] {
+  border-style: solid;
+  border-color: var(--c-border);
+}
+.x-state-block[data-state="data"] .x-state-block__mark { color: var(--c-success); }
+
+/* stale — aged figure. Dashed border (the freshness tell), clock mark, as-of line. */
+.x-state-block[data-state="stale"] {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--c-warning) 45%, var(--c-border));
+}
+.x-state-block[data-state="stale"] .x-state-block__mark { color: var(--c-warning); }
+
+/* pending — work in progress. Solid frame, loader mark runs `flow`. Not a failure. */
+.x-state-block[data-state="pending"] {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--c-info) 40%, var(--c-border));
+}
+.x-state-block[data-state="pending"] .x-state-block__mark { color: var(--c-info); }
+
+/* unavailable — hatched, the same tell the charge track uses, so the two read as
+   one idea across the system rather than two unrelated empty styles. */
+.x-state-block[data-state="unavailable"] {
+  border-style: solid;
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--c-text-faint) 12%, transparent) 0 var(--space-1),
+    transparent var(--space-1) calc(var(--space-2) + var(--space-1))
+  );
+}
+
+/* empty — an open field. Dashed outline, inbox mark traced in. */
+.x-state-block[data-state="empty"] {
+  border-style: dashed;
+}
+
+/* refused — a barrier. Solid border plus the -45deg barrier hatch (opposing the
+   unavailable hatch so the two muted states stay visually distinct). */
+.x-state-block[data-state="refused"] {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--c-error) 50%, var(--c-border));
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--c-error) 10%, transparent) 0 var(--space-2),
+    transparent var(--space-2) calc(var(--space-3) + var(--space-1))
+  );
+}
+.x-state-block[data-state="refused"] .x-state-block__mark { color: var(--c-error); }
+.x-state-block[data-state="refused"] .x-state-block__message { color: var(--c-text-primary); }
+
+/* pruned — detail aged out. Dotted border, history mark. */
+.x-state-block[data-state="pruned"] {
+  border-style: dotted;
+}

@@ -1,0 +1,51 @@
+/* UnreadListRow — the notification record. The row frame and the `data-unread`
+   accent edge live in ListRow.css (containers/ListRow) — this sheet owns only
+   the row's inner anatomy and the NEW marker.
+   Source: Account.tsx:72-88. */
+
+.x-unread-list-row__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.x-unread-list-row__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.x-unread-list-row__title {
+  font-size: var(--text-base);
+  color: var(--c-text-primary);
+  min-width: 0;
+}
+
+.x-unread-list-row__meta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--c-text-faint);
+  font-size: var(--text-sm);
+}
+
+/* The NEW marker — the demo's `background: accent; color: "white"` chip.
+   On-accent ink is a token because it is not white in every theme. */
+.x-unread-list-row__new {
+  padding: calc(var(--space-1) * 0.5) var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case);
+  /* --tracking-micro is a needed token — falls back to normal until it lands. */
+  letter-spacing: var(--tracking-micro, normal);
+}
+
+.x-unread-list-row__body {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}

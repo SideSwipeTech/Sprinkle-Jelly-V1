@@ -1,0 +1,90 @@
+/* ListRow — the row stack. Canonicalises `.list` / `.list-row` (app.css:83-102).
+
+   Two fixed behaviours the demo carried:
+   - hover accent painted on EVERY row, including static div/article records —
+     an affordance that promised interactivity nothing honoured. Now only real
+     interactive elements (a / button) get it.
+   - the solved `border-left: 3px solid #2dd4bf` (Practice.tsx:184) and unread
+     `border-left: 3px solid var(--c-accent-primary)` (Account.tsx:72) inline
+     literals are now `data-done` / `data-unread` edge tells — a thicker edge is
+     a shape tell, not colour alone. */
+
+.x-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.x-list-row {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--c-border);
+  text-align: left;
+  background: transparent;
+  color: inherit;
+  width: 100%;
+  min-width: 0;
+  transition:
+    border-color var(--duration-fast) var(--ease-hover),
+    background-color var(--duration-fast) var(--ease-hover);
+}
+
+/* ── Variants ────────────────────────────────────────────────────────────── */
+
+/* Single-line rows — the demo's recurring `alignItems: "center"` override. */
+.x-list-row--center {
+  align-items: center;
+}
+
+/* ── States ──────────────────────────────────────────────────────────────── */
+
+/* Hover is a truthful affordance: interactive rows only. `[data-hover]` is the
+   sink pin — it paints the same state statically for the matrix. */
+a.x-list-row:hover,
+button.x-list-row:hover,
+a.x-list-row[data-hover],
+button.x-list-row[data-hover] {
+  border-color: var(--c-accent-primary);
+}
+
+.x-list-row[data-on] {
+  border-color: var(--c-accent-primary);
+}
+
+/* Edge stripes removed — done reads through its Done chip + check, unread
+   through the dot + weight. Never a colour seam on the row's edge. */
+
+.x-list-row:focus-visible,
+.x-list-row[data-focus] {
+  /* Mirrors the one global ring (base.css) — width derives from border-width. */
+  outline: calc(var(--border-width) + 1px) solid var(--c-focus-ring);
+  outline-offset: calc(var(--border-width) + 1px);
+}
+
+/* Disabled — real inert semantics, never pointer-events + opacity. */
+.x-list-row[data-disabled] {
+  opacity: 0.55;
+}
+
+a.x-list-row[data-disabled]:hover,
+button.x-list-row[data-disabled]:hover {
+  border-color: var(--c-border);
+}
+
+button.x-list-row {
+  cursor: pointer;
+}
+
+button.x-list-row[data-disabled],
+a.x-list-row[data-disabled] {
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-list-row {
+    transition: none;
+  }
+}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" data-theme="halo" data-scheme="dark" data-subtheme="halo" data-icon-style="rounded">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wizly Labs — product prototype</title>
+    <meta
+      name="description"
+      content="Learner product frontend prototype. Presentation (T3) is not locked. Design library remains on port 5190."
+    />
+    <!-- Pre-paint: put the four ruled appearance axes on <html> before the first frame, so
+         no default paints and then jumps. It expresses "theme default" as the ABSENCE of
+         data-accent, resolves *follow system* itself, and reads no retired key — the custom
+         accent hex (wp.accentHex) is not a launch option and is not honoured here; a
+         load-time normalization in src/foundation/appearance.ts clears it and the other
+         retired keys off devices that still carry them.
+         (owner review: OR-O20 — pack O, O-A/OR-O3) -->
+    <script>
+      (function () {
+        var THEMES = ["halo", "voyage", "forge", "meridian", "atlas", "atelier"];
+        var SCHEMES = ["light", "dark"];
+        var ACCENTS = ["ember", "jade", "orchid", "glacier", "azure"];
+        var root = document.documentElement;
+        var remembered = true;
+
+        function read(key, allowed, fallback) {
+          try {
+            var v = window.localStorage.getItem(key);
+            return allowed.indexOf(v) !== -1 ? v : fallback;
+          } catch (e) {
+            remembered = false;
+            return fallback;
+          }
+        }
+
+        var NAVS = ["rail", "spine", "command", "dock", "dual"];
+        var TYPES = ["identity", "bricolage", "sora", "archivo", "inter"];
+        var HYBRID = ["halo", "voyage", "forge", "meridian"];
+        var theme = read("wp.theme", THEMES, "halo");
+        var scheme = read("wp.scheme", SCHEMES, "dark");
+        // Follow system is a selection mode (PRF-R6): resolve it here so no default paints first.
+        var schemeMode = read("wp.schemeMode", ["light", "dark", "system"], scheme);
+        if (schemeMode === "system") {
+          try { scheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"; } catch (e) {}
+        } else {
+          scheme = schemeMode;
+        }
+        // Accent: a stored tint selects the package's per-identity value; no key means the
+        // identity's own accent ("theme default"), which is the absence of data-accent
+        // (pack O, O-A) — never a hex written here (owner review: OR-O20).
+        var accent = read("wp.accent", ACCENTS, null);
+        var nav = read("wp.nav", NAVS, "rail");
+        var typeface = read("wp.typeface", TYPES, "identity");
+        var iconStyle = theme === "halo" || theme === "atlas" || theme === "atelier" ? "rounded" : "keyline";
+
+        root.setAttribute("data-theme", theme);
+        root.setAttribute("data-scheme", scheme);
+        if (HYBRID.indexOf(theme) !== -1) root.setAttribute("data-subtheme", theme);
+        else root.removeAttribute("data-subtheme");
+        root.setAttribute("data-nav", nav);
+        root.setAttribute("data-icon-style", iconStyle);
+        if (typeface !== "identity") root.setAttribute("data-type", typeface);
+        if (accent) root.setAttribute("data-accent", accent);
+        else root.removeAttribute("data-accent");
+        if (!remembered) root.setAttribute("data-appearance-unremembered", "true");
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

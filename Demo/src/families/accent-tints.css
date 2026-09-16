@@ -1,0 +1,35 @@
+/* The accent axis carries NO VALUE in this file any more.
+
+   Ruled 2026-08-23 (O-A; pack O): the accent is one of the four appearance axes the
+   learner chooses in Settings › Appearance, so its sixty values — six identities x two
+   schemes x five tints — are stated in the presentation package
+   (`package/values.json`, `accents`) and emitted by `package/generate.mjs` into
+   `src/tokens/subthemes.css` as
+   `html[data-theme="<identity>"][data-scheme="<scheme>"][data-accent="<tint>"]` rules,
+   every one gated to WCAG 2.2 AA at generate time. Fifty-one value rules used to live
+   here; they were lifted, not rewritten, and three of them moved along their own hue
+   because they failed the gate — `accents.values.*._derived` records which and why.
+
+   Two things stayed, because neither is a value:
+
+   1. The charge gradient's TOKEN form. It resolves through --c-accent-*, so an identity
+      whose `charge.gradientForm` is `token` retints its progress bar with its buttons.
+      Halo's is `literal` by design — its aurora is the identity, not a tint — and its
+      palette rule outweighs this one, which is how that stays true.
+   2. The focus ring's fallback. The package now derives --c-focus-ring per accent cell
+      at (0,3,1); this declaration is the floor beneath it and is what covers an accent
+      applied to something the package does not state a cell for.
+
+   `html[data-accent="custom"]` was removed with the values: OR-O3 makes a custom hex a
+   later-version candidate and not a launch option, because no gate can certify an
+   arbitrary colour before it is chosen (docs/IMPROVEMENTS.md). */
+
+html[data-accent] {
+  --c-focus-ring: var(--c-accent-primary);
+  --charge-gradient: linear-gradient(
+    90deg,
+    var(--c-accent-primary) var(--charge-stop-1, 0%),
+    var(--c-accent-secondary) var(--charge-stop-2, 55%),
+    var(--c-accent-light) var(--charge-stop-3, 100%)
+  );
+}

@@ -1,0 +1,482 @@
+/* courses.css — CRS. Two families, two panels, one Continue region. */
+
+.courses { display: flex; flex-direction: column; gap: var(--space-6); }
+
+.courses__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.courses__intro { min-width: 0; }
+.courses__title { font-size: var(--text-4xl); margin: var(--space-1) 0; }
+.courses__lede { margin: 0; color: var(--c-text-muted); max-width: 56ch; font-size: var(--text-sm); }
+
+/* ── Tabs (CRS-F1) — two visibly separate destinations, not a segmented control ── */
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--space-3);
+}
+
+.tabs__tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  color: var(--c-text-muted);
+  text-align: left;
+  transition:
+    border-color var(--duration-fast) var(--ease-hover),
+    background-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+
+.tabs__tab span { display: flex; flex-direction: column; min-width: 0; }
+.tabs__tab strong { font-family: var(--font-display); font-size: var(--text-base); color: inherit; }
+.tabs__tab small { font-size: var(--text-2xs); color: var(--c-text-faint); }
+
+.tabs__tab:hover { border-color: var(--c-accent-primary); color: var(--c-text-primary); }
+
+.tabs__tab[aria-selected="true"] {
+  border-color: var(--c-accent-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, var(--c-surface));
+  color: var(--c-text-primary);
+}
+
+/* The selected tab carries a charge edge — the same "you are here" language the rail uses,
+   rather than a second vocabulary invented for tabs. */
+.tabs__tab[aria-selected="true"] {
+  box-shadow: inset 0 -3px 0 0 var(--c-accent-primary);
+}
+
+.tabs__count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-faint);
+}
+
+/* ── Filters — each tab owns its own (CRS-R1) ── */
+
+.panel { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.filters__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1 1 260px;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  color: var(--c-text-faint);
+}
+
+.filters__search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--c-text-primary);
+  font-size: var(--text-sm);
+}
+
+.filters__select { display: flex; align-items: center; gap: var(--space-2); }
+
+.filters__select select {
+  padding: var(--space-2) var(--space-2);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+  font-size: var(--text-sm);
+}
+
+.filters__count { margin: 0; margin-left: auto; color: var(--c-text-faint); }
+
+/* ── Cards ── */
+
+.courses__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--stack-gap);
+  align-items: start;
+}
+
+.course__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.course__count {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.course__optional {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+.course__affordances {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: var(--space-3) 0 0;
+  border-top: var(--border-width) solid var(--c-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.course__affordances li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-2xs);
+  color: var(--c-text-muted);
+}
+
+.course__affordances svg { color: var(--c-success); }
+
+/* ── Coverage vocabulary (CRS-R5) ──────────────────────────────────────────
+   Four words, and each carries a distinct dot treatment so the state survives
+   greyscale. Never "mastered", never a percentage on its own as a claim. */
+
+.coverage {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--c-border-strong);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-muted);
+}
+
+.coverage__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+}
+
+.coverage[data-coverage="not-started"] { color: var(--c-text-faint); }
+
+.coverage[data-coverage="learning"] { color: var(--c-accent-primary); }
+.coverage[data-coverage="learning"] .coverage__dot {
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+}
+
+.coverage[data-coverage="covered"] { color: var(--c-info); }
+.coverage[data-coverage="covered"] .coverage__dot { background: currentColor; }
+
+.coverage[data-coverage="completed"] { color: var(--c-success); }
+.coverage[data-coverage="completed"] .coverage__dot {
+  background: currentColor;
+  box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 30%, transparent);
+}
+
+/* ── Catalogue cards ─────────────────────────────────────────────────────── */
+
+.course-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--display-weight);
+}
+.course-card__title a { color: inherit; }
+.course-card__title a:hover { color: var(--c-accent-primary); }
+
+.course-card__summary {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+}
+
+.course-card__progress {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+}
+
+/* A chapter/section label inside a card or the outline — the learner-side
+   counterpart of the studio's cs-label. */
+.outline-label {
+  margin: var(--space-3) 0 var(--space-1);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case, uppercase);
+  letter-spacing: var(--tracking-micro, 0.08em);
+  color: var(--c-text-faint);
+}
+
+/* The returning-learner change record — a card read, set off by surface only. */
+.change-brief {
+  background: color-mix(in srgb, var(--c-surface-inset) 55%, var(--c-surface));
+}
+
+/* ── The reader (W06) — outline rail beside the content pane ─────────────── */
+
+.reader {
+  display: grid;
+  gap: var(--stack-gap);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .reader { grid-template-columns: minmax(230px, 280px) minmax(0, 1fr); }
+  .reader__rail { position: sticky; top: var(--space-4); }
+  .reader__contents-btn { display: none; }
+}
+
+.reader__rail {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  max-height: calc(100dvh - var(--space-10));
+  overflow-y: auto;
+}
+@media (min-width: 960px) {
+  .reader__rail { display: flex; }
+}
+
+.reader__contents-btn { align-self: flex-start; }
+
+.reader__rail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2) var(--space-2);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+.reader__outline { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.reader__chapter-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case, uppercase);
+  letter-spacing: var(--tracking-micro, 0.08em);
+  text-align: left;
+  cursor: pointer;
+}
+.reader__chapter-head:hover { color: var(--c-text-primary); }
+.reader__chapter[data-current] > .reader__chapter-head { color: var(--c-text-primary); }
+
+.reader__lessons {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.reader__lesson {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-2);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  font-size: var(--text-xs);
+  text-align: left;
+  cursor: pointer;
+}
+.reader__lesson:hover { color: var(--c-text-primary); }
+.reader__lesson[aria-current="page"] {
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, var(--c-surface));
+  border-color: color-mix(in srgb, var(--c-accent-primary) 35%, var(--c-border));
+  color: var(--c-text-primary);
+}
+.reader__lesson[data-done] .reader__lesson-title { color: var(--c-text-faint); }
+.reader__lesson[data-done] > .icon:last-child,
+.reader__lesson[data-done] svg:last-child { color: var(--c-success); }
+/* Sequential gating dims the row but never disables it — the click explains. */
+.reader__lesson[data-locked] { opacity: 0.55; }
+
+.reader__lesson-n {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+  padding-top: 1px;
+}
+
+.reader__lesson-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.reader__lesson-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-medium);
+}
+.reader__lesson-meta { font-size: var(--text-2xs); color: var(--c-text-faint); }
+
+.reader__content { min-width: 0; display: flex; flex-direction: column; gap: var(--stack-gap); }
+
+.reader__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.reader__body { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* Callouts — the authored kinds the block set allows. */
+.reader__callout {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+  border: var(--border-width) solid var(--c-border);
+}
+.reader__callout[data-kind="key-takeaway"] {
+  border-color: color-mix(in srgb, var(--c-accent-primary) 45%, var(--c-border));
+}
+.reader__callout p { margin: 0; }
+.reader__callout-label {
+  margin: 0 0 var(--space-1);
+  color: var(--c-text-faint);
+  font-weight: var(--weight-semibold);
+}
+.reader__callout[data-kind="key-takeaway"] .reader__callout-label { color: var(--c-accent-primary); }
+
+.reader__block-heading { margin: 0; }
+.reader__figure { margin: 0; }
+.reader__figure img { max-width: 100%; border-radius: var(--radius-md); }
+
+.reader__quiz { display: flex; flex-direction: column; gap: var(--space-4); }
+.reader__question {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.reader__question:disabled .choice { cursor: default; }
+.reader__question-prompt {
+  padding: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-primary);
+}
+.choice[data-wrong] {
+  border-color: var(--c-error);
+  background: color-mix(in srgb, var(--c-error) 8%, transparent);
+}
+.reader__choice-letter { font-weight: var(--weight-semibold); margin-right: var(--space-2); }
+.reader__why { padding-left: var(--space-4); }
+
+.reader__outcomes {
+  border-top: var(--border-width) solid var(--c-border);
+  padding-top: var(--space-3);
+}
+
+.reader__reference {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+
+.reader__video {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+}
+.reader__video-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+  cursor: pointer;
+}
+.reader__video-toggle:hover { border-color: var(--c-accent-primary); }
+
+/* ── Video course surface ────────────────────────────────────────────────── */
+
+.reader__video-stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+}
+.reader__video-screen {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+}
+.reader__video-speed {
+  font-size: var(--text-2xs);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-xs);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+}
+.reader__transcript {
+  max-height: 180px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-right: var(--space-2);
+}

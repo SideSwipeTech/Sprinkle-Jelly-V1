@@ -1,0 +1,45 @@
+/* RouteNotFound — was .route-not-found (app.css, adopted token-clean). */
+
+.x-route-not-found {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.x-route-not-found__icon {
+  flex: none;
+  width: var(--space-10);
+  height: var(--space-10);
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  color: var(--c-text-faint);
+  background: var(--c-surface-inset);
+  border: var(--border-width) solid var(--c-border);
+}
+
+.x-route-not-found__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.x-route-not-found__title {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--c-text-primary);
+}
+
+.x-route-not-found__detail {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+}
+
+.x-route-not-found__action {
+  flex: none;
+}
+
+@media (max-width: 560px) {
+  .x-route-not-found { flex-wrap: wrap; }
+  .x-route-not-found__action { flex-basis: 100%; }
+}

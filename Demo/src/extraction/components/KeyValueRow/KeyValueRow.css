@@ -1,0 +1,97 @@
+/* KeyValueRow — term left, value right. Merges DiagnosticRow (Assess.tsx:403),
+   ProfileFactRow (Assess.tsx:871) and the `.account-facts` dl strip
+   (app.css:213-217).
+
+   Class contract is fixed: CompletionFactPanel (domain/) already emits
+   `x-key-value` / `x-key-value__row` / `__term` / `__value` — this sheet is the
+   implementation it composes onto.
+
+   Off-scale metrics are component tokens, stated once: */
+
+.x-key-value {
+  /* --x-kv-term-min — the term column floor (was minmax(120px, .45fr)). */
+  --x-kv-term-min: 120px;
+
+  display: grid;
+  margin: 0;
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* ── The row — bare pair by default ─────────────────────────────────────── */
+
+.x-key-value__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+  min-width: 0;
+}
+
+/* The standalone inset pill — the diagnostics/profile surface. */
+.x-key-value__row--inset {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+}
+
+.x-key-value__term {
+  min-width: 0;
+}
+
+.x-key-value__value {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  color: var(--c-text-primary);
+  font-weight: var(--weight-semibold);
+  text-align: right;
+  min-width: 0;
+}
+
+/* Value tones — colour reinforces the text/icon tell, never carries alone. */
+.x-key-value__row[data-tone="success"] .x-key-value__value { color: var(--c-success); }
+.x-key-value__row[data-tone="warning"] .x-key-value__value { color: var(--c-warning); }
+.x-key-value__row[data-tone="error"]   .x-key-value__value { color: var(--c-error); }
+.x-key-value__row[data-tone="info"]    .x-key-value__value { color: var(--c-info); }
+.x-key-value__row[data-tone="accent"]  .x-key-value__value { color: var(--c-accent-primary); }
+.x-key-value__row[data-tone="muted"]   .x-key-value__value { color: var(--c-text-muted); font-weight: var(--weight-regular); }
+
+/* ── Inside the dl strip — ruled rows on the term/value grid ────────────── */
+
+.x-key-value > .x-key-value__row {
+  display: grid;
+  grid-template-columns: minmax(var(--x-kv-term-min), 0.45fr) 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+.x-key-value > .x-key-value__row:last-child {
+  border-bottom: 0;
+}
+
+.x-key-value .x-key-value__term {
+  color: var(--c-text-faint);
+  font-size: var(--text-xs);
+}
+
+.x-key-value .x-key-value__value {
+  color: var(--c-text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  justify-content: flex-start;
+  text-align: left;
+}
+
+/* Compact band (≤ --band-compact-max 599px): term stacks over value. */
+@media (max-width: 599px) {
+  .x-key-value > .x-key-value__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}

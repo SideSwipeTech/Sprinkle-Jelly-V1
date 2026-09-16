@@ -1,0 +1,50 @@
+/* CourseCard — was lab.css .course-card (+ cover variant). */
+
+.x-course-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 13.75rem; /* was 220px */
+  overflow: hidden;
+}
+
+.x-course-card__cover {
+  height: var(--space-11); /* was 72px — the strip is a fixed-depth banner */
+  margin: calc(var(--card-padding) * -1) calc(var(--card-padding) * -1) var(--space-3);
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--c-accent-primary) 38%, transparent),
+      color-mix(in srgb, var(--c-surface-inset) 80%, var(--c-accent-primary)));
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+
+.x-course-card__summary {
+  margin: 0;
+  color: var(--c-text-muted);
+  max-width: 62ch;
+}
+
+.x-course-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-3);
+}
+
+/* Enrolled: success tint + check icon + the word — never the tint alone. */
+.x-course-card__enrolled {
+  background: color-mix(in srgb, var(--c-success) 15%, transparent);
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+  color: var(--c-success);
+}
+
+.x-course-card__action {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-course-card__cover { transition: none; }
+}

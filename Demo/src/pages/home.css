@@ -1,0 +1,135 @@
+/* home.css — PRG-F1 composition. */
+
+.home { display: flex; flex-direction: column; gap: var(--space-6); }
+
+.home__hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.home__greeting { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.home__name { font-size: var(--text-4xl); margin: 0; }
+
+.home__sub { margin: 0; color: var(--c-text-muted); font-size: var(--text-sm); }
+
+.home__record { display: flex; align-items: center; gap: var(--space-6); }
+
+.home__record-stats { display: flex; flex-direction: column; gap: var(--space-4); }
+
+/* The grid is the hybrid's own arrangement — not the previous platform's five stacked
+   rows, and not Aurora's single centred column. Content-driven auto-placement, with the
+   two heaviest regions spanning. */
+.home__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--stack-gap);
+  align-items: start;
+}
+
+@media (min-width: 1280px) {
+  .home__grid { grid-template-columns: repeat(3, 1fr); }
+  .home__continue { grid-column: span 2; }
+  .home__activity { grid-column: span 2; }
+  .home__recent { grid-row: span 1; }
+}
+
+.home__meta { margin: 0; color: var(--c-text-muted); font-size: var(--text-sm); }
+
+.home__cta { align-self: flex-start; margin-top: var(--space-2); }
+
+.home__chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: color-mix(in srgb, var(--c-accent-primary) 10%, transparent);
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+}
+
+.chip--quiet { background: transparent; }
+
+/* Quick launch tiles */
+.home__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: var(--space-2);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-2);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--c-border);
+  color: var(--c-text-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-align: center;
+  transition: border-color var(--duration-fast) var(--ease-hover),
+              color var(--duration-fast) var(--ease-hover),
+              transform var(--duration-fast) var(--ease-hover);
+}
+
+.tile:hover {
+  border-color: var(--c-accent-primary);
+  color: var(--c-text-primary);
+}
+
+:is([data-subtheme="halo"], html[data-theme="halo"]) .tile:hover { transform: translateY(-2px); }
+:is([data-subtheme="voyage"], html[data-theme="voyage"]) .tile:hover { transform: scale(1.03); }
+
+.home__goals { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.home__note {
+  width: 100%;
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid var(--c-border-strong);
+  background: var(--c-surface-inset);
+  color: var(--c-text-primary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  resize: vertical;
+}
+
+.home__note:focus { outline: 2px solid var(--c-focus-ring); outline-offset: 1px; }
+
+.home__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+
+.home__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: var(--border-width) solid var(--c-border);
+  font-size: var(--text-sm);
+  color: var(--c-text-muted);
+  min-height: var(--row-height);
+}
+
+.home__row:last-child { border-bottom: none; }
+
+.home__row svg { color: var(--c-success); flex: none; }
+
+.home__row-title {
+  flex: 1;
+  min-width: 0;
+  color: var(--c-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home__row-when { color: var(--c-text-faint); font-size: var(--text-2xs); flex: none; }

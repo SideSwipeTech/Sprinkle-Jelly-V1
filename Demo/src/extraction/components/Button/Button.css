@@ -1,0 +1,115 @@
+/* Button — the legacy `.btn` family (card.css) plus the variants the demo faked:
+   destructive (inline rose literals), sm (demo.css), loading, and a REAL disabled
+   instead of pointerEvents + opacity. Per-theme :active press preserved verbatim. */
+
+.x-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: var(--border-width) solid transparent;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1.5;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    border-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover),
+    transform var(--duration-fast) var(--ease-hover);
+}
+
+.x-btn__label {
+  min-width: 0;
+}
+
+.x-btn--primary {
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+}
+
+.x-btn--primary:hover {
+  background: color-mix(in srgb, var(--c-accent-primary) 86%, var(--c-text-primary));
+}
+
+.x-btn--secondary {
+  background: transparent;
+  border-color: var(--c-border-strong);
+  color: var(--c-text-primary);
+}
+
+.x-btn--secondary:hover {
+  border-color: var(--c-accent-primary);
+  color: var(--c-accent-primary);
+}
+
+.x-btn--quiet {
+  padding: var(--space-1) var(--space-2);
+  background: transparent;
+  color: var(--c-accent-primary);
+}
+
+.x-btn--quiet:hover {
+  text-decoration: underline;
+}
+
+/* destructive — the demo reached for inline rose literals on a quiet button. A real
+   variant instead: error ink, error-tinted hover, never a hardcoded hex. */
+.x-btn--destructive {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--c-error) 40%, transparent);
+  color: var(--c-error);
+}
+
+.x-btn--destructive:hover {
+  background: color-mix(in srgb, var(--c-error) 12%, transparent);
+  border-color: var(--c-error);
+}
+
+/* sm — the workbench/toolbar size (demo.css .btn--sm). */
+.x-btn--sm {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  gap: var(--space-1);
+}
+
+.x-btn--sm.x-btn--quiet {
+  padding: calc(var(--space-1) * 0.5) var(--space-2);
+}
+
+/* Disabled — real semantics (disabled / aria-disabled), not a pointer-events hack.
+   Dimmed, inert, and honest about it. */
+.x-btn[data-disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.x-btn[data-disabled]:hover {
+  background: none;
+  border-color: transparent;
+  color: inherit;
+  text-decoration: none;
+}
+
+.x-btn--primary[data-disabled]:hover { background: var(--c-accent-primary); color: var(--c-on-accent-primary); }
+.x-btn--secondary[data-disabled]:hover { border-color: var(--c-border-strong); color: var(--c-text-primary); }
+.x-btn--quiet[data-disabled]:hover { color: var(--c-accent-primary); }
+.x-btn--destructive[data-disabled]:hover { border-color: color-mix(in srgb, var(--c-error) 40%, transparent); color: var(--c-error); }
+
+.x-btn[data-loading] {
+  cursor: progress;
+}
+
+/* Per-theme press language — preserved from card.css. Meridian and the family
+   identities deliberately have none. Reduced motion holds every press still. */
+[data-theme="halo"] .x-btn:not([data-disabled]):active { transform: scale(0.97); }
+[data-theme="voyage"] .x-btn:not([data-disabled]):active,
+[data-theme="forge"] .x-btn:not([data-disabled]):active { transform: translateY(1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .x-btn:active { transform: none !important; }
+}
+
+[data-reduced-motion="true"] .x-btn:active { transform: none !important; }

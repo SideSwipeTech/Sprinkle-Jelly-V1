@@ -1,0 +1,95 @@
+/* Atlas and Atelier construction. Hybrid identities keep identity.css. */
+
+html[data-theme="atlas"] body::before {
+  display: block;
+  opacity: 0.75;
+  mix-blend-mode: normal;
+  background: var(--gradient-background);
+}
+
+html[data-theme="atelier"] body::before {
+  display: block;
+  opacity: 0.42;
+  mix-blend-mode: soft-light;
+  background-image:
+    radial-gradient(90% 70% at 8% -8%, rgba(var(--c-accent-primary-rgb), 0.28), transparent 52%),
+    radial-gradient(70% 55% at 100% 110%, rgba(var(--c-accent-secondary-rgb), 0.18), transparent 50%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: auto, auto, 180px 180px;
+}
+
+html[data-theme="atelier"][data-scheme="light"] body::before {
+  opacity: 0.28;
+  mix-blend-mode: multiply;
+}
+
+html[data-theme="atlas"] .surface,
+html[data-theme="atelier"] .surface {
+  background: var(--c-surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-theme="atlas"] .surface {
+  background: var(--c-surface);
+  box-shadow: var(--card-shadow);
+}
+
+html[data-theme="atlas"] .surface:where(:hover, :focus-within) {
+  transform: translateY(-2px);
+  border-color: var(--c-border);
+  box-shadow: var(--card-shadow-hover);
+}
+
+html[data-theme="atelier"] .surface {
+  background: var(--c-surface);
+  box-shadow:
+    0 1px 0 0 color-mix(in srgb, var(--c-text-primary) 4%, transparent) inset,
+    0 18px 44px -28px rgba(var(--c-shadow-rgb), 0.55);
+}
+
+html[data-theme="atelier"] .surface:where(:hover, :focus-within) {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--c-accent-primary) 28%, var(--c-border));
+}
+
+html[data-theme="atlas"] .shell__header {
+  background: var(--bg-secondary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: var(--topbar-shadow);
+}
+
+html[data-theme="atelier"] .shell__header {
+  background: color-mix(in srgb, var(--c-bg) 88%, var(--c-surface) 12%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+html[data-theme="atlas"] .rail {
+  padding: 12px 8px;
+  background: var(--bg-secondary);
+}
+
+html[data-theme="atlas"] .rail__item.is-active {
+  border: 1px solid var(--c-accent-primary);
+  background: var(--c-accent-primary);
+  color: var(--c-on-accent-primary);
+}
+
+html[data-theme="atelier"] .rail {
+  padding: var(--space-4);
+  background: var(--c-surface);
+}
+
+html[data-theme="atelier"] .rail__item.is-active {
+  background: color-mix(in srgb, var(--c-accent-primary) 12%, transparent);
+}
+
+html[data-theme="forge"] .rail {
+  padding: var(--space-3) var(--space-2);
+}
+
+html[data-theme="forge"] .rail__legend {
+  letter-spacing: 0.12em;
+}

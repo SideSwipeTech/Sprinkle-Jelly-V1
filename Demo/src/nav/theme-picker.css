@@ -1,0 +1,50 @@
+/* HeaderThemePicker — compact popover reusing the Appearance panel's look__* controls. */
+
+.theme-picker { position: relative; }
+
+.theme-picker__panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  width: 264px;
+  padding: var(--space-3);
+  background: var(--c-surface);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  z-index: 60;
+}
+
+.theme-picker__group { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.theme-picker__legend {
+  margin: 0;
+  color: var(--c-text-faint);
+  font-size: var(--text-xs);
+  text-transform: var(--micro-case, uppercase);
+  letter-spacing: var(--tracking-micro, 0.08em);
+}
+
+.theme-picker__swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.theme-picker__scheme { width: 100%; }
+.theme-picker__scheme button { flex: 1; }
+
+.theme-picker__dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* Popover sizing — the face is a preview chip here, not the page-scale swatch. */
+.theme-picker__swatches .look__swatch-face { aspect-ratio: 4 / 3; }
+.theme-picker__swatches .look__swatch-name { font-size: var(--text-xs); }
+.theme-picker__dots .look__dot { width: 18px; height: 18px; }

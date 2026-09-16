@@ -1,0 +1,79 @@
+/* ProficiencyRow — category figure with meter + icon tell.
+   ProficiencyPanel — the inset host (was an inline-styled surface-inset div). */
+
+.x-proficiency-panel {
+  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-inset);
+}
+
+.x-proficiency-panel__title {
+  margin: 0 0 var(--space-2);
+  color: var(--c-text-faint);
+}
+
+.x-proficiency-panel__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.x-proficiency-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(var(--space-10), 30%) auto;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.x-proficiency-row__label {
+  color: var(--c-text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.x-proficiency-row__track {
+  height: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--c-text-primary) 12%, transparent);
+  overflow: hidden;
+}
+
+.x-proficiency-row__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--c-text-faint);
+}
+
+.x-proficiency-row[data-verdict="met"] .x-proficiency-row__fill {
+  background: var(--c-success);
+}
+
+.x-proficiency-row[data-verdict="gap"] .x-proficiency-row__fill {
+  background: var(--c-warning);
+}
+
+.x-proficiency-row__value {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--c-text-primary);
+  white-space: nowrap;
+}
+
+.x-proficiency-row[data-verdict="met"] .x-proficiency-row__value {
+  color: var(--c-success);
+}
+
+.x-proficiency-row[data-verdict="gap"] .x-proficiency-row__value {
+  color: var(--c-warning);
+}
+
+.x-proficiency-row[data-verdict="unknown"] .x-proficiency-row__value {
+  color: var(--c-text-faint);
+}

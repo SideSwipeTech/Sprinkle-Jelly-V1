@@ -1,0 +1,98 @@
+/* people — page-local styles for the directory, the person's detail, the
+   moderation pages and the correction page. Tokens only; no accent edge
+   stripes. */
+
+.pp-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.pp-count {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--c-text-primary);
+}
+.pp-count strong { font-variant-numeric: var(--numerals); }
+.pp-count__lens { color: var(--c-text-faint); font-size: var(--text-sm); }
+
+.pp-pager {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* The detail split — the record beside the action rail. Fraction columns,
+   the codebase's own grid-2 idiom; no rail-width token exists to name. */
+.pp-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+.pp-main { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+
+/* The standing statement — a statement, never the absence of a badge. */
+.pp-standing {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--c-text-primary);
+}
+.pp-standing[data-kind="good"] { border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border)); }
+.pp-standing[data-kind="suspended"] { border-color: color-mix(in srgb, var(--c-warning) 55%, var(--c-border)); color: var(--c-warning); }
+.pp-standing[data-kind="banned"] { border-color: color-mix(in srgb, var(--c-error) 55%, var(--c-border)); color: var(--c-error); }
+.pp-standing__reason { font-weight: var(--weight-regular); color: var(--c-text-muted); font-size: var(--text-sm); }
+
+/* Moderation history — one entry per act, before → after in words. */
+.pp-history { display: flex; flex-direction: column; gap: var(--space-2); }
+.pp-history__entry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+}
+.pp-history__head { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: baseline; font-size: var(--text-sm); }
+.pp-history__actor { color: var(--c-text-muted); font-size: var(--text-sm); }
+.pp-history__move { color: var(--c-text-faint); font-size: var(--text-xs); }
+.pp-history__note { color: var(--c-text-faint); font-size: var(--text-sm); }
+
+/* Externally-owned marker on the identity rows. */
+.pp-owned { color: var(--c-text-faint); font-size: var(--text-xs); }
+
+/* Outcome note after a recorded act. */
+.pp-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  color: var(--c-text-muted);
+  font-size: var(--text-sm);
+}
+.pp-note[data-tone="ok"] { color: var(--c-success); }
+.pp-note[data-tone="err"] { color: var(--c-error); }
+
+.pp-mono { font-family: var(--font-mono); font-size: var(--text-sm); word-break: break-all; }
+
+.pp-roleform {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+/* 899px — the below-wide band token's boundary (a media query cannot read a var). */
+@media (max-width: 899px) {
+  .pp-split { grid-template-columns: 1fr; }
+  .pp-filters { grid-template-columns: 1fr; }
+}

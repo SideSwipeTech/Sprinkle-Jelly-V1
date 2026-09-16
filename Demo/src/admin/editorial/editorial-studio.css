@@ -1,0 +1,239 @@
+/* Editorial studio — page-local layout for the worked-solution admin page.
+   Tokens only; no accent edge stripes. */
+
+/* ── The index ──────────────────────────────────────────────────────────── */
+
+/* The count a coverage filter chip carries — read live under this
+   authorization and snapshot, kept faint inside the label it qualifies. */
+.estudio-filter-count {
+  font-variant-numeric: var(--numerals, tabular-nums);
+  color: var(--c-text-faint);
+}
+
+.x-chip[data-on] .estudio-filter-count {
+  color: inherit;
+}
+
+/* The row's authored/published figures set in tabular numerals. */
+.estudio-facts {
+  font-variant-numeric: var(--numerals, tabular-nums);
+}
+
+/* Per-language authored facts inside the meta line: an authored language
+   reads plain; an unauthored one carries the absent tell — fainter ink and a
+   dotted underline, the same "nothing here" language StateBlock[empty] draws.
+   The phrase itself sits on the row as the mark's title. */
+.estudio-lang:not([data-authored]) {
+  color: var(--c-text-faint);
+  text-decoration: underline dotted;
+  text-decoration-color: var(--c-border-strong);
+  text-underline-offset: var(--space-1);
+}
+
+/* The record's title keeps its own link — the row itself is a static record
+   now that it carries a visible Open verb. */
+.estudio-name {
+  color: var(--c-text-primary);
+  text-decoration: none;
+}
+
+.estudio-name:hover {
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.estudio-name:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-0);
+}
+
+/* The record block grows and shrinks — long titles truncate inside it rather
+   than pushing the verb off the row. */
+.estudio-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The row's right edge — the stale flag beside its Open verb, pushed to the
+   row's end so the act reads as its action. */
+.estudio-row-side {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  margin-inline-start: auto;
+}
+
+/* Inside the side column the flag's own centering gives way to the edge. */
+.estudio-row-side .estudio-flag {
+  align-self: flex-end;
+}
+
+/* The row's stale tell — an authored solution whose execution check no longer
+   holds. A dashed warning pill with the clock icon: the state-stale tell
+   (dashed + clock), never colour alone. */
+.estudio-flag {
+  flex: none;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: calc(var(--space-1) / 2) var(--space-2);
+  border: var(--border-width) dashed color-mix(in srgb, var(--c-warning) 55%, var(--c-border));
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--c-warning) 8%, transparent);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  text-transform: var(--micro-case, uppercase);
+  letter-spacing: var(--tracking-micro, normal);
+  color: var(--c-warning);
+  white-space: nowrap;
+}
+
+/* ── The studio ─────────────────────────────────────────────────────────── */
+
+/* Review and gate sit side by side where the surface is wide enough —
+   evidence and the execution check read as one decision — and stack where
+   they cannot, intrinsic rather than a breakpoint this page invents. */
+.estudio-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* The review checklist — each row a state reading or an author's attestation. */
+.estudio-review {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.estudio-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--c-surface-inset) 45%, transparent);
+  transition: border-color var(--duration-fast) var(--ease-hover);
+}
+
+/* A met row keeps the quiet frame — the mark turns and the border warms, so
+   the state reads through shape and tint together, not a recoloured panel. */
+.estudio-check[data-state="met"] {
+  border-color: color-mix(in srgb, var(--c-success) 30%, var(--c-border));
+}
+
+.estudio-check__mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-4);
+  height: var(--space-4);
+  margin-top: var(--space-0);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-xs);
+  color: var(--c-text-faint);
+  transition:
+    border-color var(--duration-fast) var(--ease-hover),
+    background-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+
+.estudio-check[data-state="met"] .estudio-check__mark {
+  border-color: color-mix(in srgb, var(--c-success) 55%, var(--c-border));
+  background: color-mix(in srgb, var(--c-success) 12%, transparent);
+  color: var(--c-success);
+}
+
+.estudio-check[data-state="unverifiable"] .estudio-check__mark {
+  border-style: dashed;
+  color: var(--c-warning);
+}
+
+.estudio-check[data-state="blocked"] .estudio-check__mark {
+  border-color: var(--c-error);
+  color: var(--c-error);
+}
+
+.estudio-check__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0);
+  min-width: 0;
+}
+
+.estudio-check__label {
+  font-size: var(--text-sm);
+  color: var(--c-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.estudio-check__evidence {
+  font-size: var(--text-sm);
+  color: var(--c-text-faint);
+  font-variant-numeric: var(--numerals, tabular-nums);
+}
+
+.estudio-check input[type="checkbox"] {
+  width: var(--space-4);
+  height: var(--space-4);
+  margin: 0;
+  flex: none;
+  cursor: pointer;
+  accent-color: var(--c-accent-primary);
+}
+
+/* The gate verdict strip — a padded instrument row above the output dock.
+   Each status gets tint plus a construction tell: a solid frame for the
+   readings a run produced, dashed for the one that cannot run — the same
+   honesty language Notice and StateBlock carry. */
+.estudio-gate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-inset);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-muted);
+}
+
+.estudio-gate .icon {
+  flex: none;
+}
+
+.estudio-gate[data-status="passing"] {
+  border-color: color-mix(in srgb, var(--c-success) 40%, var(--c-border));
+  background: color-mix(in srgb, var(--c-success) 8%, var(--c-surface-inset));
+  color: var(--c-success);
+}
+
+.estudio-gate[data-status="failing"] {
+  border-color: color-mix(in srgb, var(--c-error) 45%, var(--c-border));
+  background: color-mix(in srgb, var(--c-error) 7%, var(--c-surface-inset));
+  color: var(--c-error);
+}
+
+.estudio-gate[data-status="unverifiable"] {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--c-warning) 55%, var(--c-border));
+  background: color-mix(in srgb, var(--c-warning) 7%, var(--c-surface-inset));
+  color: var(--c-warning);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .estudio-check,
+  .estudio-check__mark {
+    transition: none;
+  }
+}

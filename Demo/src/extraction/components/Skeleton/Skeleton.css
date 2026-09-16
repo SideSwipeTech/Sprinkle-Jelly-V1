@@ -1,0 +1,135 @@
+/* Skeleton — bones + one sheen. The sheen lives on the OUTER container so a
+   composite skeleton sweeps as a single object. Reduced motion removes the
+   sheen outright: shape, not motion, is the "loading" tell. */
+
+.x-skeleton {
+  position: relative;
+  overflow: hidden;
+}
+
+/* The bone — a matte bar of surface ink. Faint variant for secondary lines. */
+.x-skeleton__bone {
+  display: block;
+  border-radius: var(--radius-xs);
+  background: color-mix(in srgb, var(--c-text-faint) 18%, transparent);
+}
+
+.x-skeleton__bone--faint {
+  background: color-mix(in srgb, var(--c-text-faint) 11%, transparent);
+}
+
+/* The sheen — a soft vertical wipe across whatever the variant contains.
+   Duration scales off the identity's slow register, so Halo shimmers gently
+   and Meridian barely moves (its register is near-instant by design). */
+.x-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in srgb, var(--c-text-primary) 9%, transparent) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  animation: x-skeleton-sheen calc(var(--duration-slow) * 4) var(--ease-standard) infinite;
+}
+
+@keyframes x-skeleton-sheen {
+  to { transform: translateX(100%); }
+}
+
+/* ── Variants ─────────────────────────────────────────────────────────────── */
+
+/* text — a run of line bones; the last is shorter, like real copy. */
+.x-skeleton--text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.x-skeleton__bone--line {
+  height: var(--text-sm);
+}
+
+/* Proportional cuts — the reading-rhythm percentages copy actually has. */
+.x-skeleton__bone--short  { width: 62%; }
+.x-skeleton__bone--wide   { width: 55%; }
+.x-skeleton__bone--narrow { width: 34%; }
+.x-skeleton__bone--mid    { width: 71%; }
+
+/* row — the list-row silhouette: disc + stacked lines, row-height tall. */
+.x-skeleton--row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--row-height);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--c-border);
+}
+
+.x-skeleton__bone--disc {
+  flex: none;
+  width: var(--space-7);
+  height: var(--space-7);
+  border-radius: 50%;
+}
+
+.x-skeleton__stack {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* card — a framed panel of bones (title / two lines / cta bar). */
+.x-skeleton--card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--card-padding, var(--space-4));
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-surface) 60%, transparent);
+}
+
+.x-skeleton__bone--title {
+  height: var(--text-lg);
+  width: 42%;
+}
+
+.x-skeleton__bone--cta {
+  height: var(--space-7);
+  width: 34%;
+}
+
+.x-skeleton__bone--cta {
+  height: var(--space-7);
+  width: 34%;
+  margin-top: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+/* block — one freeform bone. */
+.x-skeleton--block {
+  display: block;
+}
+
+.x-skeleton__bone--fill {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Reduced motion — static matte, no sweep ────────────────────────────────
+   The OS signal AND the platform's own in-product signal both land here. */
+@media (prefers-reduced-motion: reduce) {
+  .x-skeleton::after { animation: none; opacity: 0; }
+}
+
+[data-reduced-motion="true"] .x-skeleton::after {
+  animation: none;
+  opacity: 0;
+}

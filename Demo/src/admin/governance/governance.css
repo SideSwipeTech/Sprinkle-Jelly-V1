@@ -1,0 +1,114 @@
+/* governance — the few shapes the shared kit does not already carry:
+   the nine-scope picker, the durable operation's per-scope steps, the pager.
+   Tokens only; no accent edge stripes. */
+
+.gov-scopes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.gov-scope {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+}
+.gov-scope:hover { border-color: var(--c-border-interactive); }
+.gov-scope[data-on] {
+  border-color: color-mix(in srgb, var(--c-accent-primary) 55%, var(--c-border));
+  background: color-mix(in srgb, var(--c-accent-primary) 7%, transparent);
+}
+.gov-scope input[type="checkbox"] {
+  margin-top: var(--space-1);
+  accent-color: var(--c-accent-primary);
+}
+.gov-scope__body { flex: 1; min-width: 0; }
+.gov-scope__title { font-weight: var(--weight-semibold); font-size: var(--text-sm); }
+.gov-scope__covers { display: block; color: var(--c-text-faint); font-size: var(--text-sm); margin-top: var(--space-1); }
+.gov-scope__count {
+  flex: none;
+  font-variant-numeric: var(--numerals);
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-muted);
+  text-align: right;
+}
+.gov-scope__count[data-unavailable] { color: var(--c-warning); font-weight: var(--weight-medium); }
+
+/* The durable operation — one row per requested scope. */
+.gov-ops {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.gov-op {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+}
+.gov-op__title { flex: 1; min-width: 0; font-size: var(--text-sm); }
+.gov-op__detail { color: var(--c-text-faint); font-size: var(--text-sm); }
+.gov-op[data-status="failed"] { border-color: color-mix(in srgb, var(--c-error) 55%, var(--c-border)); }
+.gov-op[data-status="succeeded"] { border-color: color-mix(in srgb, var(--c-success) 40%, var(--c-border)); }
+
+/* Real paging — the count stays under the same filters and snapshot. */
+.gov-pager {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* The trail's four filters on one row. */
+.gov-filterbar {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) minmax(0, 1fr) 190px;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+}
+@media (max-width: 899px) {
+  .gov-filterbar { grid-template-columns: 1fr; }
+}
+
+/* Two views of one destination — the view switch sits above the panels. */
+.gov-views { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+/* Deletion-queue status — held and failed never render alike. */
+.gov-dq {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--c-text-muted);
+}
+.gov-dq--held {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--c-warning) 60%, var(--c-border));
+  color: var(--c-warning);
+}
+.gov-dq--failed {
+  border-color: color-mix(in srgb, var(--c-error) 60%, var(--c-border));
+  color: var(--c-error);
+}
+.gov-dq--completed {
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+  color: var(--c-success);
+}
+
+@media (max-width: 640px) {
+  .gov-scope { flex-wrap: wrap; }
+  .gov-scope__count { text-align: left; }
+}

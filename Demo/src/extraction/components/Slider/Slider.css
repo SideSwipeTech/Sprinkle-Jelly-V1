@@ -1,0 +1,143 @@
+/* Slider — a styled range input. Track, fill and thumb all read tokens; the fill
+   position arrives as --x-slider-pct set from the value (Charge's data-var idiom).
+   WebKit and Gecko pseudos are stated separately — they cannot share a selector. */
+
+.x-slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.x-slider__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.x-slider__label {
+  min-width: 0;
+  flex: 1;
+  color: var(--c-text-primary);
+  font-size: var(--text-sm);
+}
+
+.x-slider__value {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--c-text-primary);
+  font-variant-numeric: var(--numerals);
+}
+
+.x-slider__aside {
+  flex: none;
+}
+
+.x-slider__hint {
+  margin: 0;
+  font-size: var(--text-2xs);
+  color: var(--c-text-faint);
+}
+
+/* ── The input ── */
+
+.x-slider__input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  /* thumb --space-4 tall; the input box matches so the focus ring wraps the thumb */
+  height: var(--space-5);
+}
+
+.x-slider__input::-webkit-slider-runnable-track {
+  height: var(--space-1);
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(
+      90deg,
+      var(--c-accent-primary) var(--x-slider-pct, 0%),
+      var(--c-border) var(--x-slider-pct, 0%)
+    );
+}
+
+.x-slider__input::-moz-range-track {
+  height: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--c-border);
+}
+
+.x-slider__input::-moz-range-progress {
+  height: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--c-accent-primary);
+}
+
+.x-slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: var(--space-4);
+  height: var(--space-4);
+  /* centres the thumb on the space-1 track: (track − thumb) / 2 */
+  margin-top: calc((var(--space-1) - var(--space-4)) / 2);
+  border-radius: 50%;
+  background: var(--c-accent-primary);
+  border: calc(var(--border-width) * 2) solid var(--c-surface);
+  box-shadow: 0 0 0 var(--border-width) var(--c-accent-primary);
+  transition: transform var(--duration-fast) var(--ease-hover);
+}
+
+.x-slider__input::-moz-range-thumb {
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: 50%;
+  background: var(--c-accent-primary);
+  border: calc(var(--border-width) * 2) solid var(--c-surface);
+  box-shadow: 0 0 0 var(--border-width) var(--c-accent-primary);
+  transition: transform var(--duration-fast) var(--ease-hover);
+}
+
+.x-slider__input:hover::-webkit-slider-thumb,
+.x-slider__input:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+.x-slider__input:hover::-moz-range-thumb,
+.x-slider__input:focus-visible::-moz-range-thumb {
+  transform: scale(1.12);
+}
+
+.x-slider[data-disabled] .x-slider__input {
+  cursor: not-allowed;
+}
+
+.x-slider[data-disabled] .x-slider__label,
+.x-slider[data-disabled] .x-slider__value {
+  color: var(--c-text-faint);
+}
+
+.x-slider[data-disabled] .x-slider__input::-webkit-slider-thumb {
+  background: var(--c-text-faint);
+  box-shadow: 0 0 0 var(--border-width) var(--c-text-faint);
+}
+
+.x-slider[data-disabled] .x-slider__input::-moz-range-thumb {
+  background: var(--c-text-faint);
+  box-shadow: 0 0 0 var(--border-width) var(--c-text-faint);
+}
+
+.x-slider[data-disabled] .x-slider__input::-moz-range-progress {
+  background: var(--c-text-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-slider__input::-webkit-slider-thumb,
+  .x-slider__input::-moz-range-thumb {
+    transition: none;
+    transform: none !important;
+  }
+}

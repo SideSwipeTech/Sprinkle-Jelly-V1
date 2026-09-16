@@ -1,0 +1,29 @@
+/* GENERATED FILE — DO NOT EDIT BY HAND.
+   Source of truth: package/values.json
+   Regenerate:      pnpm design:generate      Verify no drift: pnpm design:check
+   Emitted by:      package/generate.mjs -> src/families/typefaces.css */
+
+
+/* Optional type overlay. When data-type is absent, the identity owns the faces —
+   that is the `identity` pairing, which is a selection and emits nothing, exactly
+   as follow-system is a selection on the scheme axis. Ruled 2026-08-23 (O-A; pack O). */
+
+html[data-type="bricolage"] {
+  --font-display: "Bricolage Grotesque Variable", "Segoe UI Variable Display", system-ui, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+}
+
+html[data-type="sora"] {
+  --font-display: "Sora Variable", Sora, Inter, system-ui, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+}
+
+html[data-type="archivo"] {
+  --font-display: "Archivo Variable", Archivo, Inter, system-ui, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+}
+
+html[data-type="inter"] {
+  --font-display: "Inter Variable", Inter, system-ui, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+}

@@ -1,0 +1,8 @@
+/* TagCloud — a dense wrap of sibling x-chip--quiet x-chip--sm chips.
+   Only the row gap is owned here; the chips' paint is Chip's. */
+
+.x-tagcloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}

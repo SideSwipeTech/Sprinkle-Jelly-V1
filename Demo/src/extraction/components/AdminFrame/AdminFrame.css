@@ -1,0 +1,447 @@
+/* AdminFrame.css — the staff console shell.
+   Extracted from src/admin/admin-shell.css (frame/nav/top/main/page/refusal/drawer
+   blocks only — admin-health, admin-table, admin-tools, admin-action-panel,
+   admin-form-grid, admin-filterbar and maintenance-preview belong to the domain
+   family's DataTable/HealthTileGrid/ToolCluster/ActionPanel/FormGrid extractions).
+
+   The admin shell had NO token family — every dimension was a literal. They are now
+   component tokens on .x-admin-frame, proposed for promotion as the --admin-* family
+   (see README for the full proposal including the domain pieces' 175/116/680). */
+
+.x-admin-frame {
+  --x-admin-nav-width: 236px;
+  --x-admin-top-height: 64px;
+  --x-admin-nav-drawer-width: 320px;
+  --x-admin-page-max: 1220px;
+  --x-admin-refusal-max: 440px;
+  --x-admin-hit-size: 38px;
+  --x-admin-brand-gap: 2px;
+  --x-admin-nav-item-min: 35px;
+  --x-admin-nav-item-block: 7px;
+  --x-admin-nav-item-inline: 10px;
+  --x-admin-nav-item-gap: 10px;
+  --x-admin-user-gap: 8px;
+  --x-admin-scrim-blur: 2px;
+  --x-admin-title-size: clamp(2rem, 4vw, 3rem);
+  --x-admin-top-bg-mix: 90%;
+  --x-admin-ambient-mix: 8%;
+
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: var(--x-admin-nav-width) minmax(0, 1fr);
+  grid-template-rows: var(--x-admin-top-height) minmax(0, 1fr);
+  grid-template-areas:
+    "brand top"
+    "nav   main";
+  background:
+    radial-gradient(circle at 84% 8%, color-mix(in srgb, var(--c-accent-primary) var(--x-admin-ambient-mix), transparent), transparent 34rem),
+    var(--c-bg);
+}
+
+/* ── Brand corner ── */
+
+.x-admin-frame__brand {
+  grid-area: brand;
+  position: sticky;
+  top: 0;
+  z-index: calc(var(--z-header) + 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--x-admin-brand-gap);
+  padding: 0 var(--space-5);
+  border-right: var(--border-width) solid var(--c-border);
+  border-bottom: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-bg) 96%, var(--c-surface));
+}
+.x-admin-frame__brand strong {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+}
+.x-admin-frame__brand small {
+  color: var(--c-text-faint);
+  font-size: var(--text-2xs);
+}
+.x-admin-frame__back {
+  margin-top: var(--x-admin-brand-gap);
+  color: var(--c-accent-primary);
+  font-size: var(--text-2xs);
+}
+
+/* ── Nav — active idiom: tint-bar ── */
+
+.x-admin-nav {
+  grid-area: nav;
+  position: sticky;
+  top: var(--x-admin-top-height);
+  align-self: start;
+  height: calc(100dvh - var(--x-admin-top-height));
+  overflow-y: auto;
+  padding: var(--space-4) var(--space-3) var(--space-8);
+  border-right: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-bg) 97%, var(--c-surface));
+  scrollbar-gutter: stable;
+}
+/* The ungrouped destination — the operations hub sits above the groups under
+   no legend. */
+.x-admin-nav__home {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+.x-admin-nav__group {
+  margin-bottom: var(--space-4);
+}
+.x-admin-nav__legend {
+  margin: 0 0 var(--space-1);
+  padding: 0 var(--space-2);
+  color: var(--c-text-faint);
+}
+.x-admin-nav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--x-admin-nav-item-gap);
+  min-height: var(--x-admin-nav-item-min);
+  padding: var(--x-admin-nav-item-block) var(--x-admin-nav-item-inline);
+  border-radius: var(--radius-sm);
+  color: var(--c-text-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  transition:
+    background-color var(--duration-fast) var(--ease-hover),
+    color var(--duration-fast) var(--ease-hover);
+}
+.x-admin-nav__item:hover {
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+}
+/* Active reads as accent tint alone — never an accent edge stripe. */
+.x-admin-nav__item[data-active] {
+  color: var(--c-text-primary);
+  background: color-mix(in srgb, var(--c-accent-primary) 15%, var(--c-surface));
+}
+.x-admin-nav__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  color: inherit;
+}
+.x-admin-nav__mobile-head {
+  display: none;
+}
+
+/* ── Top bar ── */
+
+.x-admin-frame__top {
+  grid-area: top;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: 0 var(--space-5);
+  border-bottom: var(--border-width) solid var(--c-border);
+  background: color-mix(in srgb, var(--c-bg) var(--x-admin-top-bg-mix), transparent);
+  backdrop-filter: blur(var(--backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--backdrop-blur));
+}
+.x-admin-frame__menu {
+  display: none;
+}
+
+/* The crumb is the sibling Breadcrumbs' x-crumbs--current anatomy; this frame adds
+   only the topbar's truncation rules. */
+.x-admin-frame__crumb {
+  min-width: 0;
+}
+.x-admin-frame__crumb .x-crumbs__here {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.x-admin-frame__top-end {
+  position: relative;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* The compact operational-health indication — a small status read, nothing more. */
+.x-admin-health {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-pill);
+  color: var(--c-text-muted);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+}
+.x-admin-health[data-verdict="healthy"] {
+  color: var(--c-success);
+  border-color: color-mix(in srgb, var(--c-success) 45%, var(--c-border));
+}
+.x-admin-health[data-verdict="degraded"] {
+  color: var(--c-warning);
+  border-color: color-mix(in srgb, var(--c-warning) 55%, var(--c-border));
+}
+.x-admin-health[data-verdict="unknown"] {
+  border-style: dashed;
+}
+
+.x-admin-frame__user {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--x-admin-user-gap);
+  color: var(--c-text-muted);
+  font-size: var(--text-xs);
+}
+
+/* ── Main + AdminPage ── */
+
+.x-admin-frame__main {
+  grid-area: main;
+  min-width: 0;
+  padding: clamp(var(--space-6), 3vw, var(--space-9)) clamp(var(--space-5), 4vw, var(--space-9)) var(--space-12);
+}
+
+.x-admin-page {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--space-5), 2vw, var(--space-7));
+  max-width: var(--x-admin-page-max);
+}
+.x-admin-page__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  padding-bottom: var(--space-2);
+  border-bottom: var(--border-width) solid var(--c-border);
+}
+.x-admin-page__kicker {
+  margin: 0;
+}
+.x-admin-page__title {
+  margin: var(--space-1) 0;
+  font-size: var(--x-admin-title-size);
+}
+.x-admin-page__lead {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--c-text-muted);
+  line-height: 1.65;
+}
+
+/* ── Refusal surface ── */
+
+.x-admin-refusal {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--c-accent-primary) 10%, transparent), transparent 28rem),
+    var(--c-bg);
+}
+.x-admin-refusal__card {
+  width: min(var(--x-admin-refusal-max), 100%);
+}
+
+.x-admin-nav-scrim {
+  display: none;
+}
+
+/* ── Below Standard (--band-tablet-narrow-max: 899px) — nav becomes a drawer ── */
+
+@media (max-width: 899px) {
+  .x-admin-frame {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--x-admin-top-height) minmax(0, 1fr);
+    grid-template-areas:
+      "top"
+      "main";
+  }
+  .x-admin-frame__brand {
+    display: none;
+  }
+  .x-admin-frame__menu {
+    display: grid;
+    place-items: center;
+    width: var(--x-admin-hit-size);
+    height: var(--x-admin-hit-size);
+    flex: none;
+    border-radius: var(--radius-sm);
+    color: var(--c-text-muted);
+  }
+  .x-admin-nav {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: var(--z-modal);
+    width: min(var(--x-admin-nav-drawer-width), 88vw);
+    height: 100dvh;
+    padding-top: var(--space-3);
+    transform: translateX(-102%);
+    transition: transform var(--duration-normal) var(--ease-enter);
+    box-shadow: 20px 0 60px -28px rgba(var(--c-shadow-rgb), 0.9);
+  }
+  .x-admin-nav[data-open] {
+    transform: translateX(0);
+  }
+  .x-admin-nav__mobile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+    padding: 0 var(--space-2) var(--space-3);
+    border-bottom: var(--border-width) solid var(--c-border);
+  }
+  .x-admin-nav-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-modal) - 1);
+    width: 100%;
+    background: rgba(var(--c-shadow-rgb), 0.62);
+    backdrop-filter: blur(var(--x-admin-scrim-blur));
+    -webkit-backdrop-filter: blur(var(--x-admin-scrim-blur));
+  }
+  .x-admin-frame__top {
+    padding: 0 var(--space-3);
+  }
+  .x-admin-frame__main {
+    padding: var(--space-6) var(--space-4) var(--space-10);
+  }
+  .x-admin-frame__user {
+    gap: 0;
+  }
+  .x-admin-frame__user-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ── Compact band (--band-compact-max: 599px) — the source's 520px tweak block
+   folds into the sanctioned edge. */
+@media (max-width: 599px) {
+  .x-admin-frame__top-end {
+    gap: var(--space-1);
+  }
+  .x-admin-frame__main {
+    padding-inline: var(--space-3);
+  }
+  .x-admin-page__title {
+    font-size: var(--text-3xl);
+  }
+}
+
+/* ── Identity construction hooks (carry the source's per-theme rules) ── */
+
+[data-theme="forge"] .x-admin-nav {
+  font-family: var(--font-mono);
+}
+[data-theme="meridian"] .x-admin-nav {
+  background: var(--c-bg);
+}
+[data-theme="meridian"] .x-admin-frame__top {
+  background: var(--c-bg);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+[data-theme="atelier"] .x-admin-nav {
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+/* ── Demo stage — the sink bounds the 100dvh shell grid (and the refusal
+   surface) to a fixed height so a state cell shows real frame proportions
+   instead of a viewport-tall box. ── */
+
+.x-adminframe-stage {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 30rem;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+.x-adminframe-stage > .x-admin-frame,
+.x-adminframe-stage > .x-admin-refusal {
+  height: 100%;
+  min-height: 0;
+}
+
+/* The sticky nav fills its grid row — the same span it claims from the
+   viewport in production, here bounded to the stage. `position: static` keeps
+   it inside the frame grid: the sink pins a bare `.x-admin-nav` absolute
+   (inset:0) for standalone overlay states, which would stretch it over the
+   whole stage and hide the rest of the frame. Scoped to the Standard band and
+   up (mirrors the 899px edge above): below it the nav is the off-canvas drawer
+   and the absolute pinning is the correct behaviour. */
+@media (min-width: 900px) {
+  .x-adminframe-stage .x-admin-frame .x-admin-nav {
+    position: static;
+    height: 100%;
+  }
+}
+
+/* ── Attention strip — mirrors the hub's admin-local `.admin-attention`:
+   exactly four named conditions, each a panel linking to the owning page.
+   Lives here so the sink can render the strip inside the frame; a domain
+   component may promote it later. ── */
+
+.x-admin-attention {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-3);
+}
+.x-admin-attention__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-height: 110px;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--c-surface-inset) 82%, transparent);
+  transition: border-color var(--duration-fast) var(--ease-hover);
+}
+a.x-admin-attention__cell:hover {
+  border-color: var(--c-accent-primary);
+}
+.x-admin-attention__cell[data-state="unavailable"] {
+  border-style: dashed;
+}
+.x-admin-attention__name {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--c-text-muted);
+  word-break: break-word;
+}
+.x-admin-attention__figure {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: 1.15;
+}
+.x-admin-attention__note {
+  color: var(--c-text-faint);
+  font-size: var(--text-xs);
+}
+.x-admin-attention__go {
+  margin-top: auto;
+  padding-top: var(--space-2);
+  color: var(--c-accent-primary);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+}

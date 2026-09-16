@@ -1,0 +1,24 @@
+/* FormGrid — was .admin-form-grid (admin-shell.css:160-166). */
+
+.x-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: var(--space-3) 0 var(--space-4);
+}
+
+.x-form-grid__wide {
+  grid-column: 1 / -1;
+}
+
+/* Long fields breathe — was `.request-form textarea, .admin-form-grid textarea`
+   sharing one min-height. */
+.x-form-grid textarea {
+  min-height: var(--space-12); /* was 92px — nearest token step */
+  resize: vertical;
+}
+
+@media (max-width: 899px) {
+  .x-form-grid { grid-template-columns: 1fr; }
+  .x-form-grid__wide { grid-column: auto; }
+}

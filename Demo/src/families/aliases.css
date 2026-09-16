@@ -1,0 +1,158 @@
+/* Map Atlas / Atelier token names onto the hybrid --c-* contract.
+   Hybrid identities already emit --c-* from subthemes.css. */
+
+html[data-theme="atlas"],
+html[data-theme="atelier"] {
+  --numerals: tabular-nums;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+  --backdrop-blur: 0px;
+  --backdrop-saturate: 1;
+  --charge-track-opacity: 0.14;
+  --charge-stop-1: 0%;
+  --charge-stop-2: 72%;
+  --charge-stop-3: 100%;
+  --c-shadow-rgb: 0, 0, 0;
+  --c-on-success: #ffffff;
+  --c-on-warning: #141414;
+  --c-on-error: #ffffff;
+  --c-on-info: #ffffff;
+}
+
+html[data-theme="atlas"] {
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+  --font-display: "Sora Variable", Sora, Inter, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --body-size: 16px;
+  --body-line-height: 1.5;
+  --display-weight: 800;
+  --heading-tracking: -0.02em;
+  --micro-case: none;
+  --border-width: 1px;
+  --stack-gap: 16px;
+  --card-padding: 20px;
+  --row-height: 44px;
+  --duration-fast: var(--motion-fast, 120ms);
+  --duration-normal: var(--motion-normal, 180ms);
+  --duration-slow: var(--motion-slow, 240ms);
+  --ease-hover: var(--motion-ease-premium, var(--ease-premium));
+  --ease-enter: var(--ease-hover);
+  --shell-header-height: 52px;
+  --shell-rail-expanded: 240px;
+  --ambient-opacity: 0.75;
+  --radius-lg: var(--radius-card-premium, 24px);
+  --c-bg: var(--bg-primary);
+  --c-surface: var(--surface-primary);
+  --c-surface-elevated: var(--surface-elevated);
+  --c-surface-inset: var(--surface-inset);
+  --c-text-primary: var(--text-primary);
+  --c-text-muted: var(--text-muted);
+  --c-text-faint: var(--text-faint);
+  --c-border: var(--border-subtle);
+  --c-border-strong: var(--border-strong);
+  --c-accent-primary: var(--accent-primary);
+  --c-accent-secondary: var(--accent-secondary);
+  --c-accent-light: var(--accent-light);
+  --c-accent-primary-rgb: var(--accent-primary-rgb);
+  --c-accent-secondary-rgb: var(--accent-secondary-rgb);
+  --c-on-accent-primary: var(--on-accent, #ffffff);
+  --c-success: var(--success);
+  --c-warning: var(--warning);
+  --c-error: var(--error);
+  --c-info: var(--info);
+  --c-focus-ring: var(--accent-primary);
+  --c-border-interactive: var(--text-muted);
+  --charge-gradient: var(--accent-gradient, linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-light)));
+  --c-bg-rgb: 18, 18, 21;
+  --c-surface-rgb: 24, 24, 29;
+  --c-text-primary-rgb: 247, 247, 248;
+}
+
+html[data-theme="atlas"][data-scheme="light"] {
+  --c-bg-rgb: 247, 246, 243;
+  --c-surface-rgb: 255, 255, 255;
+  --c-text-primary-rgb: 28, 27, 23;
+  --c-shadow-rgb: 40, 36, 25;
+}
+
+html[data-theme="atelier"] {
+  --font-sans: "Inter Variable", Inter, system-ui, sans-serif;
+  --font-display: "Archivo Variable", Archivo, Inter, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --body-size: 16px;
+  --body-line-height: 1.62;
+  --display-weight: 600;
+  --heading-tracking: -0.016em;
+  --micro-case: none;
+  --border-width: 1px;
+  --stack-gap: 18px;
+  --card-padding: 24px;
+  --row-height: 48px;
+  --radius-xs: 10px;
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+  --radius-2xl: 44px;
+  --duration-fast: 160ms;
+  --duration-normal: 280ms;
+  --duration-slow: 420ms;
+  --ease-hover: var(--ease-out);
+  --ease-enter: var(--ease-out);
+  --shell-header-height: 60px;
+  --shell-rail-expanded: 248px;
+  --ambient-opacity: 1;
+  --c-bg: var(--bg);
+  --c-surface: var(--panel);
+  --c-surface-elevated: var(--elevated);
+  --c-surface-inset: var(--inset);
+  --c-text-primary: var(--text);
+  --c-text-muted: var(--text-muted);
+  --c-text-faint: var(--text-faint);
+  --c-border: var(--border);
+  --c-border-strong: var(--border-strong);
+  --c-accent-primary: var(--accent-primary);
+  --c-accent-secondary: var(--accent-secondary);
+  --c-accent-light: var(--accent-light);
+  --c-accent-primary-rgb: var(--accent-primary-rgb);
+  --c-accent-secondary-rgb: var(--accent-secondary-rgb);
+  --c-on-accent-primary: #ffffff;
+  --c-success: var(--success);
+  --c-warning: var(--warning);
+  --c-error: var(--error);
+  --c-info: var(--info);
+  --c-focus-ring: var(--accent-light);
+  --c-border-interactive: var(--text-muted);
+  --charge-gradient: var(--accent-gradient);
+  --c-bg-rgb: 18, 18, 21;
+  --c-surface-rgb: 24, 24, 29;
+  --c-text-primary-rgb: 247, 247, 248;
+}
+
+html[data-theme="atelier"][data-scheme="light"] {
+  color-scheme: light;
+  --bg: #f3f2ef;
+  --panel: #ffffff;
+  --elevated: #ffffff;
+  --elevated-hover: #f7f6f3;
+  --inset: #ebe9e4;
+  --text: #1c1c22;
+  --text-secondary: #6a6a74;
+  --text-muted: #4e4e58;
+  --text-faint: #8a8a94;
+  --text-disabled: #a3a3ab;
+  --border-subtle: rgba(28, 28, 34, 0.08);
+  --border: rgba(28, 28, 34, 0.10);
+  --border-strong: rgba(28, 28, 34, 0.16);
+  --border-hover: rgba(28, 28, 34, 0.24);
+  --glass: rgba(255, 255, 255, 0.94);
+  --input-bg: #ffffff;
+  --c-bg-rgb: 243, 242, 239;
+  --c-surface-rgb: 255, 255, 255;
+  --c-text-primary-rgb: 28, 28, 34;
+  --c-shadow-rgb: 40, 38, 32;
+  --c-on-warning: #1c1c22;
+}

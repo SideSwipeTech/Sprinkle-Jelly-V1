@@ -1,0 +1,133 @@
+/* Menu — trigger + role=menu panel. The dock-popover / header-menu anatomy generalized. */
+
+.x-menu {
+  position: relative;
+  display: inline-flex;
+}
+
+.x-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  color: var(--c-text-muted);
+  font: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.x-menu__trigger:hover { border-color: var(--c-accent-primary); color: var(--c-text-primary); }
+
+.x-menu__trigger[aria-expanded="true"] {
+  border-color: var(--c-accent-primary);
+  color: var(--c-text-primary);
+}
+
+.x-menu__trigger:focus-visible {
+  outline: var(--border-width) solid var(--c-focus-ring);
+  outline-offset: var(--space-1);
+}
+
+/* Top layer + fixed coordinates anchored to the trigger by the component —
+   an overflow:auto card or table wrap can never clip the panel, and an
+   identity's hover transform can never shift it. `inset`/`margin` reset the
+   [popover] UA centring so the inline top/left own the position. */
+.x-menu__panel {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  z-index: var(--z-dropdown);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: min(14rem, calc(100vw - var(--space-8)));
+  max-width: calc(100vw - var(--space-4));
+  max-height: calc(100vh - var(--space-4));
+  overflow-y: auto;
+  padding: var(--space-2);
+  border: var(--border-width) solid var(--c-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-elevated);
+  box-shadow: 0 var(--space-5) var(--space-10) calc(-1 * var(--space-4)) rgba(var(--c-shadow-rgb), 0.6);
+  animation: x-menu-in var(--duration-fast) var(--ease-enter) both;
+}
+
+.x-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-text-muted);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.x-menu__item:hover,
+.x-menu__item:focus-visible {
+  background: var(--c-surface);
+  color: var(--c-text-primary);
+  outline: none;
+}
+
+/* Roving focus ring — focus-visible doesn't fire on programmatic focus reliably. */
+.x-menu__item:focus-visible {
+  box-shadow: inset 0 0 0 var(--border-width) var(--c-focus-ring);
+}
+
+.x-menu__item[aria-disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.x-menu__item[data-destructive] { color: var(--c-error); }
+.x-menu__item[data-destructive]:hover,
+.x-menu__item[data-destructive]:focus-visible {
+  background: color-mix(in srgb, var(--c-error) 10%, transparent);
+  color: var(--c-error);
+}
+
+.x-menu__item-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: inherit;
+}
+
+.x-menu__item-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@keyframes x-menu-in {
+  from { opacity: 0; transform: translateY(calc(-1 * var(--space-1))); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .x-menu__panel { animation: none; }
+}
+
+/* State-matrix fixture — open demos reserve room for the panel (the sink's
+   generic anchored-panel room rule doesn't reach x-menu__panel), and the
+   end-aligned demo parks its trigger at the cell's right edge: end alignment
+   exists for right-edge triggers, so the panel opens leftward inside the cell. */
+.x-menu__demo {
+  display: flex;
+  min-height: 18rem;
+}
+
+.x-menu__demo--end {
+  justify-content: flex-end;
+}
