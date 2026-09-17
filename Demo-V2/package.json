@@ -1,0 +1,24 @@
+{
+  "name": "wizly-admin-demo-v2",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone, local-only Wizly admin workflow prototype. Not production application code.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node server.mjs",
+    "preview": "node server.mjs --dist",
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/domain.test.mjs tests/server.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "verify": "node scripts/check.mjs && node --test tests/domain.test.mjs tests/server.test.mjs"
+  },
+  "dependencies": {
+    "monaco-editor": "0.52.2"
+  },
+  "devDependencies": {
+    "playwright": "1.55.0"
+  }
+}

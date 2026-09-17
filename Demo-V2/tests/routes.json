@@ -1,0 +1,334 @@
+[
+  {
+    "pattern": "/admin/analytics/home-suggestion",
+    "path": "/admin/analytics/home-suggestion"
+  },
+  {
+    "pattern": "/admin/analytics/next-action-mappings",
+    "path": "/admin/analytics/next-action-mappings"
+  },
+  {
+    "pattern": "/admin/analytics/skill-evidence-reset",
+    "path": "/admin/analytics/skill-evidence-reset"
+  },
+  {
+    "pattern": "/admin/analytics/reporting",
+    "path": "/admin/analytics/reporting"
+  },
+  {
+    "pattern": "/admin/courses",
+    "path": "/admin/courses"
+  },
+  {
+    "pattern": "/admin/courses/:content",
+    "path": "/admin/courses/subject-networks"
+  },
+  {
+    "pattern": "/admin/courses/:content/chapters/:chapter",
+    "path": "/admin/courses/subject-networks/chapters/chapter-basics"
+  },
+  {
+    "pattern": "/admin/courses/lessons/:lesson",
+    "path": "/admin/courses/lessons/lesson-internet"
+  },
+  {
+    "pattern": "/admin/courses/lessons/:lesson/revisions",
+    "path": "/admin/courses/lessons/lesson-internet/revisions"
+  },
+  {
+    "pattern": "/admin/courses/:content/order-preview",
+    "path": "/admin/courses/subject-networks/order-preview"
+  },
+  {
+    "pattern": "/admin/courses/:content/publish",
+    "path": "/admin/courses/subject-networks/publish"
+  },
+  {
+    "pattern": "/admin/courses/:content/settings",
+    "path": "/admin/courses/subject-networks/settings"
+  },
+  {
+    "pattern": "/admin/courses/:content/retirement",
+    "path": "/admin/courses/subject-networks/retirement"
+  },
+  {
+    "pattern": "/admin/courses/:content/review",
+    "path": "/admin/courses/subject-networks/review"
+  },
+  {
+    "pattern": "/admin/courses/approvals",
+    "path": "/admin/courses/approvals"
+  },
+  {
+    "pattern": "/admin/courses/transfer",
+    "path": "/admin/courses/transfer"
+  },
+  {
+    "pattern": "/admin/challenges",
+    "path": "/admin/challenges"
+  },
+  {
+    "pattern": "/admin/challenges/:challengeId",
+    "path": "/admin/challenges/challenge-parentheses"
+  },
+  {
+    "pattern": "/admin/challenges/:challengeId/editorial",
+    "path": "/admin/challenges/challenge-parentheses/editorial"
+  },
+  {
+    "pattern": "/admin/challenges-review",
+    "path": "/admin/challenges-review"
+  },
+  {
+    "pattern": "/admin/daily-challenges",
+    "path": "/admin/daily-challenges"
+  },
+  {
+    "pattern": "/admin/daily-challenges/schedule",
+    "path": "/admin/daily-challenges/schedule"
+  },
+  {
+    "pattern": "/admin/daily-challenges/schedule-health",
+    "path": "/admin/daily-challenges/schedule-health"
+  },
+  {
+    "pattern": "/admin/daily-challenges/review",
+    "path": "/admin/daily-challenges/review"
+  },
+  {
+    "pattern": "/admin/debug-detective",
+    "path": "/admin/debug-detective"
+  },
+  {
+    "pattern": "/admin/debug-detective/:caseId",
+    "path": "/admin/debug-detective/debug-off-by-one"
+  },
+  {
+    "pattern": "/admin/debug-detective-bug-types",
+    "path": "/admin/debug-detective-bug-types"
+  },
+  {
+    "pattern": "/admin/debug-detective-review",
+    "path": "/admin/debug-detective-review"
+  },
+  {
+    "pattern": "/admin/tracks",
+    "path": "/admin/tracks"
+  },
+  {
+    "pattern": "/admin/tracks/:trackId",
+    "path": "/admin/tracks/track-python"
+  },
+  {
+    "pattern": "/admin/workspace/templates",
+    "path": "/admin/workspace/templates"
+  },
+  {
+    "pattern": "/admin/papers",
+    "path": "/admin/papers"
+  },
+  {
+    "pattern": "/admin/papers/:paper",
+    "path": "/admin/papers/paper-foundations"
+  },
+  {
+    "pattern": "/admin/papers/:paper/questions",
+    "path": "/admin/papers/paper-foundations/questions"
+  },
+  {
+    "pattern": "/admin/papers/:paper/import",
+    "path": "/admin/papers/paper-foundations/import"
+  },
+  {
+    "pattern": "/admin/papers/:paper/checklist",
+    "path": "/admin/papers/paper-foundations/checklist"
+  },
+  {
+    "pattern": "/admin/papers/:paper/published",
+    "path": "/admin/papers/paper-foundations/published"
+  },
+  {
+    "pattern": "/admin/papers/:paper/settings",
+    "path": "/admin/papers/paper-foundations/settings"
+  },
+  {
+    "pattern": "/admin/papers/:paper/accommodations",
+    "path": "/admin/papers/paper-foundations/accommodations"
+  },
+  {
+    "pattern": "/admin/papers/:paper/analytics",
+    "path": "/admin/papers/paper-foundations/analytics"
+  },
+  {
+    "pattern": "/admin/tests/:test/recorded-events",
+    "path": "/admin/tests/test-demo/recorded-events"
+  },
+  {
+    "pattern": "/admin/tests/:test/invalidate",
+    "path": "/admin/tests/test-demo/invalidate"
+  },
+  {
+    "pattern": "/admin/companies",
+    "path": "/admin/companies"
+  },
+  {
+    "pattern": "/admin/companies/:company/analytics",
+    "path": "/admin/companies/company-northstar/analytics"
+  },
+  {
+    "pattern": "/admin/certificates",
+    "path": "/admin/certificates"
+  },
+  {
+    "pattern": "/admin/certificates/name-corrections",
+    "path": "/admin/certificates/name-corrections"
+  },
+  {
+    "pattern": "/admin/certificates/parked-generations",
+    "path": "/admin/certificates/parked-generations"
+  },
+  {
+    "pattern": "/admin/certificates/:certificateId",
+    "path": "/admin/certificates/certificate-1"
+  },
+  {
+    "pattern": "/admin/certificates/:certificateId/revoke",
+    "path": "/admin/certificates/certificate-1/revoke"
+  },
+  {
+    "pattern": "/admin/topic-requests",
+    "path": "/admin/topic-requests"
+  },
+  {
+    "pattern": "/admin/economy/configuration",
+    "path": "/admin/economy/configuration"
+  },
+  {
+    "pattern": "/admin/economy/correction",
+    "path": "/admin/economy/correction"
+  },
+  {
+    "pattern": "/admin/economy/failed-rewards",
+    "path": "/admin/economy/failed-rewards"
+  },
+  {
+    "pattern": "/admin/economy/operations",
+    "path": "/admin/economy/operations"
+  },
+  {
+    "pattern": "/admin/wizbit/kb",
+    "path": "/admin/wizbit/kb"
+  },
+  {
+    "pattern": "/admin/wizbit/kb-administration",
+    "path": "/admin/wizbit/kb-administration"
+  },
+  {
+    "pattern": "/admin/wizbit/responses",
+    "path": "/admin/wizbit/responses"
+  },
+  {
+    "pattern": "/admin/wizbit/identity",
+    "path": "/admin/wizbit/identity"
+  },
+  {
+    "pattern": "/admin/wizbit/nudges",
+    "path": "/admin/wizbit/nudges"
+  },
+  {
+    "pattern": "/admin/broadcasts",
+    "path": "/admin/broadcasts"
+  },
+  {
+    "pattern": "/admin/broadcasts/history",
+    "path": "/admin/broadcasts/history"
+  },
+  {
+    "pattern": "/admin/language-registry",
+    "path": "/admin/language-registry"
+  },
+  {
+    "pattern": "/admin",
+    "path": "/admin"
+  },
+  {
+    "pattern": "/admin/people",
+    "path": "/admin/people"
+  },
+  {
+    "pattern": "/admin/people/:identity",
+    "path": "/admin/people/person-asha"
+  },
+  {
+    "pattern": "/admin/people/:identity/suspend",
+    "path": "/admin/people/person-asha/suspend"
+  },
+  {
+    "pattern": "/admin/people/:identity/lift-suspension",
+    "path": "/admin/people/person-asha/lift-suspension"
+  },
+  {
+    "pattern": "/admin/people/:identity/ban",
+    "path": "/admin/people/person-asha/ban"
+  },
+  {
+    "pattern": "/admin/people/:identity/unban",
+    "path": "/admin/people/person-asha/unban"
+  },
+  {
+    "pattern": "/admin/people/:identity/payment-reversal",
+    "path": "/admin/people/person-asha/payment-reversal"
+  },
+  {
+    "pattern": "/admin/people/:identity/reset",
+    "path": "/admin/people/person-asha/reset"
+  },
+  {
+    "pattern": "/admin/identity-delivery",
+    "path": "/admin/identity-delivery"
+  },
+  {
+    "pattern": "/admin/maintenance-windows",
+    "path": "/admin/maintenance-windows"
+  },
+  {
+    "pattern": "/admin/submissions",
+    "path": "/admin/submissions"
+  },
+  {
+    "pattern": "/admin/submissions/:submissionId",
+    "path": "/admin/submissions/challenge-parentheses"
+  },
+  {
+    "pattern": "/admin/reports",
+    "path": "/admin/reports"
+  },
+  {
+    "pattern": "/admin/vocabulary",
+    "path": "/admin/vocabulary"
+  },
+  {
+    "pattern": "/admin/import/:kind/:id",
+    "path": "/admin/import/challenge/challenge-parentheses"
+  },
+  {
+    "pattern": "/admin/provenance",
+    "path": "/admin/provenance"
+  },
+  {
+    "pattern": "/admin/provenance/:kind/:id",
+    "path": "/admin/provenance/challenge/challenge-parentheses"
+  },
+  {
+    "pattern": "/admin/content-gaps",
+    "path": "/admin/content-gaps"
+  },
+  {
+    "pattern": "/admin/lifecycle",
+    "path": "/admin/lifecycle"
+  },
+  {
+    "pattern": "/admin/audit",
+    "path": "/admin/audit"
+  }
+]
