@@ -1,18 +1,18 @@
 # Build Phases
 
-**Status:** Draft for owner review  
-**Date:** 16 September 2026  
+**Status:** Reviewed  
+**Date:** 17 September 2026  
 **Approach:** Sequential development; one active domain or closely related group at a time.
 
 ## Purpose
 
 Build Wizly Labs as a new product with clear ownership and a working experience at every milestone. Shared capabilities are built once. Each domain then adds its own complete learner and staff experience without recreating those capabilities.
 
-This document defines the build order and completion checks only. It does not select technologies or approve individual features.
+This document defines the build order and completion checks only. It does not select technologies or approve individual features. Reviewed describes the agreed plan, not completed implementation or a substitute for the detailed dependency checks before each slice.
 
 ## Before implementation
 
-Define the product in plain language: shared capabilities, individual domains, important edge cases, cross-domain journeys and visual references. Then agree the technology stack and architecture. Only behaviour approved for this product enters the build.
+Complete the consistency corrections, shared product definitions and visual/admin workflow review around the approved domain descriptions. Confirm Architecture and Rules before coding. Only behaviour approved for this product enters the build; a prototype or technical convenience does not silently expand it.
 
 ## Working rules
 
@@ -38,7 +38,7 @@ Define the product in plain language: shared capabilities, individual domains, i
 |---|---|
 | **1.1 Project & environments** | Set up the repository, local development and test environment. Establish repeatable installation, startup, reset and configuration. |
 | **1.2 Data & operational basics** | Establish persistence, migrations, required storage and a first repeatable test deployment. Add logging, request tracing and health checks. |
-| **1.3 Access & permissions** | Implement the agreed main-site handoff, learner and staff access, permissions, sign-out, expired access and account/session restrictions. |
+| **1.3 Access & permissions** | Implement the agreed main-site handoff, WordPress-derived User/Admin/Super Admin roles, fixed action permissions, sign-out, expired access and account/session restrictions. No Labs role editor. |
 | **1.4 Basic application shell** | Build routing, learner navigation and a minimal staff shell. Establish basic appearance and common page feedback; defer full Dashboard, Settings and Administration pages. |
 | **1.5 Foundation verification** | Check fresh setup, sign-in, access refusal, staff restrictions, sign-out, restart and deployment. Correct failures before proceeding. |
 
@@ -51,17 +51,17 @@ Define the product in plain language: shared capabilities, individual domains, i
 | **2.1 Common interface components** | Build reusable forms, buttons, dialogs, lists, tables, navigation elements, loading/empty/error states and accessibility behaviour. Extend the shell rather than rebuilding it. |
 | **2.2 Languages & coding workspace** | Establish the approved language catalogue, starter-code rules, shared editor configurations, output panel, interactive terminal and browser preview where supported. |
 | **2.3 Execution & evaluation** | Implement Run, Stop, input/output, execution limits and supported-language behaviour. Separately implement answer checking, test results and hidden-answer protection. Platform faults must not count as learner failures. |
-| **2.4 Content & media** | Build the agreed shared draft, review, publish and archive behaviour, together with common file/media handling. Individual authoring screens belong to their domains. |
+| **2.4 Content & media** | Build the agreed shared draft, review, publish/update, supported Unpublish, Archive and safe Delete behaviour, together with common file/media handling. Capabilities are reused; content stays domain-owned and individual authoring screens belong to their domains. |
 | **2.5 Reliable actions & data lifecycle** | Establish shared background processing, safe repeat actions, change tracking and agreed retention/deletion handling. Record the activity and completion facts approved Progress features will need; dashboard screens remain later. |
-| **2.6 Shared assistance & verification** | Build common generated-help behaviour only if approved for this product. Verify all shared capabilities through development-only examples, including normal, failed and interrupted operations. |
+| **2.6 Shared assistance & verification** | Build the approved generated-help foundation, switched off initially, with its privacy, restriction and recovery behaviour. Verify all shared capabilities through development-only examples, including normal, failed and interrupted operations. Activation waits for the real Economy and page integrations and the approved safety/cost checks. |
 
-**Boundaries:** Assessment timing, test saving and result history belong to the Assessment domain, not a second shared assessment product. Notifications, Economy and Progress keep their own domain ownership even where other domains use their capabilities. Build only known shared needs, not speculative frameworks.
+**Boundaries:** Assessment timing, test saving and result history belong to the Assessment domain, not a second shared assessment product. Notifications, Economy and Progress keep their own domain ownership even where other domains use their capabilities. Build only known shared needs, not speculative frameworks. Authored WizBit guidance is separate from generated help.
 
-**Exit check:** The shared frontend and backend work together in the verification environment. Required interfaces and behaviour are clear, failure cases are exercised, and later domains can reuse them without inventing alternatives.
+**Exit check:** The shared frontend and backend work together in the verification environment. Required interfaces and behaviour are clear, failure cases are exercised, and later domains can reuse them without inventing alternatives. Development-only fixtures or doubles demonstrate isolated checks; they are not delivered substitutes for a required domain integration.
 
 ## Phase 3 — Sequential Domain Delivery
 
-Groups organize the work; they do not create additional domains or dictate the technical architecture. Within each group, finish one domain or explicitly linked pair before moving on.
+Groups organize the work; they do not create additional domains or dictate the technical architecture. Within each group, finish one domain or explicitly linked pair before moving on. The group order below is the main delivery sequence; a required capability must be brought forward in its owning domain before a dependent slice is signed off.
 
 | Subphase / group | Delivery order | Group completion |
 |---|---|---|
@@ -75,19 +75,21 @@ Groups organize the work; they do not create additional domains or dictate the t
 | **3.8 Companion** | WizBit | The companion works against real pages and approved help contexts, including its restrictions and unavailable states. |
 | **3.9 Administration** | Unified console and remaining cross-domain management | Assemble the domain-owned staff screens and complete global administration. Verify role-specific access and management journeys without rebuilding individual studios. |
 
-**Domain coverage:** These groups contain 17 domains. Mock and Company are two types within Assessment; Home / Skills / Progress is one domain; Profile & Settings is one domain.
+**Domain coverage:** These groups contain 17 domains. Mock and Company are two types within Assessment; Home / Skills / Progress is one domain; Profile & Settings is one domain. Tracks owns its own problems within the Challenges & Tracks grouping.
 
 ### The same pipeline for every domain
 
-**Confirm behaviour → agree local implementation details → backend → frontend and staff screens → integrations → automated checks → manual walkthrough → merge.**
+**Confirm behaviour and prerequisites → agree local implementation details → backend → frontend and staff screens → integrations → automated checks → manual walkthrough → merge.**
 
 The brief states the learner outcome, owned area, shared capabilities used and completion checks. The agent makes ordinary local implementation choices within the approved architecture; new product or architecture choices return to the owner.
 
 A domain is complete when its agreed workflows work, important edge cases are handled, applicable staff controls work, its data survives the promised interruptions, and previously completed domains still pass their relevant checks.
 
-**Dependency rule:** No required integration is silently replaced with a placeholder. Build its prerequisite first or complete the two domains as one sequential group. A later dashboard is acceptable only when its required source facts are already captured correctly.
+**Dependency rule:** Before starting a slice, identify each required producer, consumer and staff action and verify that it works. If its owner is scheduled later, complete that prerequisite in its own home first, or make it part of an explicitly linked sequential group. Do not duplicate it inside the consumer, hide the missing feature, substitute a placeholder or call the slice complete while its required integration is absent.
 
-**Administration rule:** Build each domain's authoring and management screens with that domain inside the basic staff shell. Subphase 3.9 unifies and completes the console; it is not the first time staff can manage content.
+In particular, resolve required Notes, Topic Requests, content-report handling, notification preferences, classification/publishing controls and shared help restrictions before the first domain slice depending on them is signed off. Phase-detail documents name that concrete prerequisite order without creating parallel workstreams. Final navigation and a consolidated admin/dashboard presentation can remain later; the underlying capability cannot.
+
+**Administration rule:** Build each domain's authoring and management screens with that domain inside the basic staff shell. Subphase 3.9 unifies and completes the console; it is not the first time staff can manage content. Common account authority and fixed role checks already exist from Phase 1.
 
 **Progress rule:** Build collection of the required facts early and their recording with each producer. Build the final Progress calculations and screens in 3.7. Any calculation needed earlier by another domain must be completed before that dependency is signed off.
 
@@ -98,7 +100,7 @@ Freeze features during this phase. Work consists of verified defect fixes and re
 | Subphase | Verification |
 |---|---|
 | **4.1 Complete domain walkthroughs** | Manually test every learner and staff domain, including normal, empty, loading, restricted and failed states. Repeat checks on the integrated product. |
-| **4.2 Cross-domain journeys** | Verify challenge → solution → reward → progress; daily → completion → streak; course → activity → completion →certificate; assessment → result → progress; and account/preferences changes across affected areas. |
+| **4.2 Cross-domain journeys** | Verify challenge → solution → reward → progress; daily → completion → streak; course → activity → completion → certificate; assessment → result → progress; and account/preferences changes across affected areas. |
 | **4.3 Failure & recovery behaviour** | Exercise refresh, disconnect, duplicate actions, service interruption, expired access and interrupted background work. Confirm work is preserved as promised and results are not duplicated. |
 | **4.4 Security & access** | Test learner/staff boundaries, access to another learner's data, hidden test material, uploads, sensitive actions and the main-site boundary. |
 | **4.5 k6 & performance** | Run representative browse, run, submit, assessment, stream and mixed workloads against agreed targets. Use representative data, identify bottlenecks, fix and rerun. |
@@ -110,4 +112,4 @@ Freeze features during this phase. Work consists of verified defect fixes and re
 
 Keep this roadmap as the single build-order overview. Later, create one focused document for each phase, supported by the shared and individual domain documents already planned. Phase documents reference those descriptions instead of copying their features and workflows.
 
-**Draft assumptions to confirm:** Notifications and Economy come before Practice; domain-specific staff screens are delivered with their domain; final dashboard and account screens come late, but the facts and controls they depend on are not postponed.
+**Confirmed direction:** Notifications and Economy precede Practice in the main sequence; domain-specific staff capabilities are delivered with their domain; final dashboard/account/admin composition comes late, but required facts, permissions and supporting capabilities do not. Generated help is built but initially off. Detailed implementation dependencies and verification remain work to complete, not proof of readiness supplied by this roadmap.

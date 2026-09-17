@@ -39,7 +39,9 @@ A save failure, missing required file, invalid entry file or failed preparation 
 
 Output appears as the program produces it, and the learner can type input while it runs. Switching output tabs preserves terminal scrollback. Stop ends the selected program. Show relevant resource usage, warnings near a limit and the limit that ended a program. Output must remain output, not actions against the surrounding page.
 
-The platform allows three simultaneous programs per learner across Code Lab, personal projects, Course Workspaces and runnable lesson blocks. It is one shared allowance, not three per project. Open editors, idle terminals and completed output do not occupy a running slot.
+The platform allows three simultaneous programs per learner across Code Lab, personal projects, Course Workspaces and runnable lesson blocks. It is one shared allowance, not three per project. Open editors, completed output and terminal panels with no live program do not occupy a running slot.
+
+A live program occupies one slot until it exits, is stopped or reaches its permitted bound, including while waiting for input or detached during Workspace's reconnection window. A quiet display is not evidence that the process ended. Release the slot only when the program actually ends; browser previews remain outside this server-running allowance. Code Lab and lesson examples use the same slot meaning, with their own leaving/stopping behavior.
 
 At the allowance, explain which owned programs are running and provide a Stop Process action for each. Stopping one releases that program only. If the running-program state cannot be checked, say so rather than admitting more or inventing a list.
 
@@ -83,4 +85,4 @@ Provider failures and refused requests follow the shared release/refund rules an
 
 ## Completion checks
 
-Test entry-file selection, a missing required file, unsaved-file failure before Run, text-only launch with a stored binary asset and replacement of an existing program. Verify interactive input, scrollback, shared-slot refusals, expired waiting, return inside/outside the two-minute window and layout narrowing mid-run. Stop the executor and confirm web preview still works. Check that optional help reads only attached material and cannot change files or completion.
+Test entry-file selection, a missing required file, unsaved-file failure before Run, text-only launch with a stored binary asset and replacement of an existing program. Verify interactive input, scrollback, shared-slot refusals, expired waiting, return inside/outside the two-minute window and layout narrowing mid-run. Count an input-waiting or briefly detached live program as one slot, an empty/completed terminal as none and browser preview as none; unknown process state must not free a slot by assumption. Stop the executor and confirm web preview still works. Check that optional help reads only attached material and cannot change files or completion.

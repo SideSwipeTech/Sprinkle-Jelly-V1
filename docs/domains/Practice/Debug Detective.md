@@ -57,7 +57,7 @@ Closing the page does not discard the window. At expiry, submit the latest ackno
 | Finish now | Grade the current acknowledged checkpoint | Yes |
 | Time expires | Grade the last acknowledged checkpoint | Yes |
 | Platform cannot honestly complete it | Explain platform invalidation; preserve recoverable code | No; restore the allowance |
-| Material content correction or retirement | Explain the change, preserve acknowledged code and end the affected window | No; restore the allowance |
+| Material content correction, unpublishing or retirement | Explain the change, preserve acknowledged code and end the affected window | No; restore the allowance |
 
 Refused or duplicate starts consume nothing. If execution or checkpoint storage prevents honest deadline grading, restore the allowance instead of inventing a learner failure.
 
@@ -81,7 +81,15 @@ Personal volume can show cases submitted, cases fixed, timed fixes, practice fix
 
 ## Staff capabilities
 
-Staff use the shared form inside Debug's own collection to create, edit, preview, publish, archive and safely delete cases. Deletion is an ordinary authorized admin action, not a maintenance-only hidden feature. Safe removal still protects learner summaries and retained solutions.
+Staff use the shared form inside Debug's own collection to create, edit, preview, publish, unpublish/return to draft, archive and safely delete cases under the fixed Admin/Super Admin responsibilities. Deletion is an ordinary authorized admin action, not a maintenance-only hidden feature. Safe removal still protects learner summaries and retained solutions.
+
+### Readable case addresses
+
+When no address is supplied, generate a readable one from the case title. If the title cannot provide a usable address, use a timestamp-based fallback. Show the resulting address to the author. Normalize a supplied address as it is entered, validate it against the shared address rules and reject an invalid or already-used address with a clear reason while preserving the draft.
+
+One accepted address resolves to exactly one case. Generating an address must not take over another case's existing address; changing a title alone does not silently regenerate an established address. Opening by the case's identifier or readable address applies the same availability and ownership checks. These are stable case links, not another problem identity or permission bypass.
+
+### Content validation and changes
 
 Author broken starter and private reference fix for every offered language, cases, difficulty, classification, bug metadata, optional hints, debrief and valid timed settings. The curated bug-type list initially includes off-by-one, boundary, state, logic, resource and typo. Staff maintain that list separately from choosing a case's values. A case may state one to ten planted bugs and one to three bug types; those are content metadata, not measured bug counts.
 
@@ -89,10 +97,12 @@ Publication and valid live edits require at least one visible and hidden case, w
 
 Changing cases, datasets, expected reference behavior, offered languages, comparison policy, timed duration or timed allowance is material. Before applying it, explain the exact active-window impact. A missing impact count blocks the destructive confirmation rather than becoming zero. Affected windows end as platform-caused, their allowances are restored and acknowledged code remains recoverable. Cosmetic text changes do not break windows.
 
-Archiving or safely deleting a live case applies the same active-window protection, stops new starts and leaves earned records readable. No in-app notification is invented for this change; the persistent affected-window message explains what happened. A new independently created replacement receives no copied learner activity.
+**Unpublish / Return to Draft** temporarily removes a published case from learner availability and returns the same case to editing. Super Admin confirms its active-window impact: preserve acknowledged code, end affected windows as platform-caused and restore their allowances. Earned fixes, rewards, drafts and retained solutions remain. Republish only after the ordinary checks; returning the case does not renew already-paid first-fix rewards. This is optional, not a prerequisite for direct updating, and cannot restore a finally archived case.
+
+Archiving or safely deleting a live case applies the same active-window protection, stops new starts and leaves earned records readable. No in-app notification is invented for these content changes; the persistent affected-window message explains what happened. A new independently created replacement receives no copied learner activity.
 
 Staff review case-level aggregate participation, fix rates, time, hints and failures, keeping timed and practice results separate. Exports disclose bounds and truncation. Staff never inspect learner source. The case and board support scoped topic requests; a content report uses the shared report reasons and preserves privacy.
 
 ## Checks
 
-Verify broken-code seeding, Cancel on Reset, unavailable last source, per-language drafts, free Run, all-case validation, no hidden feedback, same case solved in both modes without duplicate XP, one active window, failed validation before the deadline, closed-tab expiry, unsent edits, platform-invalidated allowance restoration and material edits. Check both learner/staff Fix rates, the required debrief unlock, source expiry, independent paired Challenges and account erasure of all private Debug records.
+Verify broken-code seeding, Cancel on Reset, unavailable last source, per-language drafts, free Run, all-case validation, no hidden feedback, same case solved in both modes without duplicate XP, one active window, failed validation before the deadline, closed-tab expiry, unsent edits, platform-invalidated allowance restoration and material edits. Check both learner/staff Fix rates, the required debrief unlock, source expiry, independent paired Challenges and account erasure of all private Debug records. Check generated/supplied addresses, unusable-title fallback, collisions and title edits. Unpublish during a live window and verify protected code and restored allowance; republishing the same case preserves history and cannot award its first-fix XP again.

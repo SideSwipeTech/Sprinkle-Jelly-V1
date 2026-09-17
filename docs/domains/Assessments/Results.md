@@ -35,7 +35,9 @@ A six-mark question with three correct options gives two proportional marks when
 
 ### Total and final grading
 
-A coding question with no saved code, or no cases, is skipped. Publication and live-edit validation must prevent a coding question without cases from becoming available; no missing test case is invented during marking.
+A coding question with valid grading material but no saved learner code is unanswered and scores zero without a penalty. Preserve Not reached, Skipped or Unanswered where known; do not invent learner activity.
+
+Missing, empty or unreadable required test cases are a platform/content fault, not a skipped answer, wrong answer or zero score. Preserve the acknowledged code and recover the original grading material captured for the attempt. Keep grading pending while that recovery is possible; never substitute the paper's newly edited cases. If the original inputs are provably irreparable, use the existing platform-failure invalidation and restored-attempt rules. Publication and live-edit validation still prevent questions without cases from becoming available, but those checks do not turn later data loss into a learner failure.
 
 Add the question marks at full precision, round the total once to two decimal places using half-up rounding, and do not let the final total fall below zero. The overall zero floor does not remove a valid wrong-only multi-select penalty before summing the questions. Per-question displays must not change the values used in that sum. Mock pass/fail uses the passing percentage fixed for that test; Company has no pass/fail decision.
 
@@ -101,6 +103,20 @@ Deleting live paper/question content does not delete these histories or the orig
 
 Finalized recorded tests contribute question-level evidence to Progress under separate Mock and Company labels and the shared assessment weighting. Practice, preview, excluded staff activity and repeated processing create no extra evidence. Invalidation removes that result's contribution; a corrected result updates affected skills. Direct editing does not move an existing test to a different question or skill classification.
 
+Assessment supplies each eligible question's evidence value as **100 × earned question marks ÷ available question marks, bounded to 0–100**. Use the question's original positive available marks and its full-precision earned marks from the finalized grading, not the rounded test total or the current paper. This is the input to the existing Skills model, not a second test score or a new grading rule. Actual negative question marks and the test's sum remain unchanged.
+
+An otherwise eligible unanswered question in a valid finalized test contributes zero, including a question actively skipped or not reached. Preserve that reason in the evidence explanation; zero evidence does not relabel an unanswered question as an incorrect answer in Assessment accuracy. Unclassified questions remain excluded. Pending, platform-failed or invalidated work supplies no invented zero contribution. An invalid or unreadable available-mark value is a grading-data fault, not permission to divide by zero or assume an answer.
+
+| Outcome on an eligible four-mark question | Actual question marks | Skills input |
+|---|---:|---:|
+| Full credit | 4 | 100 |
+| Half credit | 2 | 50 |
+| Wrong-only answer with a one-mark penalty | -1 | 0 |
+| Unanswered, skipped or not reached in a valid finalized test | 0 | 0 |
+| Missing required cases or unresolved grading fault | No invented grade | No contribution until validly resolved |
+
+Progress consumes this supplied value, question identity, captured classification, date and outcome reason. It does not inspect learner answers or re-grade them. Existing weights, evidence minimums, freshness windows, deduplication, current-result selection and retraction rules remain unchanged.
+
 ### Company readiness
 
 Readiness describes preparation on Labs' material for that company, not hiring probability or an employer judgement. It combines **40% coverage** of company papers with **60% performance** on recorded tests. Untaken papers affect coverage, not performance as fictional zero scores.
@@ -153,4 +169,4 @@ Delete the learner's tests of both types, including archived attempts, answers, 
 
 ### Check this journey
 
-Verify a zero-answer result, partial marks, negative marking, grading during an outage, withheld review versus aged-out detail, repeat grants, invalidation, a bounded calculation correction and account deletion. For multi-select, check fully correct, partly correct, mixed, wrong-only, unanswered and repeated selections, with negative marking both enabled and disabled; verify that penalties reduce the sum and only the final test total is floored at zero. Edit a published answer key and remove a paper from the catalogue, then verify that original attempts remain correctly gradable and reviewable. Confirm that histories remain honest and no action duplicates a result or reward.
+Verify a zero-answer result, partial marks, negative marking, grading during an outage, withheld review versus aged-out detail, repeat grants, invalidation, a bounded calculation correction and account deletion. For multi-select, check fully correct, partly correct, mixed, wrong-only, unanswered and repeated selections, with negative marking both enabled and disabled; verify that penalties reduce the sum and only the final test total is floored at zero. Edit a published answer key and remove a paper from the catalogue, then verify that original attempts remain correctly gradable and reviewable. Confirm that histories remain honest and no action duplicates a result or reward. Remove required grading cases and verify recovery or genuine platform invalidation, never a skipped answer. Check the 100/50/0 Skills inputs, including skipped/not-reached questions, while preserving the original marks, Assessment accuracy and exclusion of unresolved faults.

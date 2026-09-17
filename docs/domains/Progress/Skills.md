@@ -49,7 +49,9 @@ Exclude pending grades, invalidated outcomes, platform failures, previews, seede
 | Hard accepted practice value | 85 |
 | Extreme accepted practice value | 100 |
 
-The four practice values are configurable within 0–100 under their authorized settings; their meaning belongs here and they are not XP awards. Already captured values are not silently repriced. Assessment supplies the eligible 0–100 value from its own marking rules; Skills does not re-grade the answer or infer correctness from an overall test score.
+The four practice values are configurable within 0–100 under their authorized settings; their meaning belongs here and they are not XP awards. Already captured values are not silently repriced. Assessment supplies the eligible 0–100 value under [Results — Skill evidence](../Assessments/Results.md#skill-evidence), derived from the question's original available marks and full-precision earned marks. Skills consumes that value; it does not re-grade an answer, inspect learner code or infer question correctness from an overall test score.
+
+Full credit supplies 100, half credit 50, and a valid negative-mark answer supplies zero without changing its actual negative test marks. An otherwise eligible unanswered, skipped or not-reached question in a valid finalized test also supplies zero, with its reason retained. Missing grading material, pending work and invalidation supply no invented zero. The bounded evidence value does not alter Assessment accuracy, question marks, rewards or the test total.
 
 Use the newest eligible contribution for each distinct owned item in the chosen skill and period. Multiply each value by its weight, add the weighted values and divide by total weight. Both the weight minimum and the distinct-item minimum must pass before displaying a judgment.
 
@@ -125,4 +127,4 @@ Authorized staff maintain authored next-action mappings and the bounded practice
 
 ## Completion checks
 
-Check both evidence minimums, practice-only and mixed evidence, independent duplicate-content problems, repeated solves, boundary rounding, evidence expiry, all four non-judgment states, trends at ±5, unavailable explanations, invalidation, content archiving and resets. Compare every presented Assessment figure with its source. Verify that period changes neither revive stale evidence nor introduce a hidden company selector.
+Check both evidence minimums, practice-only and mixed evidence, independent duplicate-content problems, repeated solves, boundary rounding, evidence expiry, all four non-judgment states, trends at ±5, unavailable explanations, invalidation, content archiving and resets. Compare every presented Assessment figure with its source. Verify that period changes neither revive stale evidence nor introduce a hidden company selector. Check full, partial, negative and unanswered question contributions against Results, preserving skipped/not-reached reasons and excluding unresolved grading faults rather than treating them as zero evidence.

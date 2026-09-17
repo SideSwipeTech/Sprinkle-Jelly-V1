@@ -57,9 +57,11 @@ After completion, the onward action can lead to the learner's saved Track soluti
 
 ## Staff management
 
-Staff create and edit tracks, choose their language, create their own problems with the common form, arrange entries, import destination-owned content where supported, preview, validate, publish, archive and safely delete. The language becomes fixed once a track contains problems; a different language requires a separately authored track rather than reinterpreting existing source and results.
+Staff create and edit tracks, choose their language, create their own problems with the common form, arrange entries, import destination-owned content where supported, preview, validate, publish, unpublish/return to draft, archive and safely delete under the fixed Admin/Super Admin responsibilities. The language becomes fixed once a track contains problems; a different language requires a separately authored track rather than reinterpreting existing source and results.
 
 Problem creation is not an Add existing Challenge selector. An import creates independent track-owned content, not references or copies of learner progress. Reordering is applied coherently and leaves problem identity, source and completion unchanged. Duplicate entries or unsupported language templates are rejected with a clear reason.
+
+**Unpublish / Return to Draft** is available for a published Track and its own published problems. Super Admin can remove them from learner availability while retaining the same identities for editing. Unpublishing a Track also prevents access to its problems through that Track without deleting or reassigning those problems. Republish only after the usual validation; each child's own publication state still applies. Earned track completion, problem solves, rewards, drafts and retained solutions survive, and republishing does not pay them again. Unpublish is not required for normal direct updates and does not restore an archived item.
 
 Archiving an entry removes it from current availability. Permanent removal identifies the track-owned content affected and preserves learner histories as described in Authoring. Deleting a track cannot remove a separately owned Challenge, Daily, Debug case or another track's problem.
 
@@ -69,4 +71,4 @@ Staff content review reports rates and aggregate diagnostics for this track's ow
 
 No timed track mode, sequence lock inferred from progress, extra track XP, shared problem bank, cross-track completion, shared source reference, public solution collection or track certificate is introduced.
 
-Check independent similar problems, a fixed language, an empty track, opening an entry out of order, repeated Start, separate first-solve rewards, no repeat reward, content rates by owned item and accepted source filed under Tracks. Complete a track, add or remove problems, and verify its earned completion remains while current new work is shown separately. Account erasure removes that learner's track starts, positions, problem results and completion records without deleting authored tracks.
+Check independent similar problems, a fixed language, an empty track, opening an entry out of order, repeated Start, separate first-solve rewards, no repeat reward, content rates by owned item and accepted source filed under Tracks. Complete a track, add or remove problems, and verify its earned completion remains while current new work is shown separately. Unpublish a Track or one owned problem, then republish with validation: preserve identity/history and enforce both parent and child availability without new rewards. Account erasure removes that learner's track starts, positions, problem results and completion records without deleting authored tracks.

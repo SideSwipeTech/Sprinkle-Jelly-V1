@@ -7,7 +7,9 @@
 
 Staff manage bounded Economy settings, repair verified accounting faults and recover rewards that failed to arrive. These capabilities do not provide arbitrary gifts, a badge builder or permission to change test scores.
 
-Actions require the appropriate permission. Corrections on a learner's balance are super-administrator actions. Configuration and retry permissions are granted explicitly. Record who changed what, why where required, and the previous and resulting values. A change whose required record cannot be saved must not be reported as applied.
+Actions follow the fixed [WordPress-derived role policy](../Administration/Administration.md#fixed-responsibilities). Super Admin changes Economy or measurement configuration, corrects learner balances and retries protected failed rewards. Admin can read only the permitted operational/support summaries and cannot acquire these write actions through a local grant. Labs has no role-assignment, permission-editor or per-person override control. Check the required role at each action, not only when displaying the page.
+
+Record who changed what, why where required, and the previous and resulting values. A change whose required record cannot be saved must not be reported as applied.
 
 The later admin-workflow review will decide the final screen arrangement. This document defines capabilities and consequences, not a multi-stage planning interface.
 
@@ -58,7 +60,7 @@ A correction adds an explanatory entry; it never edits or deletes the original. 
 
 Distinguish an award waiting for delivery, an award delivered, and one that stopped trying after three automatic failures. Show the recorded occasion, learner, age and safe failure information to permitted staff. No parked awards is a genuine good state; an unreadable list is not an empty list.
 
-Staff can retry one parked reward using its original identity. The retry cannot pay twice; another failure keeps it visible. There is no write-off control or invitation to replace it with a discretionary correction. Separate notices or celebration failures do not turn an applied reward back into unpaid work.
+Super Admin can retry one parked reward using its original identity. The retry cannot pay twice; another failure keeps it visible. There is no write-off control or invitation to replace it with a discretionary correction. Separate notices or celebration failures do not turn an applied reward back into unpaid work.
 
 ## Operational summary
 
@@ -80,4 +82,4 @@ Counts and amounts describe what happened, not a currency-cost estimate or proof
 
 Economy owns balance correction and reward recovery; it does not own activity CRUD or grading. Keep learner code, private notes and unrelated content out of these screens. Account erasure removes learner-linked records while retaining platform configuration and permitted anonymous aggregates.
 
-Verify permission checks, unavailable settings, a conflicting edit, out-of-range values, future-only changes, positive and negative corrections, repeat confirmation, blocked negative balance, a failed reward retry and honest operational figures. No staff control may grant an unapproved reward or alter historical prices silently.
+Verify User/Admin/Super Admin action boundaries, unavailable or downgraded WordPress roles, no Labs-local grants, unavailable settings, a conflicting edit, out-of-range values, future-only changes, positive and negative corrections, repeat confirmation, blocked negative balance, a failed reward retry and honest operational figures. No staff control may grant an unapproved reward or alter historical prices silently.

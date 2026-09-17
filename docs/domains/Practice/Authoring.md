@@ -7,7 +7,7 @@
 
 Administrators use one reusable problem-authoring form from Challenges, Tracks, Daily Challenges and Debug Detective. The page that opens the form fixes its destination. Creating inside a Python Track creates that track's own Python problem; it does not create a standalone Challenge or a reference to one.
 
-Each area has its own Create, Read, Update, Delete, Archive, preview and publication capabilities. Each owns its statements, code, cases, hints, explanations, settings and learner outcomes. Identical exercises in different areas remain independent. A track cannot add a live reference to an existing Challenges item. There is no automatic content synchronization, shared problem lifecycle or cross-domain completion.
+Each area has its own Create, Read, Update, Delete, Archive, preview and publication capabilities. Challenges, Tracks and Debug Detective also provide Unpublish / Return to Draft as described below; Daily retains its date-bound Unschedule rules. Each owns its statements, code, cases, hints, explanations, settings and learner outcomes. Identical exercises in different areas remain independent. A track cannot add a live reference to an existing Challenges item. There is no automatic content synchronization, shared problem lifecycle or cross-domain completion.
 
 The form shows the current area and any track context clearly. It reuses controls and common validation while the owning area applies its own rules. Assessment may reuse appropriate coding-question controls, but it keeps its papers, questions and marking separate.
 
@@ -65,6 +65,18 @@ Tracks create and arrange their own problems, with ordering and bulk import wher
 
 Change records state what changed without exposing private staff notes or learner source. Previously earned solves, XP and classifications are not repriced by new difficulty or topic settings. Running submissions must not produce an outcome against mismatched case content: affected work follows the owning domain's explicit conflict or timed-window behavior.
 
+## Unpublish / Return to Draft
+
+Super Admin can unpublish a published Challenge, Track, track-owned problem or Debug case. Unpublish removes it from learner discovery and new activity and returns the same item to draft for editing. It preserves its identity, learner drafts, earned solves, rewards, completion and retained Solutions records. It is not Archive, Delete or a new problem.
+
+Republishing requires the ordinary current validation and approval rules. It makes that same item available again without re-arming first-solve rewards or resetting learner history. Unpublish is optional: a normal validated direct update does not require taking the item offline first.
+
+An unpublished Track also makes its problems unavailable through that Track, without deleting them or reaching independent problems elsewhere. Each child's own publication state still applies when the Track returns. Already submitted work follows the owning area's existing finalization/content-conflict rules; withdrawal must not be recorded as a learner's wrong answer.
+
+Unpublishing a Debug case uses its active-window protection: show the exact affected windows, preserve acknowledged code, end them as platform-caused and restore the allowance. If that protection cannot be established, do not pretend the action safely completed.
+
+Daily is not given a generic bypass: only an untouched future Daily can return to draft through Unschedule. Once its product date begins, the existing date locks and Void Daily rules govern.
+
 ## Archive and permanent Delete
 
 Archive removes an item from new discovery and solving while preserving earned learner records. Archive is a retirement action, not a hidden soft-delete or Trash folder. Retired problems do not silently reactivate. Optional duplication creates a new draft identity rather than reinstating the old one.
@@ -89,4 +101,4 @@ Staff permissions apply to the action, not just the menu. Authoring, publishing,
 
 ## Checks
 
-Create equivalent problems independently in Challenges, a Track, Daily and Debug. Edit one and verify none of the others changes. Exercise drafts with missing fields, a bad import, conflicting saves, a missing runtime, a reference that fails, an already-correct starter, safe deletion after a solve, and an unsafe Daily/Debug change. Verify learner and staff rates agree while private code remains inaccessible. The form must reuse the experience without turning the collections into one problem bank.
+Create equivalent problems independently in Challenges, a Track, Daily and Debug. Edit one and verify none of the others changes. Exercise drafts with missing fields, a bad import, conflicting saves, a missing runtime, a reference that fails, an already-correct starter, safe deletion after a solve, and an unsafe Daily/Debug change. Verify learner and staff rates agree while private code remains inaccessible. Unpublish and republish the same Challenge/Track/Debug item, checking preserved history and rewards, Track parent availability and Debug allowance restoration; a begun Daily cannot use this to bypass its date lock. The form must reuse the experience without turning the collections into one problem bank.

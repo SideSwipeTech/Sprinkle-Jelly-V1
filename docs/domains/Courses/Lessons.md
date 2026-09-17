@@ -92,9 +92,11 @@ A project lesson opens its assigned template in a **Course Workspace**. Courses 
 
 A Course Workspace does not consume the learner's personal project count, but its per-project limits still apply. A missing or archived template must not be used to publish a broken assignment.
 
-The learner presses Mark complete and confirms that this is their own assessment of their work. No automatic grader, staff review, verification or override is added. Any displayed checklist helps the learner decide; it does not secretly make that decision. Completion is recorded once and counts through the normal required-lesson rule, with no additional skill evidence or XP.
+Completion uses [Workspace's checklist and completion rule](../Workspace/Workspace.md#checklist-and-completion): at least one task must exist and every task must be checked before Mark complete is available. An unreadable checklist does not count as ready. Checking the last task only makes the project ready; the learner must still press Mark complete and confirm that this is their own assessment of their work.
 
-**Workflow:** Open the assignment → work in its Course Workspace → confirm completion → return to learning.
+Courses records the Workspace's valid completion once and applies its ordinary required-lesson rule. No separate course-side button bypasses the checklist, and no automatic grader, staff review, verification or completion override is added. Completion creates no additional skill evidence or XP. Reopening tasks or deleting the Course Workspace later does not reverse a lesson or subject completion already earned.
+
+**Workflow:** Open the assignment → work in its Course Workspace → finish a nonempty checklist → explicitly confirm completion → return to learning.
 
 ## Linked activities
 
@@ -108,4 +110,4 @@ Shared Notes, content reports, improvement requests, topic requests and authored
 
 ## Check these experiences
 
-Verify reading without completing, explicit completion with a failed save, outline search with no matches, a broken image, executable input/output and Stop, browser preview during an execution outage, and leaving an edited example. Watch, seek, pause and reconnect a video without fabricating coverage. Test quiz scoring, failed submission, unlimited retakes, temporary review, optional timer and unavailable review links. Confirm that a project completes only through the learner's confirmation and that linked activities use their actual completion.
+Verify reading without completing, explicit completion with a failed save, outline search with no matches, a broken image, executable input/output and Stop, browser preview during an execution outage, and leaving an edited example. Watch, seek, pause and reconnect a video without fabricating coverage. Test quiz scoring, failed submission, unlimited retakes, temporary review, optional timer and unavailable review links. Confirm that a project completes only after a nonempty all-checked checklist and the learner's explicit confirmation; reopening tasks or deleting its workspace preserves earned learning completion. Linked activities use their actual completion.

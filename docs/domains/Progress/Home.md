@@ -43,7 +43,9 @@ Home displays the actual facts supplied by Daily, Economy, Notes, Notifications,
 
 ## Continue
 
-Continue selects the most recently active unfinished item that still permits the learner to resume. The item must remain available under its owning area's rules, with any required prerequisites satisfied. Skip a finished, archived or inaccessible candidate without exposing unavailable content.
+Continue selects the most recently active item whose owning domain confirms that this learner's work is both unfinished and resumable. The owner applies its access, applicable prerequisites and retained-work rules. Skip completed or non-resumable work without exposing unavailable content; Home does not add a blanket refusal based on the catalogue's archived status.
+
+An unfinished archived subject can remain a candidate for an enrolled learner when Courses still permits resuming it. A test already started can remain a candidate after its catalogue paper is retired or deleted when Assessment still permits Resume. These exceptions do not permit a new enrollment, new test or solving of a withdrawn practice problem. A preserved historical result or completed subject is not unfinished work merely because it remains readable. If resumability cannot be verified, explain the unavailable resume decision rather than guessing access.
 
 Open the saved position inside that item. If the exact position no longer works, open the start of its section, not the next lesson or another invented task. Resolve equal activity times consistently. A completed item never returns merely because an older saved position still exists.
 
@@ -85,4 +87,4 @@ Home offers no learner ranking, proficiency claim, public sharing, AI-written ju
 
 ## Completion checks
 
-Check a new learner, a returning learner, completed and removed resume targets, expired solution detail, pending certificate names and a dismissed recap teaser. Compare shared figures with their owning pages. Fail one region and then every first-load region; preserve good data and never turn failure into learner inactivity. Verify that the header switcher and Settings always show one consistent theme and mode.
+Check a new learner, a returning learner, completed and removed resume targets, expired solution detail, pending certificate names and a dismissed recap teaser. Compare shared figures with their owning pages. Fail one region and then every first-load region; preserve good data and never turn failure into learner inactivity. Verify that the header switcher and Settings always show one consistent theme and mode. Check an unfinished archived course with retained enrollment, an existing test whose paper was retired, a withdrawn practice problem and an unreadable owner decision: only work the owner still allows to resume can enter Continue, and completed/history-only records stay out.

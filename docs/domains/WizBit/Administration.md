@@ -7,27 +7,29 @@
 
 Staff manage WizBit's authored product help, response wording and approved presentation. They do not message individual learners through the companion, browse learner questions or change another domain's result through assistant controls.
 
-These capabilities sit in the main Administration area and remain separately permissioned. Their final grouping, modals and screen sequence will be refined with the other admin workflows; they are not five independent applications. WizBit's learner character and learner confirmation host are absent from the console. Staff actions use the shared administrative controls and change records.
+These capabilities sit in the main Administration area and follow its fixed [WordPress-derived role policy](../Administration/Administration.md#fixed-responsibilities). Admin prepares permitted knowledge/response drafts, previews them and submits changes. Super Admin publishes, unpublishes, archives or deletes live content and changes artwork, matching controls, nudge settings and other protected configuration. Admin may delete an eligible unpublished draft under the ordinary safeguards. Labs grants no extra roles, per-person permissions or overrides. Every action still checks its required role; a visible page alone grants no write authority.
+
+Their final grouping, modals and screen sequence will be refined with the other admin workflows; they are not five independent applications. WizBit's learner character and learner confirmation host are absent from the console. Staff actions use the shared administrative controls and change records.
 
 ## Knowledge-base content
 
 Each entry contains the question it answers, an authored answer, useful synonyms, approved tags, a reference to the product rule being explained and its last-reviewed date. Keep the language understandable to learners. The answer is published product guidance, not private staff documentation or a grading reference.
 
-Staff create, read, edit, publish, unpublish, archive and safely delete their own authored entries under the agreed content-management rules. Ordinary corrections do not require archive-and-duplicate. Removing an entry from use must stop it answering; previously displayed messages are not rewritten. Preserve required staff change history without retaining learner questions.
+Staff create, read, edit, publish, unpublish, archive and safely delete their own authored entries under the agreed content-management rules and fixed role responsibilities above. Ordinary corrections do not require archive-and-duplicate. Removing an entry from use must stop it answering; previously displayed messages are not rewritten. Preserve required staff change history without retaining learner questions.
 
 Publication requires the rule/source reference and valid complete content. An unreadable entry must not look like an empty draft or an unpublished one. An empty corpus is legitimate, with no artificial minimum or seeded content pretending to be real guidance.
 
 The review list prioritizes never-reviewed entries and entries more than 90 days from review. An overdue entry still answers while published. Unpublishing takes effect immediately and returns it to editing. Synonyms support matching; there is no per-entry boost, relevance dial or arbitrary weight.
 
-**Content journey:** Create or edit entry → add its product-rule reference → preview and validate → publish → review or unpublish when needed.
+**Content journey:** Create or edit entry → add its product-rule reference → preview and validate → publish as Super Admin, or submit as Admin for approval and publication → review or unpublish when needed.
 
 ## Matching controls and evaluation
 
-The two controls are the minimum match score and the margin over the runner-up, at the values and bounds defined in Guidance. Manage them in one administrative location; show their current effect in the authoring experience without creating a second editable copy.
+Super Admin manages the two controls: the minimum match score and the margin over the runner-up, at the values and bounds defined in Guidance. Keep one administrative location; show their current effect in the authoring experience without creating a second editable copy.
 
 Before changing either, preview the proposed behavior against the labeled evaluation set, show the current/proposed setting and record the change. Apply a valid change as a whole; an invalid or failed change leaves the current policy intact. An unreadable current policy cannot be replaced from guessed defaults.
 
-The evaluation set is private and managed by super administrators. Its own changes are recorded as a coherent version. It uses authored test questions, not harvested learner conversations. No learner prompt or private source becomes evaluation data.
+The evaluation set is private and managed by Super Admin. Its own changes are recorded as a coherent version. It uses authored test questions, not harvested learner conversations. No learner prompt or private source becomes evaluation data.
 
 ## Response wording
 
@@ -53,7 +55,7 @@ The studio may include a coverage view for unused/missing kinds and a side-by-si
 
 ## Character configuration
 
-An authorized administrator selects approved artwork and a character accent. Apply the choice throughout the learner experience without changing page behavior or requiring a new product release.
+Super Admin selects approved artwork and a character accent. Apply the choice throughout the learner experience without changing page behavior or requiring a new product release.
 
 Artwork must cover the expression set and its reduced-motion and failed-load treatments. Reject an accent that undermines contrast or obscures tone meaning. An unreadable new selection leaves the previous approved artwork in force; the learner presentation still has its safe runtime fallback.
 
@@ -61,7 +63,7 @@ The product default name is WizBit and has no administrative rename control. A l
 
 ## Nudge controls
 
-Staff can disable the one Skills next-action producer, lower its daily allowance from one to zero, or lengthen the same-target cooldown from seven up to 30 days. No configuration raises the two-per-day platform ceiling, shortens the 60-minute gap, creates another producer or adds a priority slider.
+Super Admin can disable the one Skills next-action producer, lower its daily allowance from one to zero, or lengthen the same-target cooldown from seven up to 30 days. No configuration raises the two-per-day platform ceiling, shortens the 60-minute gap, creates another producer or adds a priority slider.
 
 A change affects the next eligible nudge and does not replay withheld suggestions. An unreadable or invalid nudge policy withholds delivery and reports the administrative problem. Dismissal remains effective until the specific meaningful-change condition is met; a staff cooldown edit alone is not a reason to re-interrupt a learner.
 
@@ -100,6 +102,6 @@ Do not duplicate deletion across domains or claim that removing the companion pr
 
 Review every behavior across these documents, then verify the actual implementation with generated help both off and enabled in a controlled test environment. Documentation review is not a substitute for running the product.
 
-Exercise all nine expressions and 39 message kinds; fixed-corner placement; Plain and Quiet; guide/hint states; orientation and naming; strong, weak, tied, single and unavailable knowledge matches; nudge caps across devices; overlapping suppression and release; confirmation failure safety; generated eligibility, privacy, pricing, request recovery and expiry; version restoration against the current catalogue; failed staff saves; usage anonymity; and erasure ownership.
+Exercise all nine expressions and 39 message kinds; fixed-corner placement; Plain and Quiet; guide/hint states; orientation and naming; strong, weak, tied, single and unavailable knowledge matches; nudge caps across devices; overlapping suppression and release; confirmation failure safety; generated eligibility, privacy, pricing, request recovery and expiry; version restoration against the current catalogue; failed staff saves; usage anonymity; and erasure ownership. Check Admin draft-only preparation, Super Admin live changes, a removed/unreadable WordPress role and the absence of local permission grants.
 
 A feature is not complete merely because its control exists. The required normal, empty, restricted, failed and recovery behavior must be demonstrated, and essential learner work must remain usable when WizBit or generated assistance fails.
