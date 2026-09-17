@@ -1,13 +1,18 @@
 # Pages
 
-**Date:** 17 September 2026  
+**Date:** 18 September 2026  
 **Purpose:** Grouped page and route map for Labs.  
 **Status:** Product page map; implementation and workflow-layout verification are separate.  
-**Product baseline:** `884d34d9e133ecfd873935ba4436169c14fed0dc`.
+**Product baseline:** `884d34d9e133ecfd873935ba4436169c14fed0dc`.  
+**Route revision baseline:** `af98076b04969e3ebe0cfedf7a53232e9b922cfb`.
 
 This map organizes the approved experience by **group → domain/product area → learner and admin pages**. Domain administration stays beside its learner experience. The Administration group contains only shared oversight, people, governance and operations.
 
-Groups identify related work; they create no new domain, data owner, shared problem collection or permission. All staff routes still use the one admin console. A route prefix need not match a navigation group: Code Lab remains in Practice here even though its retained address begins with `/build`.
+Groups identify related work in this document and in learner/admin navigation only. They create no URL prefix, group landing page, data owner, shared problem collection or permission. Navigation headings organize links to the real domain pages; they are not destinations themselves and are not automatically inserted into page titles or breadcrumbs.
+
+Routes start with the relevant domain, resource or capability. For example, Code Lab is `/code-lab`, giving `https://labs.wizly.com/code-lab` on that Labs host. The deployment supplies the origin; routes remain relative and contain no hard-coded host. Staff routes retain `/admin` as the staff-area namespace, not a navigation group: `/admin/challenges` is valid without an intervening group segment. All staff pages still use one console and enforce their own authority checks.
+
+Keep meaningful domain/resource nesting, such as a Track and its owned problem, or Workspace and its templates. Removing navigation groups from URLs does not flatten every identifier into the root, combine independent records or change the existing learner/admin permissions.
 
 This is a map of browser destinations, not backend API endpoints, a code-generation registry or a claim that pages are implemented. Several routes can open different views of one editor. A dialog, file tab, validation result or action does not automatically need another page. The later admin-workflow pass may simplify presentation without removing the capabilities listed here.
 
@@ -17,7 +22,7 @@ This is a map of browser destinations, not backend API endpoints, a code-generat
 - **Admin pages:** Admin and Super Admin can perform their approved preparation/read work. Publication, live changes and protected actions remain Super Admin-only. A page available to Admin does not make every action on it available.
 - **Super Admin:** explicitly identified for protected pages/actions. WordPress alone determines staff roles; there are no local role-grant routes.
 - A `:parameter` identifies an existing, authorized item or the stated date/type. It is not a title chosen freely by the browser. No private source, answers, tokens with unrelated authority or personal text belong in route parameters.
-- Unless listed as **added/adapted** in section 10, retain the source route pattern. This is not a requirement for compatibility redirects from routes that do not ship.
+- The routes below are the canonical page paths. Source extraction establishes the features, not a requirement to preserve group-prefixed URLs. Section 10 explains routing and hosted-interface boundaries; do not add aliases or redirects solely to recreate navigation groups.
 
 The [domain documents](domains/) define feature behavior and exceptions. [Shared](shared/Shared.md) defines reused capabilities; [Architecture](Architecture.md) defines technical ownership. This map does not override them. In particular, an accepted route is never permission to read a different learner's record.
 
@@ -103,16 +108,16 @@ No dedicated admin editor, public share page or second activity-calculation syst
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/learn` | Learning catalogue | Browse the separate Lessons and Video Courses tabs with their own search, filters, counts and progress. A format selection does not mix their records. |
-| `/learn/subjects/:subject` | Subject overview | Read the subject’s orientation, chapters, requirements and recognition; Start/Open, Continue or review according to its format and learner state. Used for both formats. |
-| `/learn/subjects/:subject/changes` | Subject changes | Read learner-safe published changes for either format. Distinguish additions, updates, moves and removals without resetting completed learning. |
-| `/learn/lessons/:lesson` | Reading lesson | Read Markdown/formatted sections, images, callouts and code examples; use chapter navigation and the approved explicit completion action. |
-| `/learn/lessons/:lesson/video` | Video lesson | Watch protected video with captions/transcript and verified coverage. Playback or transcript failure must not become lost completion. |
-| `/learn/lessons/:lesson/quiz` | Quiz lesson | Read the rules, answer, submit and see the outcome plus immediate-only review. Keep the approved temporary-take and retake rules. |
-| `/learn/lessons/:lesson/project` | Assigned project lesson | Read the assignment and open its Course Workspace. Completion comes from the nonempty, checked checklist plus explicit Workspace confirmation. |
-| `/learn/lessons/:lesson/reference` | Linked activity lesson | Open the authored platform activity and display its completion supplied by that activity’s owner. Do not create a second solve or grade. |
-| `/learn/completion/:item` | Learning completion | Read the confirmed subject completion, applicable recognition and certificate state, and approved next links. Opening this page never awards completion. |
-| `/learn/previews/:previewId` | Read-only draft preview | A signed-in person holding a valid, scoped preview link reads the selected draft. The 24-hour/revocation rules apply; no editing, execution, enrollment or completion. |
+| `/courses` | Courses | Browse the separate Lessons and Video Courses tabs with their own search, filters, counts and progress. A format selection does not mix their records. |
+| `/courses/:subject` | Subject overview | Read the subject’s orientation, chapters, requirements and recognition; Start/Open, Continue or review according to its format and learner state. Used for both formats. |
+| `/courses/:subject/changes` | Subject changes | Read learner-safe published changes for either format. Distinguish additions, updates, moves and removals without resetting completed learning. |
+| `/lessons/:lesson` | Reading lesson | Read Markdown/formatted sections, images, callouts and code examples; use chapter navigation and the approved explicit completion action. |
+| `/lessons/:lesson/video` | Video lesson | Watch protected video with captions/transcript and verified coverage. Playback or transcript failure must not become lost completion. |
+| `/lessons/:lesson/quiz` | Quiz lesson | Read the rules, answer, submit and see the outcome plus immediate-only review. Keep the approved temporary-take and retake rules. |
+| `/lessons/:lesson/project` | Assigned project lesson | Read the assignment and open its Course Workspace. Completion comes from the nonempty, checked checklist plus explicit Workspace confirmation. |
+| `/lessons/:lesson/reference` | Linked activity lesson | Open the authored platform activity and display its completion supplied by that activity’s owner. Do not create a second solve or grade. |
+| `/courses/:subject/completion` | Subject completion | Read the confirmed subject completion, applicable recognition and certificate state, and approved next links. Opening this page never awards completion. |
+| `/course-previews/:previewId` | Read-only draft preview | A signed-in person holding a valid, scoped preview link reads the selected draft. The 24-hour/revocation rules apply; no editing, execution, enrollment or completion. |
 
 The lesson type is confirmed from the authorized content, not trusted from its URL suffix. A moved/removed lesson follows the owning stale-link rule and offers the current subject outline where available. A revoked draft preview never falls through to live or private editing content.
 
@@ -120,7 +125,7 @@ The lesson type is confirmed from the authorized content, not trusted from its U
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/admin/courses` | Manage learning | List and create written/video subjects. Choose the format, then manage the same hierarchy; keep incomplete drafts saveable. |
+| `/admin/courses` | Manage Courses | List and create written/video subjects. Choose the format, then manage the same hierarchy; keep incomplete drafts saveable. |
 | `/admin/courses/:content` | Edit subject | Edit subject details and its chapter tree; create chapters, manage ordering and open lessons. Here :content is the subject identity for either format. |
 | `/admin/courses/:content/chapters/:chapter` | Edit chapter | Manage this subject’s chapter details and ordered lessons. No module vocabulary or nested chapter hierarchy. |
 | `/admin/courses/lessons/:lesson` | Edit lesson | Edit the selected lesson type, including shared code editors, videos, quiz questions or an assigned template. Preserve dirty work and keep validation separate from autosave. |
@@ -129,9 +134,9 @@ The lesson type is confirmed from the authorized content, not trusted from its U
 | `/admin/courses/:content/publish` | Validate and publish view | Show the same editor’s blockers and warnings; validate and Publish/Update as Super Admin, or submit the exact draft for approval as Admin. |
 | `/admin/courses/:content/settings` | Subject settings view | Open the same subject’s navigation, prerequisites, classification and future-award presentation settings. Only authorized live changes take effect. |
 | `/admin/courses/:content/retirement` | Subject removal view | Preview Archive/Delete consequences and obtain the required confirmation. Preserve completed learning, issued awards and learner Workspace records. |
-| `/admin/courses/:content/review` | Learning content review | Read the subject’s aggregate starts, reach, completion, drop-off and certificate figures; open the owning lesson to correct content. |
-| `/admin/courses/approvals` | Learning publication approvals | Review submitted learning drafts. Super Admin approves and publishes the exact reviewed content in one action, or rejects with a reason. |
-| `/admin/courses/transfer` | Learning import/export | Validate and preview a whole-subject draft import or export permitted authored content. Never import learner records or publish implicitly. |
+| `/admin/courses/:content/review` | Subject content review | Read the subject’s aggregate starts, reach, completion, drop-off and certificate figures; open the owning lesson to correct content. |
+| `/admin/courses/approvals` | Course publication approvals | Review submitted learning drafts. Super Admin approves and publishes the exact reviewed content in one action, or rejects with a reason. |
+| `/admin/courses/transfer` | Course import/export | Validate and preview a whole-subject draft import or export permitted authored content. Never import learner records or publish implicitly. |
 
 These views are not a mandatory sequence of separate forms. Settings, preview, validation and removal can open in the same authoring workspace while preserving their direct entry addresses. Creation is an action on the relevant list/tree; a first successful draft save supplies its identity.
 
@@ -145,11 +150,7 @@ These views are not a mandatory sequence of separate forms. Settings, preview, v
 
 The five areas below remain separately identifiable. Challenges, Tracks, Daily and Debug own independent problems; Code Lab is a playground. [Practice](domains/Practice/Practice.md), [Authoring](domains/Practice/Authoring.md).
 
-**Group entry**
-
-| Route | Page or addressable view | Brief |
-|---|---|---|
-| `/practice` | Practice entry | Open Code Lab, Challenges, Daily Challenges, Debug Detective or Tracks. Reuse permitted summaries/links; this group page owns no problems, rewards or separate progress. |
+**Navigation only:** Practice is a heading containing Code Lab, Challenges, Daily Challenges, Debug Detective and Tracks in both applicable navigation contexts. There is no separate Practice landing page. Open the selected domain directly.
 
 ### Code Lab
 
@@ -159,9 +160,9 @@ The five areas below remain separately identifiable. Challenges, Tracks, Daily a
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/build/code-lab` | Code Lab | Use a language-specific scratch and runnable starter, manual/Auto selection, Run/Stop, interactive terminal or browser preview, formatting and download. No Submit or graded solve. |
+| `/code-lab` | Code Lab | Use a language-specific scratch and runnable starter, manual/Auto selection, Run/Stop, interactive terminal or browser preview, formatting and download. No Submit or graded solve. |
 
-The existing address is retained to avoid a route change made solely for grouping. It appears under Practice in this map and its entry points. Prepared input, environment information, supplied browser page and enabled generated-help results are panels here, not routes.
+Code Lab appears under the Practice navigation heading but opens directly at `/code-lab`. Prepared input, environment information, supplied browser page and enabled generated-help results are panels here, not routes.
 
 **Admin:** no Code Lab content-management page. Runtime readiness belongs to the shared runtime view in Platform; the playground does not gain a problem library.
 
@@ -175,8 +176,8 @@ The existing address is retained to avoid a route change made solely for groupin
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/practice/challenges` | Challenge catalogue | Search/filter standalone Challenges, see owned status and Solve rate, choose Random Challenge or open a problem. |
-| `/practice/challenges/:challengeId` | Challenge workbench | Read, choose a supported language, edit, Run, Submit, reveal authored hints and inspect own history. Acceptance unlocks the permitted explanation and saved solution. |
+| `/challenges` | Challenge catalogue | Search/filter standalone Challenges, see owned status and Solve rate, choose Random Challenge or open a problem. |
+| `/challenges/:challengeId` | Challenge workbench | Read, choose a supported language, edit, Run, Submit, reveal authored hints and inspect own history. Acceptance unlocks the permitted explanation and saved solution. |
 
 **Admin**
 
@@ -197,9 +198,9 @@ The existing address is retained to avoid a route change made solely for groupin
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/practice/daily` | Daily overview | See today’s problem or neutral date, countdown, streak, milestones and calendar. Open today or an eligible past Daily. |
-| `/practice/daily/past` | Past Dailies | Browse older published Dailies and permitted retained history; distinguish no more entries from a failed page. |
-| `/practice/daily/:productDate` | Daily workbench | Open the Daily for a validated product date in YYYY-MM-DD form. Run/Submit, see date-specific status and reward, hints and own history. |
+| `/daily-challenges` | Daily overview | See today’s problem or neutral date, countdown, streak, milestones and calendar. Open today or an eligible past Daily. |
+| `/daily-challenges/past` | Past Dailies | Browse older published Dailies and permitted retained history; distinguish no more entries from a failed page. |
+| `/daily-challenges/:productDate` | Daily workbench | Open the Daily for a validated product date in YYYY-MM-DD form. Run/Submit, see date-specific status and reward, hints and own history. |
 
 **Admin**
 
@@ -222,8 +223,8 @@ A selected Daily draft, validation result and Void Daily confirmation are states
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/practice/debug-detective` | Debug case board | Find published cases by the approved filters, mode and language; show separate timed/practice Fix rates and the learner’s own status. |
-| `/practice/debug-detective/:caseAddress` | Debug workbench | Repair the broken starter, Run and Validate Fix, use hints and retained-code restore. A timed window supplies its own clock/checkpoint; acceptance unlocks the debrief. |
+| `/debug-detective` | Debug case board | Find published cases by the approved filters, mode and language; show separate timed/practice Fix rates and the learner’s own status. |
+| `/debug-detective/:caseAddress` | Debug workbench | Repair the broken starter, Run and Validate Fix, use hints and retained-code restore. A timed window supplies its own clock/checkpoint; acceptance unlocks the debrief. |
 
 **Admin**
 
@@ -244,9 +245,9 @@ A selected Daily draft, validation result and Void Daily confirmation are states
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/practice/tracks` | Track catalogue | Browse single-language Tracks with description, progress and learner state. |
-| `/practice/tracks/:trackId` | Track overview | Read its language, ordered independent problems and requirements; Start, Continue, open an available entry or review a completed track. |
-| `/practice/tracks/:trackId/problems/:problemId` | Track problem workbench | Solve this Track’s own problem in its fixed language. Verify both parent and problem ownership; never route it through a standalone Challenge identity. |
+| `/tracks` | Track catalogue | Browse single-language Tracks with description, progress and learner state. |
+| `/tracks/:trackId` | Track overview | Read its language, ordered independent problems and requirements; Start, Continue, open an available entry or review a completed track. |
+| `/tracks/:trackId/problems/:problemId` | Track problem workbench | Solve this Track’s own problem in its fixed language. Verify both parent and problem ownership; never route it through a standalone Challenge identity. |
 
 **Admin**
 
@@ -267,14 +268,15 @@ A child problem editor can remain a panel/modal in the existing Track editor; it
 
 **Owner:** Workspace. [Workspace](domains/Workspace/Workspace.md), [Files and Saving](domains/Workspace/Files%20and%20Saving.md), [Running](domains/Workspace/Running.md), [Templates](domains/Workspace/Templates.md).
 
+**Navigation only:** Build groups the My Projects and Course Workspaces links. It has no landing route; the two collections open directly.
+
 **Learner**
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/build` | Build entry | Enter My Projects or Course Workspaces. This is navigation to existing collections, not another project catalogue or Code Lab owner. |
-| `/build/projects` | My Projects | List/search personal projects, see their allowance, create blank/from template, rename, download or safely delete. Do not mix Course Workspaces into its count. |
-| `/build/projects/:projectId` | Project workspace | Open an owned personal or Course Workspace: file explorer, tabs, editor, saving, Run/Preview, output, checklist and permitted management. |
-| `/build/course-workspaces` | Course Workspaces | Manage assigned work separately: open, download, delete or return to its course. Show its combined storage and retained archived-course work. |
+| `/projects` | My Projects | List/search personal projects, see their allowance, create blank/from template, rename, download or safely delete. Do not mix Course Workspaces into its count. |
+| `/projects/:projectId` | Project workspace | Open an owned personal or Course Workspace: file explorer, tabs, editor, saving, Run/Preview, output, checklist and permitted management. |
+| `/course-workspaces` | Course Workspaces | Manage assigned work separately: open, download, delete or return to its course. Show its combined storage and retained archived-course work. |
 
 **Admin**
 
@@ -292,60 +294,61 @@ Create Project, choose template, file history, restore, conflict choices and del
 
 **Owner:** Assessments. Mock and Company are distinct page families using one recorded-test capability, including proctoring. [Assessments](domains/Assessments/Assessments.md), [Taking a Test](domains/Assessments/Taking%20a%20Test.md), [Results](domains/Assessments/Results.md), [Authoring](domains/Assessments/Authoring.md).
 
-### Entry and Mock Tests — learner
+**Navigation only:** Assessments groups Mock Tests, Company Tests and the applicable staff paper/company links. It has no landing route. The common paper, recorded-test and result routes remain owned by Assessments without a group prefix.
+
+### Mock Tests — learner
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/assess` | Assessment entry | Enter the clearly labelled Mock or Company area. Opening it starts no test. |
-| `/assess/mock` | Mock catalogue | Search/filter Mock papers, inspect featured items and choose the correct Start, Resume, Practice or Result action. |
-| `/assess/mock/history` | Mock history | Read the learner’s recorded Mock results, invalidations and retained summaries; open a result. |
-| `/assess/papers/:paper` | Mock paper details | Read the Mock instructions, sections, marks, negative marking, timing and current settings; obtain the authoritative next action. |
+| `/mock-tests` | Mock catalogue | Search/filter Mock papers, inspect featured items and choose the correct Start, Resume, Practice or Result action. |
+| `/mock-tests/history` | Mock history | Read the learner’s recorded Mock results, invalidations and retained summaries; open a result. |
+| `/papers/:paper` | Mock paper details | Read the Mock instructions, sections, marks, negative marking, timing and current settings; obtain the authoritative next action. |
 
 ### Company Tests — learner
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/assess/companies` | Company catalogue | Find a company and inspect its available papers and permitted preparation summaries. |
-| `/assess/companies/:company` | Company page | Read company roles, papers, Actual/Pattern information and its readiness/progress; open a paper briefing. |
-| `/assess/company/history` | Company test history | Read the learner’s recorded Company results and statuses without introducing Mock pass/fail rules. |
-| `/assess/papers/:paper/briefing` | Company paper briefing | Read instructions, timing, marks, availability, provenance and proctoring before Start. No question or attempt is created by opening the briefing. |
+| `/company-tests` | Company catalogue | Find a company and inspect its available papers and permitted preparation summaries. |
+| `/company-tests/:company` | Company page | Read company roles, papers, Actual/Pattern information and its readiness/progress; open a paper briefing. |
+| `/company-tests/history` | Company test history | Read the learner’s recorded Company results and statuses without introducing Mock pass/fail rules. |
+| `/papers/:paper/briefing` | Company paper briefing | Read instructions, timing, marks, availability, provenance and proctoring before Start. No question or attempt is created by opening the briefing. |
 
 ### Common test views — learner
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/assess/papers/:paper/preflight` | Pre-test systems check | Check the required capabilities and read pass, warning or could-not-check states. Recheck or explicitly acknowledge actual warnings; no test starts here. |
-| `/assess/papers/:paper/acknowledgement` | Test conditions acknowledgement | Show the required recorded-test conditions for either type. Acknowledge and explicitly Start, or leave without creating a test. |
-| `/assess/tests/:test` | Recorded test | Answer/save, navigate under captured rules, Run permitted coding samples and Submit. Preserve deadline, proctoring and account-level restrictions across refresh. |
-| `/assess/results/:test` | Assessment result | Show grading, final or invalidated status; open permitted review, history or practice. Retained summary and withheld review are different states. |
-| `/assess/papers/:paper/practice` | Unrecorded paper practice | Practise the eligible paper without a recorded-test clock, proctoring events, rewards or skill evidence. Do not silently create a second recorded attempt. |
+| `/papers/:paper/preflight` | Pre-test systems check | Check the required capabilities and read pass, warning or could-not-check states. Recheck or explicitly acknowledge actual warnings; no test starts here. |
+| `/papers/:paper/acknowledgement` | Test conditions acknowledgement | Show the required recorded-test conditions for either type. Acknowledge and explicitly Start, or leave without creating a test. |
+| `/tests/:test` | Recorded test | Answer/save, navigate under captured rules, Run permitted coding samples and Submit. Preserve deadline, proctoring and account-level restrictions across refresh. |
+| `/tests/:test/result` | Assessment result | Show grading, final or invalidated status; open permitted review, history or practice. Retained summary and withheld review are different states. |
+| `/papers/:paper/practice` | Unrecorded paper practice | Practise the eligible paper without a recorded-test clock, proctoring events, rewards or skill evidence. Do not silently create a second recorded attempt. |
 
 A paper’s verified type selects its entry view and policy. Both types keep proctoring settings; event recording Off does not remove the recorded-test help/Notes restrictions. Question navigation, answer review and submission confirmation are parts of the test/result, not new routes per question.
 
 ### Common paper authoring — admin
 
-Reach the existing paper list from the Mock or Company section with that type selected; these are views of one list, not duplicate admin applications. The persisted paper type selects its fields and remains authoritative.
+Reach `/admin/papers` from the Mock or Company navigation entry with that type selected; these are views of one list, not duplicate admin applications. The persisted paper type selects its fields and remains authoritative.
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/admin/assessments/papers` | Manage papers | List/create Mock or Company papers, select the correct type and open its authoring workspace. |
-| `/admin/assessments/papers/:paper` | Paper authoring | Manage the paper’s details, sections, timing, marking, navigation and questions. Draft saves do not publish; live edits protect existing attempts. |
-| `/admin/assessments/papers/:paper/questions` | Question-authoring view | Edit supported question types, keys and explanations; use the shared code editor for coding starters, references and cases. Questions stay owned by the paper. |
-| `/admin/assessments/papers/:paper/import` | Question import | Template, upload or paste a bounded batch; validate every row and commit all or none under the paper’s type and safe-update rules. |
-| `/admin/assessments/papers/:paper/checklist` | Validation view | Inspect current blockers and reference checks, correct them and publish/update with permitted authority. A stale or unavailable check is not a pass. |
-| `/admin/assessments/papers/:paper/published` | Live paper view | Inspect the current published content and return to editing. Read-only preview is not a permanent publication freeze or a required duplicate-to-correct workflow. |
-| `/admin/assessments/papers/:paper/settings` | Paper settings view | Edit the same paper’s permitted settings and relevant change-notice/fresh-test options. Apply live changes only as Super Admin. |
-| `/admin/assessments/papers/:paper/accommodations` | Accommodations | Super Admin grants the approved pre-start time accommodation; do not add medical uploads or change an active test’s duration. |
-| `/admin/assessments/papers/:paper/analytics` | Paper analytics | Inspect the applicable aggregate paper/question figures. Render the paper’s type-specific measures without adding a score editor. |
-| `/admin/assessments/tests/:test/recorded-events` | Recorded-event review | Admin/Super Admin inspect the permitted factual event timeline and ending. No recording, source code or inference of motive. |
-| `/admin/assessments/tests/:test/invalidate` | Result invalidation | Super Admin selects a permitted reason and explicitly confirms the existing invalidation/restored-attempt consequences. No manual score choice or generic re-grade. |
+| `/admin/papers` | Manage papers | List/create Mock or Company papers, select the correct type and open its authoring workspace. |
+| `/admin/papers/:paper` | Paper authoring | Manage the paper’s details, sections, timing, marking, navigation and questions. Draft saves do not publish; live edits protect existing attempts. |
+| `/admin/papers/:paper/questions` | Question-authoring view | Edit supported question types, keys and explanations; use the shared code editor for coding starters, references and cases. Questions stay owned by the paper. |
+| `/admin/papers/:paper/import` | Question import | Template, upload or paste a bounded batch; validate every row and commit all or none under the paper’s type and safe-update rules. |
+| `/admin/papers/:paper/checklist` | Validation view | Inspect current blockers and reference checks, correct them and publish/update with permitted authority. A stale or unavailable check is not a pass. |
+| `/admin/papers/:paper/published` | Live paper view | Inspect the current published content and return to editing. Read-only preview is not a permanent publication freeze or a required duplicate-to-correct workflow. |
+| `/admin/papers/:paper/settings` | Paper settings view | Edit the same paper’s permitted settings and relevant change-notice/fresh-test options. Apply live changes only as Super Admin. |
+| `/admin/papers/:paper/accommodations` | Accommodations | Super Admin grants the approved pre-start time accommodation; do not add medical uploads or change an active test’s duration. |
+| `/admin/papers/:paper/analytics` | Paper analytics | Inspect the applicable aggregate paper/question figures. Render the paper’s type-specific measures without adding a score editor. |
+| `/admin/tests/:test/recorded-events` | Recorded-event review | Admin/Super Admin inspect the permitted factual event timeline and ending. No recording, source code or inference of motive. |
+| `/admin/tests/:test/invalidate` | Result invalidation | Super Admin selects a permitted reason and explicitly confirms the existing invalidation/restored-attempt consequences. No manual score choice or generic re-grade. |
 
 ### Company organization — admin
 
 | Route | Page or addressable view | Brief |
 |---|---|---|
-| `/admin/assessments/companies` | Manage companies and roles | Create/select companies, maintain job roles, identity and marking defaults, and reach company-owned papers. Job roles are not account permissions. |
-| `/admin/assessments/companies/:company/analytics` | Company analytics | Read aggregate company/paper preparation figures and open their owning paper review. This is internal administration, not an employer portal. |
+| `/admin/companies` | Manage companies and roles | Create/select companies, maintain job roles, identity and marking defaults, and reach company-owned papers. Job roles are not account permissions. |
+| `/admin/companies/:company/analytics` | Company analytics | Read aggregate company/paper preparation figures and open their owning paper review. This is internal administration, not an employer portal. |
 
 **Journeys:** Mock catalogue → details, or Company catalogue → company → briefing → systems check/conditions → explicit Start → saved answers → one ending → result. Admin paper → questions/code/cases → validation → publish/update. These routes can be addressable views of the same paper workspace; their existence does not mandate a multi-screen wizard.
 
@@ -600,25 +603,29 @@ An unmatched route renders the same Not found behavior. An unmatched `/admin/*` 
 
 Sign-in/sign-up, password and identity changes, billing/renewal, contact, privacy, terms and consent pages belong to WordPress/main-site destinations supplied by integration configuration. Do not invent local routes or hard-code their external addresses. Main-site sign-out and session-ending behavior stay with Access.
 
-## 10. Deliberate route adaptations and non-pages
+## 10. Route rules and non-pages
 
-These are bounded page bindings for already-approved behavior, not additional product features. Parameters may keep the implementation’s established spelling; changing a placeholder label alone does not create a new route.
+Group labels belong to navigation and this document's organization only. The page tables above are the complete canonical browser-route map. They do not define backend API endpoints, aliases, group dashboards or a second route registry.
 
-| Source address or missing binding | Mapping for this product | Reason |
-|---|---|---|
-| `/learn/courses/:course` | Use `/learn/subjects/:subject` for both formats | One subject hierarchy and overview, without a second course/module family |
-| `/learn/courses/:course/changes` | `/learn/subjects/:subject/changes` | Both learning formats need their approved published-change history |
-| `/admin/courses/:content/groups/:group` | `/admin/courses/:content/chapters/:chapter` | Chapters are the approved second level in both formats |
-| Track entry reused `/practice/challenges/:challengeId` | `/practice/tracks/:trackId/problems/:problemId` | A Track problem is an independent owner-bound item, not a standalone Challenge reference |
-| Signed-in shareable draft preview has no dedicated source-router entry | `/learn/previews/:previewId` | Give the approved scoped, expiring and revocable preview a reachable read-only destination |
-| Source Build entry combined Code Lab and projects | Retain `/build` for Workspace collection links; put the existing `/build/code-lab` entry under Practice | Grouping changes without an unnecessary Code Lab URL rename |
-| `/admin/debug-detective-maintenance` | Delete confirmation inside normal Debug administration | The approved CRUD policy removes the maintenance-only deletion restriction |
-| `/admin/people/:identity/roles/grant` and `/roles/remove` | No Labs route | Staff roles are assigned only in WordPress |
-| `/admin/people/:identity/end-session` | No standalone session-management page added | The approved People actions govern restrictions; their required session endings remain Access behavior |
+| Page family | Canonical routing rule |
+|---|---|
+| Code Lab and Practice domains | Use `/code-lab`, `/challenges`, `/daily-challenges`, `/debug-detective` and `/tracks` directly. Their navigation grouping adds no path segment. |
+| Learning content | `/courses` is the actual two-format catalogue, not a Learning group landing page. A subject uses `/courses/:subject`; its history and completion stay under that subject. Lessons use `/lessons/:lesson` with only their defined type-specific views. |
+| Draft preview | `/course-previews/:previewId` identifies the approved signed-in, scoped, expiring and revocable read-only preview. It is not a new public sharing feature. |
+| Track problem | `/tracks/:trackId/problems/:problemId` identifies an independently owned child problem. Parent/child ownership must match; a similar Challenge is not its source. |
+| Workspace | `/projects` and `/course-workspaces` open the two existing collections. `/projects/:projectId` opens an owned project of either permitted scope. There is no extra Build page. |
+| Mock and Company | `/mock-tests` and `/company-tests` open the two catalogues. `/papers/:paper` and its defined views hold paper context; `/tests/:test` and `/tests/:test/result` hold the recorded test and result. These are resources, not navigation groups. |
+| Staff paper/company work | Use `/admin/papers`, `/admin/tests/:test` with its listed action views, and `/admin/companies` with its listed views. No Assessment group segment is inserted. The bare test pattern is context for the listed views, not an extra page. |
+| Other staff domains | Retain domain/capability paths such as `/admin/courses`, `/admin/workspace/templates`, `/admin/analytics/reporting` and `/admin/wizbit/responses`. Courses, Workspace, Analytics and WizBit identify real owners, not sidebar-only groups. |
+| Profile and records | Existing meaningful nesting such as `/profile/settings` and `/profile/certificates/:certificateId` is retained. Personal is only their navigation group, never another prefix. |
 
-Do not infer redirects from this comparison table. This is a greenfield route map; compatibility redirects are needed only for links the product actually promises to preserve. Existing published content-address changes still follow their owning redirect rules.
+The `/admin` prefix separates the staff URL space from learner pages. It does not grant authority: direct requests, objects and actions still require their existing access checks. Organize staff links under the same relevant product groups without relocating their code or ownership to global Administration.
 
-The source paper checklist/published/settings views and course publish/settings/retirement views are retained as **addressable views**, not instructions to build duplicate forms or force an admin to visit every URL. The detailed workflow pass can embed them in the same editor. Source “published” never restores an immutable-content rule.
+Do not recreate the removed group-only landing pages as aliases or redirects. Update generated links, Continue targets, notification destinations, deep-link builders and route tests to the canonical paths when their implementations are built. A Continue fallback or breadcrumb must choose an available actual page, not a non-clickable group heading. Changing a heading or moving a domain between navigation groups does not change its URL.
+
+The paper checklist/published/settings views and course publish/settings/retirement views remain **addressable views**, not instructions to build duplicate forms or force an administrator to visit every URL. The detailed workflow pass can embed them in the same editor. A live-content preview does not restore an immutable-content rule.
+
+Preserve only redirects independently required by the approved content-address rules; a document revision does not imply that a previous route was deployed. WordPress owns role assignment, so there are no local role-grant/removal pages. Debug's safe Delete stays in its normal administration, not a maintenance-only destination. The existing People actions govern their required session endings without a new session-management page.
 
 ### Important interfaces without another route
 
@@ -655,7 +662,7 @@ A group is not permission for lateral imports, cross-domain SQL, a global store 
 
 ## 12. Navigation and workflow checks
 
-For every delivered page, verify direct entry, permitted normal entry, reload, Back/Cancel and its role/ownership boundary. Keep literal paths such as `past`, `history`, `approvals`, `entry` and `transfer` from being interpreted as object identifiers.
+For every delivered page, verify direct entry, permitted normal entry, reload, Back/Cancel and its role/ownership boundary. Keep literal paths such as `past`, `history`, `previews`, `lessons`, `approvals`, `entry` and `transfer` from being interpreted as object identifiers. Match static routes before dynamic siblings and validate identifier/date/type values. Verify there are no group-prefixed routes or group-only landing pages in either learner or staff routing, and that navigation headings do not lead to invented destinations.
 
 Do not lose a dirty code buffer on an internal tab, background refresh, route change or required re-verification. Apply the owning recovery/confirmation rule. A save acknowledgement covers the submitted revision, not later typing. No old validation pass authorizes modified code/cases. These checks apply equally to administrator code and learner work.
 
@@ -665,6 +672,6 @@ This map creates no new implementation tasks, runtime registry or feature-ID led
 
 ## Extraction basis
 
-The source was pinned at `SideSwipeTech/Sprinkle-Jelly` commit `adb5aaa524fd210d71bc05a2d5437998d0c55fb1`. Routes were read from [the application router](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/adb5aaa524fd210d71bc05a2d5437998d0c55fb1/frontend/src/routes.tsx) and checked against the relevant [domain page descriptions](https://github.com/SideSwipeTech/Sprinkle-Jelly/tree/adb5aaa524fd210d71bc05a2d5437998d0c55fb1/docs/domains). Current domain/shared documents at the product baseline above take precedence over superseded source behavior.
+The source for the original feature/page extraction was pinned at `SideSwipeTech/Sprinkle-Jelly` commit `adb5aaa524fd210d71bc05a2d5437998d0c55fb1`. Routes were read from [the application router](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/adb5aaa524fd210d71bc05a2d5437998d0c55fb1/frontend/src/routes.tsx) and checked against the relevant [domain page descriptions](https://github.com/SideSwipeTech/Sprinkle-Jelly/tree/adb5aaa524fd210d71bc05a2d5437998d0c55fb1/docs/domains). Current domain/shared documents take precedence over superseded source behavior. The 18 September 2026 owner instruction supersedes source URL grouping: groups appear only in learner/admin navigation and this internal map; canonical paths identify actual domains or resources.
 
 The extraction covered learner, staff, public/status destinations and hosted panels. The source’s route comments are not treated as accurate page counts; actual route entries and their purposes were used. Demo was not used as the behavior or route authority. No browser execution, access test or implementation verification is claimed by this document.
