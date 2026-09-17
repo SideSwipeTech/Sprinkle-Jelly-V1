@@ -1,169 +1,92 @@
 # Audit
 
 **Date:** 17 September 2026  
-**Result:** Inventory mapped; consistency corrections required before shared definitions.  
-**Product snapshot:** `SideSwipeTech/Sprinkle-Jelly-V1` at `1bb6e7cab9b28868a9e3446821807683aa0ea171`  
-**Source snapshot:** `SideSwipeTech/Sprinkle-Jelly` at `86730143eb20074a58bf99e32c21ad5375a8d4b2`
+**Result:** A01–A09 approved, applied and rechecked in the affected product documents.  
+**Rechecked product content:** `656061a794f8617c486cf6a22f32f9e542dd0a73`  
+**Patch base:** `d9ddea965b5ea6e300a7ed9837a806b08e6b553b`  
+**Original audit snapshot:** `1bb6e7cab9b28868a9e3446821807683aa0ea171`  
+**Source inventory:** `SideSwipeTech/Sprinkle-Jelly` at `86730143eb20074a58bf99e32c21ad5375a8d4b2`
 
-## Scope and outcome
+## Scope and result
 
-The product has descriptions for all **17 domains**, in **43 domain documents**, plus **Build Phases**. Mock and Company are two types within Assessments. Counting them as separate product areas gives 18 areas, not a missing document. Tracks has independent problems but remains within Challenges & Tracks in the domain count.
+All 17 domains have product descriptions in 43 domain documents. Mock and Company remain two types within Assessments; counting them separately gives 18 product areas, not a missing domain. Tracks keeps independent problems within the Challenges & Tracks grouping.
 
-This pass reviewed the current product descriptions, their approved changes, the source feature tables and selected detailed source rules at the boundaries where the documents interact. The working feature map assigns a destination and disposition to each of the **542 source feature entries**: **527 domain entries and 15 Access entries**.
+The owner approved the audit recommendations, including optional Unpublish / Return to Draft and the Assessment-to-Skills treatment of negative, partial and unanswered question marks. The correction pass changed eleven domain documents and Build Phases. This report records the follow-up; it does not add a new product domain or another implementation-planning layer.
 
-A mapped entry means its named capability has a home. It does not certify every sentence of the source, prove implementation, or establish that every edge case works. The substantive conflicts and omissions found are listed below. No application tests, browser walkthrough, load test or security test was run in this documentation audit. The Demo was not treated as a second behavior authority.
+**All nine findings from the original audit are closed at the documentation level.** The eleven source feature entries affected by A01–A08 are marked Corrected and rechecked in the updated working feature map. A09 concerns Build Phases and is not an additional source feature.
 
-**No product feature document, Demo file, role setting or application code was changed by this audit.** Corrections below are proposals against the stated snapshot, not silently applied requirements. Shared definitions have not been started.
+The recheck compared the changed wording with the related domain rules and confirmed the intended file-change scope. Arithmetic examples were checked separately. No application, browser, security, load or integration test was run. This is not certification that implementation works or that every sentence in every source technical file has been audited.
 
-## Inventory accounting
+Demo, `CLAUDE.md`, `Architecture.md`, `Rebuild.md` and all other unaffected files were preserved. The newly added technical documents were not rewritten or certified by this product-correction pass. No shared-definition files were created.
+
+## Feature accounting
 
 | Disposition | Source entries | Meaning |
 |---|---:|---|
-| Mapped | 470 | Named capability located in the current descriptions |
-| Approved revision | 44 | Its wording, ownership or behavior reflects an already-approved change |
-| Needs correction or clarification | 11 | Eleven feature entries affected by findings A01–A08; these are not eleven missing domains |
-| Shared presentation detail | 1 | Category presentation needs a clear shared home, S02 |
-| Removed by approval | 1 | Labs-local role assignment and permission editing; authority is now WordPress-only |
-| Access definition pending | 15 | Dedicated shared definition not yet written; already-approved role changes still apply |
-| **Total source entries** | **542** | One row per source ID in the working feature map |
+| Mapped | 470 | Named capability located in the product descriptions |
+| Approved revision | 44 | Already represented with an approved wording, ownership or behavior change |
+| Corrected and rechecked | 11 | Previously flagged entries now covered by the corrections below |
+| Shared presentation detail | 1 | Notification category treatment and broadcast-only authored icons need their shared home |
+| Removed by approval | 1 | Labs-local role assignment/permission editing; roles are WordPress-only |
+| Access definition pending | 15 | Dedicated shared Access description is the next stage |
+| **Total** | **542** | 527 domain entries plus 15 Access entries |
 
-The working CSV uses normalized readable feature labels and the original IDs. A destination is the primary reading location, not a claim that no other document participates. Dispositions are mutually exclusive; a revised feature with an identified gap is counted under the gap, with its approved change retained in the note.
+Every source ID remains represented once in the working CSV. Eleven rows changed disposition; no ID was removed or duplicated. Keep the original finding reference on each corrected row for traceability. The working feature map is a review aid, not required reading for every coding task.
 
-### Domain coverage
+542 remains a source-reference count, not a certified count of unique launch capabilities. Repeated descriptions of the same shared capability must not become independent implementations. Code Lab Auto detection is an approved addition beyond its original table; the header switcher and label-only taxonomy Rename extend existing entries. Final unique-feature accounting follows shared consolidation rather than counting document headings.
 
-| Area | Source entries | Product description |
-|---|---:|---|
-| Courses | 57 | Written |
-| Assessments | 57 | Written |
-| Administration | 42 | Written |
-| Challenges & Tracks | 36 | Written |
-| Daily Challenges | 36 | Written |
-| Debug Detective | 36 | Written |
-| WizBit | 35 | Written |
-| Workspace | 34 | Written |
-| Notifications | 32 | Written |
-| Home / Skills / Progress | 32 | Written |
-| Economy | 23 | Written |
-| Topic Requests | 22 | Written |
-| Code Lab | 21 | Written |
-| Certificates | 19 | Written |
-| Profile & Settings | 19 | Written |
-| Quick Notes | 14 | Written |
-| Solutions | 12 | Written |
-| Access boundary | 15 | Shared definition pending |
+## Closed findings
 
-### What these numbers do not mean
+| Finding | Applied rule | Owning documents |
+|---|---|---|
+| **A01 — Missing grading material** | No saved answer with valid grading material is unanswered. Missing/empty/unreadable required cases are a platform/content fault: preserve acknowledged code, recover the original material, or use the existing genuine platform-failure invalidation. Never score missing cases as learner inactivity. | [Results](domains/Assessments/Results.md#total-and-final-grading) |
+| **A02 — Course project completion** | Use Workspace's nonempty, all-checked checklist plus explicit learner confirmation. No course-side bypass or automatic grader. Later task changes/deletion preserve earned learning completion. | [Lessons](domains/Courses/Lessons.md#assigned-projects), [Workspace](domains/Workspace/Workspace.md#checklist-and-completion) |
+| **A03 — Continue and archived work** | The owning domain confirms unfinished and resumable work. Retained course enrollment or an existing test can still permit Resume after catalogue retirement; completed/history-only or withdrawn practice content is not made resumable. | [Home](domains/Progress/Home.md#continue), Courses, Assessments |
+| **A04 — Fixed staff roles** | Economy and WizBit reference WordPress-derived User/Admin/Super Admin. Protected configuration/publication/recovery is Super Admin-only; Admin has its defined preparation/read work. No local grants or overrides; per-action checks remain. | [Economy administration](domains/Economy/Administration.md), [WizBit administration](domains/WizBit/Administration.md), [Role policy](domains/Administration/Administration.md#fixed-responsibilities) |
+| **A05 — Unpublish** | Explicit optional Unpublish / Return to Draft for Challenges, Tracks, track problems and Debug. Preserve identity and earned records; republish with validation and no renewed reward. Debug protects active windows. Daily retains its future-only Unschedule and begun-date rules. Archive remains final. | [Practice authoring](domains/Practice/Authoring.md#unpublish--return-to-draft), Challenges, Tracks, Debug Detective |
+| **A06 — Debug addresses** | Generate from the title when no address is supplied, with timestamp fallback when needed. Normalize/validate supplied addresses, reject conflicts and keep one address tied to one case. A title edit does not silently regenerate its established address. | [Debug Detective](domains/Practice/Debug%20Detective.md#readable-case-addresses) |
+| **A07 — Assessment evidence value** | Assessment supplies 100 × earned question marks / original available marks, bounded to 0–100. Eligible unanswered/skipped/not-reached questions in a valid finalized test supply zero with their reason. Faulted/pending/invalidated work supplies no invented zero. Actual marks, accuracy and existing Skills weights remain unchanged. | [Results](domains/Assessments/Results.md#skill-evidence), [Skills](domains/Progress/Skills.md#values-weights-and-minimum-evidence) |
+| **A08 — Running slots** | A live program still occupies a slot while waiting for input or briefly detached. An editor, completed output or empty terminal panel occupies none. Browser preview remains outside server-running capacity. The shared limit is still three. | [Running](domains/Workspace/Running.md#terminal-and-limits), Code Lab, Lessons |
+| **A09 — Build plan alignment** | Reviewed scope, WordPress-only roles, generated help built but initially off, and a required producer/consumer/staff-capability check before each usable slice. Bring a prerequisite forward in its own home or a linked sequential group; never claim a stub is complete. | [Build Phases](Build%20Phases.md) |
 
-542 is a source-reference accounting total, not a newly certified number of unique launch features. The source sometimes counts a capability in its producer and again in a presenting domain. Shared consolidation must not multiply those into independent implementations.
+The original recommendations and evidence remain available in the earlier [audit revision](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/62e3ee90b536dd3de05c6da82e3d1ded9b9a07d9/docs/Audit.md). They are historical findings, not still-open product choices.
 
-Code Lab's approved Auto language detection is an additional capability absent from its 21-row source table. The header theme/mode shortcut and label-only taxonomy Rename extend existing entries; they need not be counted as new domains or duplicated features. Unified learning hierarchy, independent Track content and mandatory course notices replace or refine existing behavior. Custom interactive-animation sections remain excluded.
+## Recheck observations
 
-Do not publish a final unique-feature total by subtracting document headings or counting repeated controls. The current reliable figures are the 17-domain inventory and the 542-row source mapping, with the dispositions above. Final launch accounting follows closure of this audit and shared-capability consolidation.
+### Grading and Skills
 
-## Findings
+The approved multi-select arithmetic was not changed. For a four-mark question with two correct options and a one-mark penalty, the examples remain 4 for both correct, 2 for one correct, 0 for one correct plus one wrong, -1 for wrong-only and 0 for unanswered. A duplicate option counts once. A wrong-only answer with negative marking disabled scores zero. The six-mark mixed-selection example still yields two marks.
 
-### A01 — Missing grading material must not become a skipped answer
+The four-mark question supplies Skills values 100, 50, 0 and 0 for full, half, negative and unanswered outcomes respectively. A negative mark remains negative in the Assessment sum. Pending/faulted or unclassified evidence is not supplied as zero, and a nonpositive available-mark denominator is rejected rather than divided. These arithmetic examples passed a local calculation check, not an application test.
 
-**Priority:** High. **Type:** Inherited rule conflict. **Feature:** assessments.F08.
+### Completion, resume and lifecycle
 
-[Results](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Assessments/Results.md) groups a coding question with no cases together with a learner who saved no code, treating both as skipped. The [source Assessment engine](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/86730143eb20074a58bf99e32c21ad5375a8d4b2/docs/domains/assessments/04-engine.md) contains the same clause, but also says missing or irreparable grading inputs cause platform recovery or invalidation rather than an invented learner result.
+The document walkthrough distinguishes an empty checklist, an unchecked task, all tasks checked without confirmation, and valid explicit completion. Only the final eligible confirmation completes a project; later workspace changes cannot revoke earned course completion.
 
-**Correction:** no learner answer remains an unanswered/skipped response under the existing rules. Missing or unreadable required test cases are a platform/content fault: preserve the acknowledged answer, recover the required grading material, or use the existing platform-failure invalidation rule if it cannot be recovered. Publication checks remain mandatory but are not a reason to classify corrupted/missing material as learner inactivity.
+Continue distinguishes a resumable archived course or existing test from a completed result and an unavailable practice item. It cannot turn retained history into a new start. Owner unavailability is not guessed permission.
 
-The agreed multi-select arithmetic itself is present and is not being reopened.
+The Unpublish descriptions agree across shared Practice authoring, Challenges, Tracks and Debug. Track parent/child availability stays explicit, content remains independently owned, and republishing does not reset first-solve eligibility. Debug withdrawal protects acknowledged code and restores affected timed allowance. Daily receives no generic date-lock bypass.
 
-### A02 — Course projects must use the approved checklist gate
+### Roles, capacity and plan
 
-**Priority:** High. **Type:** Cross-domain detail gap. **Feature:** courses.F30.
+Economy and WizBit now use the same fixed staff policy as Administration. The change removes grantable-permission language without weakening action checks or making private learner work accessible.
 
-[Workspace](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Workspace/Workspace.md) requires at least one task, every task checked and explicit completion confirmation. [Lessons](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Courses/Lessons.md) describes project self-confirmation but does not state that eligibility condition clearly. Its statement that a checklist does not make the decision is compatible with explicit confirmation, but is not enough to communicate the prerequisite.
+Workspace and Code Lab now agree that waiting for input is still a running process. Workspace's two-minute detached process also remains a live slot. Neither a completed terminal display nor browser preview is counted as another live server program.
 
-**Correction:** a course-project lesson completes from its Workspace's valid explicit completion. State the same nonempty/all-checked prerequisite beside that action. Checking tasks alone does not complete the project. Reopening tasks or deleting the workspace does not undo learning completion already earned. No new project grader is introduced.
+Build Phases still has four sequential phases, one active delivery task and domain-owned prerequisites. The new text closes stale approval wording; it does not claim that detailed implementation dependencies have already been scheduled or that coding/testing is complete.
 
-### A03 — Continue must respect retained access to archived work
+## Remaining shared work
 
-**Priority:** High. **Type:** Cross-domain contradiction. **Feature:** skills.F02.
+**S01 — Access:** write the dedicated product definition for the 15 mapped entries, preserving the current WordPress-only roles, verified membership/staff entry, sign-in restrictions, live-test protection, account ownership and known-state versus outage behavior. Do not import superseded local role management.
 
-[Home](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Progress/Home.md) says to skip archived Continue candidates. [Courses](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Courses/Courses.md) preserves archived-subject access for existing enrollments, and [Taking a Test](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Assessments/Taking%20a%20Test.md) protects attempts already started when a paper is retired.
+**S02 — Presentation:** give notification category treatment and the broadcast-only authored icon rule one shared home. The existing inbox is not missing or being redesigned.
 
-**Correction:** Continue returns only work the owning domain confirms is both unfinished and resumable. Archive alone is not a global refusal. Completed work still stays out of Continue; retained historical results do not automatically become resumable work. The owning domain decides, not a second rule in Home.
+Consolidate the other approved common behavior: language capabilities, editor controls, execution, evaluation, content actions, files/media, common interface states, product time, saving, retention and cross-domain facts. Preserve intentional differences: Notes recovery is not Workspace recovery; a course quiz is not a recorded Assessment; Code Lab has no grading; authored WizBit help is not generated help.
 
-### A04 — Align remaining staff wording with the fixed role policy
+These are planned definition tasks, not unresolved A01–A09 decisions. Shared definitions should be discussed before writing, keep simple names and plain language, and reference domain-owned policies rather than clone them.
 
-**Priority:** Medium. **Type:** Wording/authority alignment. **Features:** economy.F19, companion.F27.
+## What follows
 
-[Economy administration](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Economy/Administration.md) still says configuration and retry permissions are granted explicitly. [WizBit administration](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/WizBit/Administration.md) uses generic separately-permissioned staff actions. [Administration](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Administration/Administration.md) now fixes those responsibilities to WordPress-derived Admin/Super Admin, with no Labs permission editor.
+Shared product definitions come next, then the Demo-based admin workflow review, final shared/domain reconciliation, technical-document alignment and focused phase details. The new Architecture and agent instructions already present in the repository are inputs for that later alignment, not a reason to recreate them without review.
 
-**Correction:** reference the shared fixed policy. Admin prepares permitted drafts and reviews; Super Admin performs protected live configuration, publication and recovery. Retain per-action checks; do not interpret the new wording as one unprotected admin endpoint. This is not evidence that extra roles have been implemented, and descriptive words such as author or support do not automatically constitute extra roles.
-
-### A05 — Preserve the source's Return to Draft capability explicitly
-
-**Priority:** Medium. **Type:** Feature detail lost in extraction. **Features:** challenges.F23, debug.F21.
-
-The [Challenges/Tracks lifecycle](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/86730143eb20074a58bf99e32c21ad5375a8d4b2/docs/domains/challenges/03-rules.md) and [Debug lifecycle](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/86730143eb20074a58bf99e32c21ad5375a8d4b2/docs/domains/debug/03-rules.md) expressly allow published content to return to draft. [Practice authoring](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Practice/Authoring.md) and the new area descriptions list editing, publishing, Archive and Delete, without clearly retaining that separate action.
-
-**Recommendation:** restore an explicit Unpublish / Return to Draft action for Challenges, Tracks and Debug cases. It removes content from new learner access while allowing editing, without removing earned records. Existing draft/code and Debug timed-window protections still apply. It is not a required step for ordinary direct editing. Final Archive remains a different action. Confirm this omission is restored rather than treating silence as approval to remove it.
-
-### A06 — Restore stable Debug case-address behavior
-
-**Priority:** Medium. **Type:** Missing behavior detail. **Feature:** debug.F29.
-
-The [source feature table](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/86730143eb20074a58bf99e32c21ad5375a8d4b2/docs/domains/debug/03-rules.md) specifies a generated readable address when none is supplied, normalization of an authored address and an unambiguous case destination. [Debug Detective](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Practice/Debug%20Detective.md) does not carry this feature beyond general shared authoring references.
-
-**Correction:** state the source's automatic-address fallback, validation and uniqueness behavior in plain language. Shared address handling can own its implementation later. Do not require every domain to invent its own address-generation policy.
-
-### A07 — Define the Assessment-to-Skills value without changing marks
-
-**Priority:** High before implementing the integration. **Type:** Incomplete product contract. **Features:** assessments.F29, skills.F11.
-
-[Results](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Assessments/Results.md) permits negative per-question marks and partial credit. [Skills](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Progress/Skills.md) expects a qualifying question value in 0–100. The [source measurement rule](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/86730143eb20074a58bf99e32c21ad5375a8d4b2/docs/domains/analytics/04-engine.md) also refers to a finalized eligible percentage without making this negative-mark conversion explicit in that rule.
-
-**Recommendation to ratify:** Assessment supplies a separate evidence value derived from its own captured grading: `100 × earned question marks / available question marks`, bounded to 0–100. Keep the actual question marks, including a valid negative mark, unchanged in the test result. Explicitly decide the eligibility of unanswered/not-reached questions; do not let Progress infer it. Recommended treatment is zero evidence value for an eligible unanswered question in a valid finalized test, while preserving the unanswered reason and excluding platform-failed/invalidated work. This is a proposal, not an approved scoring or eligibility change.
-
-Before closure, include examples for a wrong-only penalized answer, a partial answer, an unanswered/not-reached answer and a platform failure. No new model, weighting system or extra score is required.
-
-### A08 — Clarify what occupies a running-program slot
-
-**Priority:** Medium. **Type:** Ambiguous shared-capacity wording. **Feature:** workspace.F14.
-
-[Workspace Running](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Workspace/Running.md) exempts idle terminals from a running slot. [Code Lab](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/domains/Practice/Code%20Lab.md) correctly counts a live program waiting for input as active. Without distinguishing an empty terminal panel from a waiting process, those descriptions can be implemented differently.
-
-**Correction:** an editor, completed output or terminal panel with no live program consumes no slot. A live program consumes one until it exits, is stopped or reaches its allowed bound, including while waiting for input. Keep the existing shared limit; do not add a second Workspace counter.
-
-### A09 — Refresh Build Phases after the approved domain work
-
-**Priority:** Medium before implementation. **Type:** Planning/status alignment; not an additional feature entry.
-
-[Build Phases](https://github.com/SideSwipeTech/Sprinkle-Jelly-V1/blob/1bb6e7cab9b28868a9e3446821807683aa0ea171/docs/Build%20Phases.md) still contains draft assumptions and conditional generated-help wording. Generated help has now been explicitly approved as built but initially off. Its no-placeholder/domain-end-to-end rule also needs an explicit prerequisite check before starting a slice whose required Notes, requests, reports or staff controls have a later delivery position.
-
-**Correction:** update the approved scope statements without claiming implementation has started. During phase-detail work, give required producer/consumer capabilities a definite prerequisite or an explicitly linked sequential group. Do not silently use stubs or start parallel domain work. The final administration composition remains late; a domain's required management capability does not.
-
-## Shared work that is expected, not a missing domain
-
-**S01 — Access.** Its 15 reference entries need one current shared definition. In particular, carry forward the three WordPress-derived roles, verified downgrade behavior, membership versus staff entry, one sign-in, same-account takeover/refusal, recorded-test protection and privacy. Do not import superseded local role grants or older eligibility mechanics from the extraction snapshot simply because their old feature IDs remain in the checklist.
-
-**S02 — Common presentation.** Notification categories exist, but their consistent category treatment and broadcast-only authored icon rule need a clear shared home (notifications.F13). This is presentation definition, not a reason to rebuild Notifications.
-
-**Other planned shared definitions:** language capabilities and status, editor controls, execution and evaluation, honest save/error states, safe repeated actions, data-retention terms, publishing/authoring controls, product time and cross-domain facts. Preserve intentional differences: Notes recovery is not Workspace recovery; a course quiz is not a recorded Assessment; Code Lab has no grading; authored help is not generated help.
-
-## Approved direction confirmed in the documents
-
-The checks found the following choices represented: independent problem collections and rewards; shared forms rather than a shared problem bank; learner/admin Solve rates; restored Mock proctoring; the agreed multi-select formula; one learning hierarchy; protected completed learning and issued certificates; mandatory course-change notices; the four Workspace restrictions; the Notes and Topic Request restrictions; the shared header theme/mode choice; fixed-corner WizBit; and WordPress-only User/Admin/Super Admin authority.
-
-The five locally available WizBit files were matched by Git blob hash to their committed versions. Counting the actual tables confirmed **39 message kinds and nine expressions**. This is a document check, not an animation or behavior test.
-
-No whole domain was missing from the product set. The exceptions above concern conflicting wording, omitted feature detail and an incomplete cross-domain rule; they are not a recommendation to restart the product definition.
-
-## Closing this audit
-
-Keep the existing product documents. Make small edits at their owning locations, not a second specification hierarchy. A01–A04, A06 and A08 can be aligned to rules already agreed. Explicitly restore or decide A05, and ratify A07's evidence examples rather than leaving an implementation agent to choose. Refresh A09 during the phase-plan alignment.
-
-Then repeat the affected cross-domain checks and update this report's dispositions. Only after that should shared product definitions consolidate the settled behavior. Admin workflow simplification, Demo-to-feature mapping, Architecture, Rules and phase details follow; none is certified complete by this audit.
-
-The detailed feature map is an audit working attachment, not another document every coding session must load. A corrected document should be verified against the relevant scenario, not merely contain the feature ID.
-
-## Source references
-
-[Source inventory and 542-entry count](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/86730143eb20074a58bf99e32c21ad5375a8d4b2/reference/extraction/README.md); [Source document index](https://github.com/SideSwipeTech/Sprinkle-Jelly/blob/86730143eb20074a58bf99e32c21ad5375a8d4b2/docs/README.md).
-
-Named feature tables were checked in the source domain documents for Courses, Assessments, Administration, Challenges/Tracks, Daily, Debug, Workspace, Economy, Notifications, Progress, Profile, Notes, Requests, Solutions, Certificates and WizBit. Access uses its 15-row extraction inventory, with current approved decisions taking precedence. Selected detailed checks additionally used the Assessment, measurement, messaging, AI and access rules. This is not a claim that all source technical implementation documents were audited line by line.
+The correction pass adds no new domain, central problem library, role, grading model, project grader, feature branch or worktree. Keep the existing structure and move forward from the corrected behavior.
